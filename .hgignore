@@ -1,0 +1,3 @@
+glob:nbproject
+glob:src/application/cache/*/*
+glob:src/application/logs/*/*
