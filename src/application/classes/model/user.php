@@ -68,7 +68,7 @@ class Model_User extends ORM
 	 * Validates user data. Upon success, data is stored in the database and a
 	 * confirmation email is sent out to the user.
 	 *
-	 * @uses   ORM::create To validate and insert data
+	 * @uses   ORM::create To validate and insert data.
 	 * @param  array $values
 	 * @return bool
 	 */
@@ -85,7 +85,87 @@ class Model_User extends ORM
 		))
 		->create($password_validation);
 
-		return TRUE;
+		return $this->send_email('confirm_registration');
+	}
+
+	/**
+	 * Sends different emails to the user.
+	 *
+	 * @param  string $type The type of email to send.
+	 * @param  array  $data Any extra data to add to the email.
+	 * @return bool
+	 */
+	public function send_email($type, array $data = array())
+	{
+		if ( ! $this->loaded())
+		{
+			throw new Kohana_Exception('Cannot send email using unloaded :model model.',
+				array(':model' => $this->_object_name));
+		}
+
+		// Depends on the type of email
+		$subject = $message = NULL;
+
+		// Data to pass to the email message
+		$data += array('user' => $this->as_array());
+
+		switch ($type)
+		{
+			case 'confirm_registration':
+				$subject = 'Park-a-Lot Registration';
+				$message = Kostache::factory('email/confirm/registration')
+					->set('confirmation_url', $this->confirmation_url('confirm_registration'));
+			break;
+
+			default: // Invalid type
+				throw new Kohana_Exception('Invalid email type: :type', array(':type' => $type));
+			break;
+		}
+
+		// Render HTML
+		$message = $message->set($data)->render();
+
+		return Email::factory($subject, $message, 'text/html')
+			->to($this->email, $this->first_name.' '.$this->last_name)
+			->from(Kohana::config('site.emails.outgoing'), 'Park a Lot')
+			->send();
+	}
+
+	/**
+	 * Builds a confirmation url, which must be validated to complete a previous
+	 * action.
+	 *
+	 * @param  string $action User action to redirect to.
+	 * @return string
+	 */
+	protected function confirmation_url($action)
+	{
+		if ( ! $this->loaded())
+		{
+			throw new Kohana_Exception('Cannot build a confirmation url using an unloaded :model model.',
+				array(':model' => $this->_object_name));
+		}
+
+		// ex: http://site.com/user/confirm_registration?id=34&token=12323kl...
+		$url = Route::url('default', array('action' => $action))
+			 . URL::query(array(
+				 'id'    => $this->id,
+				 'time'  => time(),
+				 'token' => $this->generate_token(),
+			   ));
+
+		// Build full url, with protocol
+		return URL::site($url, TRUE);
+	}
+
+	/**
+	 * Generates a token, used for different purposes.
+	 *
+	 * @return string
+	 */
+	protected function generate_token()
+	{
+		return Auth::instance()->hash($this->email);
 	}
 
 	/**

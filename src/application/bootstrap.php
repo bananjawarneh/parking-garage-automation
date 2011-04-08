@@ -109,6 +109,7 @@ Kohana::$config->attach(new Config_File);
 $modules = array(
 	'auth'     => MODPATH.'auth',
 	'database' => MODPATH.'database',
+	'email'    => MODPATH.'email',
 	'image'    => MODPATH.'image',
 	'kostache' => MODPATH.'kostache',
 	'orm'      => MODPATH.'orm',
