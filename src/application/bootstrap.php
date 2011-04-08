@@ -22,8 +22,7 @@ else
  * @see  http://kohanaframework.org/guide/using.configuration
  * @see  http://php.net/timezones
  */
-date_default_timezone_set('America/Chicago');
-
+date_default_timezone_set('UTC');
 /**
  * Set the default locale.
  *
@@ -65,6 +64,16 @@ if (isset($_SERVER['KOHANA_ENV']))
 {
 	Kohana::$environment = constant('Kohana::'.strtoupper($_SERVER['KOHANA_ENV']));
 }
+else if (isset($_SERVER['SERVER_ADDR']))
+{
+	Kohana::$environment = ($_SERVER['SERVER_ADDR'] === '127.0.0.1')
+	                     ? Kohana::DEVELOPMENT
+	                     : Kohana::PRODUCTION;
+}
+else
+{
+	Kohana::$environment = Kohana::PRODUCTION;
+}
 
 /**
  * Initialize Kohana, setting the default options.
@@ -81,6 +90,9 @@ if (isset($_SERVER['KOHANA_ENV']))
  */
 Kohana::init(array(
 	'base_url'   => '/',
+	'index_file' => FALSE,
+	'profile'    => (Kohana::$environment !== Kohana::PRODUCTION),
+	'caching'    => (Kohana::$environment === Kohana::PRODUCTION),
 ));
 
 /**
@@ -93,26 +105,62 @@ Kohana::$log->attach(new Log_File(APPPATH.'logs'));
  */
 Kohana::$config->attach(new Config_File);
 
-/**
- * Enable modules. Modules are referenced by a relative or absolute path.
- */
-Kohana::modules(array(
-	// 'auth'       => MODPATH.'auth',       // Basic authentication
-	// 'cache'      => MODPATH.'cache',      // Caching with multiple backends
-	// 'codebench'  => MODPATH.'codebench',  // Benchmarking tool
-	// 'database'   => MODPATH.'database',   // Database access
-	// 'image'      => MODPATH.'image',      // Image manipulation
-	// 'orm'        => MODPATH.'orm',        // Object Relationship Mapping
-	// 'unittest'   => MODPATH.'unittest',   // Unit testing
-	// 'userguide'  => MODPATH.'userguide',  // User guide and API documentation
-	));
+// Loaded in any environment
+$modules = array(
+	'auth'     => MODPATH.'auth',
+	'database' => MODPATH.'database',
+	'image'    => MODPATH.'image',
+	'kostache' => MODPATH.'kostache',
+	'orm'      => MODPATH.'orm',
+);
+
+// Environment specific modules
+switch (Kohana::$environment)
+{
+	case Kohana::DEVELOPMENT;
+		$modules += array(
+			'codebench' => MODPATH.'codebench',
+			'userguide' => MODPATH.'userguide',
+		);
+	break;
+
+	case Kohana::PRODUCTION:
+		$modules += array(
+			'cache' => MODPATH.'cache',
+		);
+	break;
+
+	case Kohana::TESTING:
+		$modules += array(
+			'unittest' => MODPATH.'unittest',
+		);
+	break;
+}
+
+Kohana::modules($modules);
+unset($modules);
 
 /**
  * Set the routes. Each route must have a minimum of a name, a URI and a set of
  * defaults for the URI.
  */
-Route::set('default', '(<controller>(/<action>(/<id>)))')
-	->defaults(array(
-		'controller' => 'welcome',
-		'action'     => 'index',
-	));
+if ( ! Route::cache())
+{
+	if (Kohana::$environment === Kohana::STAGING)
+	{
+		// Route everything to show an "under maintenance" message
+		Route::set('everything', '(<everything>)', array('everything' => '.*'))
+			->defaults(array(
+				'controller' => 'static',
+				'action'     => 'maintenance',
+			));
+	}
+
+	Route::set('default', '(<controller>(/<action>(/<id>)))')
+		->defaults(array(
+			'controller' => 'home',
+			'action'     => 'index',
+		));
+	
+	Route::cache(Kohana::$environment === Kohana::PRODUCTION);
+}

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<base href="{{base_url}}" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		<title>{{#title}}{{title}} &ndash; {{/title}}Park a Lot</title>
+		{{#meta_tags}}
+			<meta name="{{name}}" content="{{content}}" />
+		{{/meta_tags}}
+		{{#styles}}
+			{{#condition}}<!--[if {{condition}}]>{{/condition}}<link rel="stylesheet" type="text/css" href="{{href}}" media="{{media}}" />{{#condition}}<![endif]-->{{/condition}}
+		{{/styles}}
+		{{#scripts}}
+			<script type="text/javascript" src="{{src}}"></script>
+		{{/scripts}}
+	</head>
+	<body>
+		{{#notification}}
+		<div id="notification" class="wrapper">
+			{{notification}}
+		</div>
+		{{/notification}}
+		<div id="header-wrapper" class="wrapper">
+			<div id="header" class="container">
+				<a href="" id="logo"></a>
+				<ul id="topnav" class="navbar clearfix">
+				{{#topnav}}
+					<li><a href="{{href}}">{{title}}</a></li>
+				{{/topnav}}
+				</ul>
+			</div>
+		</div>
+		<div id="main-wrapper" class="wrapper">
+			<div id="main" class="container">
+				{{>content}}
+			</div>
+		</div>
+		<div id="footer-wrapper" class="wrapper">
+			<div id="footer" class="container">
+				<span>&copy; Park a Lot Inc. 2010 - 2011</span>
+				<ul class="navbar cleafix">
+					<li><a href="">Help</a></li>
+					<li><a href="">Contact</a></li>
+					<li><a href="">About Us</a></li>
+				</ul>
+			</div>
+		</div>
+		{{!&profiler}}
+	</body>
+</html>
