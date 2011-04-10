@@ -89,7 +89,9 @@ else
  * - boolean  caching     enable or disable internal caching                 FALSE
  */
 Kohana::init(array(
-	'base_url'   => '/',
+	'base_url'   => (Kohana::$environment === Kohana::PRODUCTION)
+	             ?  'http://park-a-lot.vacau.com/'
+	             :  'http://park-a-lot.localhost/',
 	'index_file' => FALSE,
 	'profile'    => (Kohana::$environment !== Kohana::PRODUCTION),
 	'caching'    => (Kohana::$environment === Kohana::PRODUCTION),

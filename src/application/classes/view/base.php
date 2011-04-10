@@ -114,14 +114,7 @@ abstract class View_Base extends Kostache_Layout
 	 */
 	public function render()
 	{
-		if ($this->_template === NULL)
-		{
-			$class = explode('_', get_class($this));
-
-			$this->_template = strtolower(implode('/', array_slice($class, 1)));
-		}
-
-		$this->base_url = Kohana::$base_url;
+		$this->base_url = URL::base(FALSE, TRUE);
 
 		return parent::render();
 	}
