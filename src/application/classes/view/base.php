@@ -6,6 +6,7 @@
  * @category  View
  * @author    Abdul Hassan
  * @copyright (c) 2011 The authors
+ * @license   see LICENSE
  */
 abstract class View_Base extends Kostache_Layout
 {

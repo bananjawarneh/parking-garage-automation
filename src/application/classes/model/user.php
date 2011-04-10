@@ -5,7 +5,8 @@
  * @package   Park-a-Lot
  * @category  Model
  * @author    Abdul Hassan
- * @copyright (c) The authors
+ * @copyright (c) 2011 The authors
+ * @license   see LICENSE
  */
 class Model_User extends ORM
 {

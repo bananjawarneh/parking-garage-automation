@@ -5,7 +5,8 @@
  * @package   Park-a-Lot
  * @category  View
  * @author    Abdul Hassan
- * @copyright (c) The authors
+ * @copyright (c) 2011 The authors
+ * @license   see LICENSE
  */
 class View_Email_Confirm_Registration extends View_Base
 {

@@ -2,11 +2,11 @@
 /**
  * Custom error handling.
  *
- * @package   Library
+ * @package   Park-a-Lot
  * @category  Exception
  * @author    Abdul Hassan
- * @copyright (c) 2011 Abdul Hassan
- * @license   http://creativecommons.org/licenses/by-nc-nd/3.0/
+ * @copyright (c) 2011 The authors
+ * @license   see LICENSE
  */
 class Kohana_Exception extends Kohana_Kohana_Exception
 {

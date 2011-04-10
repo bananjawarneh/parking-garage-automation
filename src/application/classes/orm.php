@@ -5,7 +5,8 @@
  * @package    Park-a-Lot
  * @subpackage ORM
  * @author     Abdul Hassan
- * @copyright  (c) The authors
+ * @copyright  (c) 2011 The authors
+ * @license    see LICENSE
  */
 class ORM extends Kohana_ORM
 {

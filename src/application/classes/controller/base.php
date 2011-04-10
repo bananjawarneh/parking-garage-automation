@@ -5,7 +5,8 @@
  * @package   Park-a-Lot
  * @category  Controller
  * @author    Abdul Hassan
- * @copyright (c) The authors
+ * @copyright (c) 2011 The authors
+ * @license   see LICENSE
  */
 abstract class Controller_Base extends Controller
 {
