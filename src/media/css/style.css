@@ -271,23 +271,23 @@ legend{
 
 label{
 	color: #555555;
-	font-weight: bold;
+	font-weight: normal;
 }
 
 input[type='text'],
 input[type='password'],
 textarea,
-select{
-	border: 1px solid #AAAAAA;
-	font-family: arial, helvetica;
-	font-size: 1.1em;
-	padding: 6px 3px;
+select,
+.readonly{
+	border: 1px solid #CCCCCC;
+	font: 1em arial, helvetica;
+	padding: 3px;
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	border-radius: 4px;
-	-webkit-box-shadow: #DDDDDD 2px 2px 1px inset;
-	-moz-box-shadow: #DDDDDD 2px 2px 1px inset;
-	box-shadow: #DDDDDD 2px 2px 1px inset;
+	-webkit-box-shadow: #D5D5D5 2px 2px 1px inset;
+	-moz-box-shadow: #D5D5D5 2px 2px 1px inset;
+	box-shadow: #D5D5D5 2px 2px 1px inset;
 }
 
 select{
@@ -361,6 +361,29 @@ a.button img{
 
 .form-row{
 	margin: 0.5em 0 1em;
+}
+
+.readonly{
+	color: #888888;
+	height: 100px;
+	overflow: auto;
+}
+
+/* ~TABULAR FORMS
+--------------------------------------*/
+
+form.tabular .form-row label{
+	float: left;
+	margin-right: 10px;
+	text-align: right;
+	width: 120px;
+}
+
+#wrap #content form.tabular .form-row input[type='text'],
+#wrap #content form.tabular .form-row input[type='password'],
+#wrap #content form.tabular .form-row textarea,
+#wrap #content form.tabular .form-row .readonly{
+	width: 300px;
 }
 
 /* ~TABLES
@@ -589,6 +612,7 @@ body{
 	width: 250px;
 }
 
+#wrap,
 .module{
 	background: #FFFFFF;
 	margin-bottom: 15px;
@@ -601,6 +625,14 @@ body{
 	box-shadow: #555555 0 0 3px;
 }
 
+#wrap #content{
+	width: 500px;
+}
+
+#wrap #sidebar{
+	width: 276px;
+}
+
 /* ~GLOBALS
 ------------------------------------------------------------------------------*/
 
@@ -608,6 +640,37 @@ body{
 	background: #F1F1F1;
 	color: #333333;
 	font: normal normal normal 0.8em/1.5em "trebuchet ms", arial, helvetica, sans-serif;
+}
+
+/* ~MODULES WITHIN MAIN WRAP
+--------------------------------------*/
+
+#wrap .module{
+	margin-bottom: 15px;
+	padding: 0;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+	-moz-box-shadow: 0 0 0;
+	-webkit-box-shadow: 0 0 0;
+	box-shadow: 0 0 0;
+}
+
+/* ~HOW TO TIP
+--------------------------------------*/
+
+.how-to,
+#wrap .how-to{
+	background: #EEEEEE;
+	border: none;
+	padding: 5px;
+	-moz-box-shadow: 0 0 0;
+	-webkit-box-shadow: 0 0 0;
+	box-shadow: 0 0 0;
+}
+
+.how-to p:last-child{
+	margin-bottom: 0;
 }
 
 /* ~NAVIGATION BARS
@@ -623,6 +686,16 @@ ul.navbar > li{
 	float: left;
 	margin: 0;
 	padding: 0;
+}
+
+/* ~NOTIFICATIONS
+--------------------------------------*/
+
+.notification{
+	border-bottom: 1px solid #888888;
+	font-weight: bold;
+	padding: 3px 0;
+	text-align: center;
 }
 
 /* ~HEADER

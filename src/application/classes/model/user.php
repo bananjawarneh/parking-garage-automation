@@ -28,6 +28,9 @@ class Model_User extends ORM
 	public function filters()
 	{
 		return array(
+			TRUE => array(
+				array('trim'),
+			),
 			'password' => array(
 				array(array(Auth::instance(), 'hash')),
 			),
@@ -86,7 +89,20 @@ class Model_User extends ORM
 		))
 		->create($password_validation);
 
+		// Allow this user to login
+		$this->add('roles', ORM::factory('role', array('name' => Model_Role::LOGIN)));
+
 		return $this->send_email('confirm_registration');
+	}
+
+	/**
+	 * Logs this user in by force. Best used after user registration.
+	 *
+	 * @return void
+	 */
+	public function force_login()
+	{
+		Auth::instance()->force_login($this);
 	}
 
 	/**

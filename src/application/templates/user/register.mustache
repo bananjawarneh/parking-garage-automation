@@ -1,0 +1,52 @@
+<div id="wrap" class="clearfix">
+	<h1>Sign up for an account. It's quick and painless.</h1>
+	<div id="content">
+		{{&errors}}
+		{{#form}}
+		<form action="user/register" method="post" class="tabular">
+			<div class="form-row">
+				<label for="first_name">First Name</label>
+				<input type="text" name="first_name" id="first_name" value="{{first_name}}" />
+			</div>
+			<div class="form-row">
+				<label for="last_name">Last Name</label>
+				<input type="text" name="last_name" id="last_name" value="{{last_name}}" />
+			</div>
+			<div class="form-row">
+				<label for="email">Email</label>
+				<input type="text" name="email" id="email" value="{{email}}" />
+			</div>
+			<div class="form-row">
+				<label for="password">Password</label>
+				<input type="password" name="password" id="password" />
+			</div>
+			<div class="form-row">
+				<label for="password_confirm">Confirm Password</label>
+				<input type="password" name="password_confirm" id="password_confirm" />
+			</div>
+			<div class="form-row">
+				<label>Terms of service</label>
+				<div class="readonly">{{user_agreement}}</div>
+			</div>
+			<p>By clicking Sign up and creating an account, you agree to the
+					terms of service, listed direclty above. Violation of the above
+					terms could lead to a cancellation of service.</p>
+			<div class="form-row center">
+				<input type="submit" value="Sign up" />
+				<div><strong>Already have an account?</strong> <a href="user/login">Login</a></div>
+			</div>
+		</form>
+		{{/form}}
+	</div>
+	<div id="sidebar">
+		<div class="how-to module">
+			<h4>Why sign up?</h4>
+			<p>
+				As a registered user, you get to reserve parking in any one of
+				our Park-a-Lot parking lots. Don't have enough time to reserve
+				parking ahead of time, just stop in for on the spot parking and
+				we'll add it to your monthly bill.
+			</p>
+		</div>
+	</div>
+</div>

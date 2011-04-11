@@ -18,6 +18,22 @@ abstract class Controller_Base extends Controller
 	protected $view;
 
 	/**
+	 * The user object of the viewing user. May or not be loaded, depending on
+	 * whether the user is logged in or not.
+	 *
+	 * @var ORM
+	 */
+	protected $_user;
+
+	public function before()
+	{
+		// Get currently logged in user, or create a new user instance
+		$this->_user = Auth::instance()->get_user(ORM::factory('user'));
+
+		return parent::before();
+	}
+
+	/**
 	 * Sets the contents of the view object as the response.
 	 *
 	 * @return void

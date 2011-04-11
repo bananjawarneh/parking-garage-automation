@@ -17,18 +17,14 @@
 		{{/scripts}}
 	</head>
 	<body>
-		{{#notification}}
-		<div id="notification" class="wrapper">
-			{{notification}}
-		</div>
-		{{/notification}}
+		{{#notifications}}<div class="notification wrapper">{{notification}}</div>{{/notifications}}
 		<div id="header-wrapper" class="wrapper">
 			<div id="header" class="container">
 				<a href="" id="logo"></a>
 				<ul id="topnav" class="navbar clearfix">
-				{{#topnav}}
-					<li><a href="{{href}}">{{title}}</a></li>
-				{{/topnav}}
+					<li><a href="/">Home</a></li>
+					<li><a href="/">Reserve</a></li>
+					<li><a href="user/register">Register</a></li>
 				</ul>
 			</div>
 		</div>

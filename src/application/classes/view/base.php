@@ -31,6 +31,8 @@ abstract class View_Base extends Kostache_Layout
 		'keywords'    => 'parking, garage, automation',
 	);
 
+	protected $_notifications = array();
+
 	public function styles()
 	{
 		return $this->_styles;
@@ -60,22 +62,54 @@ abstract class View_Base extends Kostache_Layout
 		return $meta_tags;
 	}
 
-	public function topnav()
+	public function notifications()
 	{
-		return array(
-			array(
-				'href'  => '/',
-				'title' => 'Home',
-			),
-			array(
-				'href'  => '/',
-				'title' => 'Reserve',
-			),
-			array(
-				'href'  => '/',
-				'title' => 'Register',
-			),
-		);
+		$notifications = array();
+
+		foreach ($this->_notifications as $notification)
+		{
+			$notifications[] = array('notification' => $notification);
+		}
+
+		return $notifications;
+	}
+
+	/**
+	 * Builds the list of errors, if any exist.
+	 *
+	 * @return string
+	 * @todo   Is this really the best way to do this?
+	 */
+	public function errors()
+	{
+		if (empty($this->errors))
+		{
+			return;
+		}
+
+		$errors = '<div class="error">'
+			    . '<b>Please correct these errors</b>'
+		        . '<ul>';
+
+		foreach ($this->errors as $error)
+		{
+			if (is_array($error))
+			{
+				foreach ($error as $e)
+				{
+					$errors .= '<li>'.$e.'</li>';
+				}
+			}
+			else
+			{
+				$errors .= '<li>'.$error.'</li>';
+			}
+		}
+		
+		$errors .= '</ul>'
+		         . '</div>';
+
+		return $errors;
 	}
 
 // -----------------------------------------------------------------------------
