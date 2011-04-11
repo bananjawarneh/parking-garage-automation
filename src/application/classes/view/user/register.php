@@ -18,8 +18,6 @@ class View_User_Register extends View_Base
 		'email'      => NULL,
 	);
 
-	public $errors = array();
-
 	public $user_agreement = 'This user agreement needs to be updated to
 		resemble the actual user agreement of the site. Lorem ipsum dolor sit
 		amet, consectetur adipiscing elit. Sed rhoncus accumsan nibh, ut consectetur

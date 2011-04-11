@@ -1,0 +1,29 @@
+<div id="wrap" class="clearfix">
+	<div id="content">
+		<h1>Sign in</h1>
+		{{>errors}}
+		{{#form}}
+		<form action="user/login" method="post" class="tabular">
+			{{#return_to}}<input type="hidden" name="return_to" value="{{return_to}}" />{{/return_to}}
+			<div class="form-row">
+				<label for="email">Email</label>
+				<input type="text" name="email" id="email" value="{{email}}" />
+			</div>
+			<div class="form-row">
+				<label for="password">Password</label>
+				<input type="password" name="password" id="password" />
+			</div>
+			<div class="form-row center">
+				<input type="submit" value="Sign in" />
+				or <a href="user/register">Sign up</a>
+			</div>
+		</form>
+		{{/form}}
+	</div>
+	<div id="sidebar">
+		<div class="how-to module">
+			<h4>Did you know?</h4>
+			<p>{{random_tip}}</p>
+		</div>
+	</div>
+</div>

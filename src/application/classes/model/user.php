@@ -96,6 +96,39 @@ class Model_User extends ORM
 	}
 
 	/**
+	 * Validates the login form, and logs the user in upon success.
+	 *
+	 * @todo   throw exception is user is loaded already?
+	 * @param  array &$values
+	 * @return bool
+	 */
+	public function login(array &$values)
+	{
+		$values = Validation::factory($values)
+			->rule('email', 'not_empty')
+			->rule('password', 'not_empty');
+
+		if ( ! $values->check())
+		{
+			// Failed validation
+			return FALSE;
+		}
+
+		// Try loading the user by email
+		$this->where('email', '=', $values['email'])->find();
+
+		if ( ! Auth::instance()->login($this, $values['password'], (bool) @$values['remember']))
+		{
+			// Invalid login
+			$values->error('email', 'invalid');
+
+			return FALSE;
+		}
+
+		return TRUE;
+	}
+
+	/**
 	 * Logs this user in by force. Best used after user registration.
 	 *
 	 * @return void
@@ -211,5 +244,25 @@ class Model_User extends ORM
 	protected function unique_key($value)
 	{
 		return Valid::email($value) ? 'email' : 'id';
+	}
+
+	/**
+	 * Taken directly from Model_Auth_User.
+	 *
+	 * @return void
+	 */
+	public function complete_login()
+	{
+		if ($this->_loaded)
+		{
+			// Update the number of logins
+			$this->logins = new Database_Expression('logins + 1');
+
+			// Set the last login date
+			$this->last_login = time();
+
+			// Save the user
+			$this->update();
+		}
 	}
 } // End Model_User

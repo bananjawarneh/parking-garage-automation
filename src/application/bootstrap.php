@@ -165,6 +165,12 @@ if ( ! Route::cache())
 			'action'     => 'profile',
 		));
 
+	Route::set('login', 'login')
+		->defaults(array(
+			'controller' => 'user',
+			'action'     => 'login',
+		));
+
 	Route::set('default', '(<controller>(/<action>(/<id>)))')
 		->defaults(array(
 			'controller' => 'home',

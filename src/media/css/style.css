@@ -378,7 +378,9 @@ form .readonly{
 }
 
 form .extra-info{
+	border: 1px dotted #CCCCCC;
 	font: 0.9em courier;
+	padding: 3px;
 }
 
 /* ~TABULAR FORMS
