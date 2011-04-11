@@ -20,7 +20,13 @@
 				<ul id="topnav" class="navbar clearfix">
 					<li><a href="/">Home</a></li>
 					<li><a href="/">Reserve</a></li>
+					{{#logged_in}}
+					<li><a href="user/logout">Logout</a></li>
+					{{/logged_in}}
+					{{^logged_in}}
+					<li><a href="user/login">Login</a></li>
 					<li><a href="user/register">Register</a></li>
+					{{/logged_in}}
 				</ul>
 			</div>
 		</div>
@@ -39,6 +45,6 @@
 				</ul>
 			</div>
 		</div>
-		{{&profiler}}
+		{{!&profiler}}
 	</body>
 </html>

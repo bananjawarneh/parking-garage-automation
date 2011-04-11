@@ -400,6 +400,24 @@ form.tabular .form-row label{
 	width: 300px;
 }
 
+#content .module form.tabular .form-row input[type='text'],
+#content .module form.tabular .form-row input[type='password'],
+#content .module form.tabular .form-row textarea,
+#content .module form.tabular .form-row .readonly{
+	width: 250px;
+}
+
+#sidebar form.tabular .form-row label{
+	width: 60px;
+}
+
+#sidebar .module form.tabular .form-row input[type='text'],
+#sidebar .module form.tabular .form-row input[type='password'],
+#sidebar .module form.tabular .form-row textarea,
+#sidebar .module form.tabular .form-row .readonly{
+	width: 140px;
+}
+
 /* ~TABLES
 ------------------------------------------------------------------------------*/
 
@@ -668,6 +686,17 @@ body{
 	-moz-box-shadow: 0 0 0;
 	-webkit-box-shadow: 0 0 0;
 	box-shadow: 0 0 0;
+}
+
+/* ~MODULE HEADERS
+--------------------------------------*/
+
+.module .header{
+	background: #1D568F;
+	border: 2px outset #888888;
+	color: #FFFFFF;
+	margin-bottom: 15px;
+	padding: 1px 1px 1px 8px;
 }
 
 /* ~HOW TO TIP

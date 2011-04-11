@@ -8,8 +8,8 @@ return array(
 		 *   outgoing - the from address in all outgoing emails
 		 *   error    - where error messages are sent
 		 */
-		'incoming' => NULL,
-		'outgoing' => NULL,
-		'error'    => NULL,
+		'incoming' => 'incoming@park-a-lot.com',
+		'outgoing' => 'outgoing@park-a-lot.com',
+		'error'    => 'errors@park-a-lot.com',
 	),
 );

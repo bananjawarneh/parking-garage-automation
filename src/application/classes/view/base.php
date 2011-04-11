@@ -49,6 +49,13 @@ abstract class View_Base extends Kostache_Layout
 	public $errors = array();
 
 	/**
+	 * The logged in user.
+	 *
+	 * @var ORM
+	 */
+	public $user;
+
+	/**
 	 * Builds an array of presentable notifications.
 	 *
 	 * @return array
@@ -63,7 +70,7 @@ abstract class View_Base extends Kostache_Layout
 	 *
 	 * @return bool
 	 */
-	public function if_errors()
+	public function errors_exist()
 	{
 		return ( ! empty($this->errors));
 	}
@@ -76,6 +83,29 @@ abstract class View_Base extends Kostache_Layout
 	public function errors()
 	{
 		return $this->build_array($this->errors, 'error');
+	}
+
+	/**
+	 * Returns data about the logged in user.
+	 *
+	 * @return array
+	 */
+	public function user()
+	{
+		if ($this->user !== NULL)
+		{
+			return $this->user->as_array();
+		}
+	}
+
+	/**
+	 * Determines if the user is logged in.
+	 *
+	 * @return bool
+	 */
+	public function logged_in()
+	{
+		return Auth::instance()->logged_in();
 	}
 
 	/**

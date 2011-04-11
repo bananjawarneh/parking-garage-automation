@@ -42,7 +42,7 @@ abstract class Controller_Base extends Controller
 	{
 		if ($this->view !== NULL)
 		{
-			$this->response->body($this->view->render());
+			$this->response->body($this->view->set('user', $this->_user)->render());
 		}
 
 		return parent::after();

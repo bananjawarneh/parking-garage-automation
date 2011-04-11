@@ -80,6 +80,17 @@ class Controller_User extends Controller_Base
 	}
 
 	/**
+	 * Logs the user out, and redirects to the login page.
+	 */
+	public function action_logout()
+	{
+		Auth::instance()->logout(TRUE);
+
+		// Redirect to login page
+		$this->request->redirect('user/login');
+	}
+
+	/**
 	 * Users profile only displays data about the user.
 	 */
 	public function action_profile()
