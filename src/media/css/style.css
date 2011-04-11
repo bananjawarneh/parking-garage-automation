@@ -363,10 +363,22 @@ a.button img{
 	margin: 0.5em 0 1em;
 }
 
-.readonly{
+/* ~READ ONLY FIELDS
+--------------------------------------*/
+
+form .readonly,
+form .extra-info{
+	text-align: justify;
+}
+
+form .readonly{
 	color: #888888;
 	height: 100px;
 	overflow: auto;
+}
+
+form .extra-info{
+	font: 0.9em courier;
 }
 
 /* ~TABULAR FORMS

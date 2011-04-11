@@ -18,9 +18,9 @@ class View_User_Register extends View_Base
 		'email'      => NULL,
 	);
 
-	protected $errors = array();
+	public $errors = array();
 
-	protected $_user_agreement = 'This user agreement needs to be updated to
+	public $user_agreement = 'This user agreement needs to be updated to
 		resemble the actual user agreement of the site. Lorem ipsum dolor sit
 		amet, consectetur adipiscing elit. Sed rhoncus accumsan nibh, ut consectetur
 		elit bibendum id. Fusce tristique lacinia tortor, id tincidunt risus ullamcorper
@@ -39,6 +39,6 @@ class View_User_Register extends View_Base
 	 */
 	public function user_agreement()
 	{
-		return preg_replace('/\s+/', ' ', $this->_user_agreement);
+		return preg_replace('/\s+/', ' ', $this->user_agreement);
 	}
 } // End View_User_Register

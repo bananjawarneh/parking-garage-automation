@@ -1,0 +1,10 @@
+{{#if_errors}}
+<div class="error">
+	<b>Please correct these errors</b>
+	<ul>
+		{{#errors}}
+		<li>{{error}}</li>
+		{{/errors}}
+	</ul>
+</div>
+{{/if_errors}}

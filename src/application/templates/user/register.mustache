@@ -1,7 +1,7 @@
 <div id="wrap" class="clearfix">
 	<h1>Sign up for an account. It's quick and painless.</h1>
 	<div id="content">
-		{{&errors}}
+		{{>errors}}
 		{{#form}}
 		<form action="user/register" method="post" class="tabular">
 			<div class="form-row">
@@ -28,9 +28,9 @@
 				<label>Terms of service</label>
 				<div class="readonly">{{user_agreement}}</div>
 			</div>
-			<p>By clicking Sign up and creating an account, you agree to the
-					terms of service, listed direclty above. Violation of the above
-					terms could lead to a cancellation of service.</p>
+			<p class="extra-info">By clicking Sign up and creating an account,
+				you agree to the terms of service, listed direclty above. Violation
+				of the above terms could lead to a cancellation of service.</p>
 			<div class="form-row center">
 				<input type="submit" value="Sign up" />
 				<div><strong>Already have an account?</strong> <a href="user/login">Login</a></div>
@@ -41,12 +41,10 @@
 	<div id="sidebar">
 		<div class="how-to module">
 			<h4>Why sign up?</h4>
-			<p>
-				As a registered user, you get to reserve parking in any one of
-				our Park-a-Lot parking lots. Don't have enough time to reserve
-				parking ahead of time, just stop in for on the spot parking and
-				we'll add it to your monthly bill.
-			</p>
+			<p>As a registered user, you get to reserve parking 
+				in any one of our Park-a-Lot parking lots. Don't have enough time
+				to reserve parking ahead of time? Just stop in for on the spot
+				parking andwe'll add it to your monthly bill.</p>
 		</div>
 	</div>
 </div>
