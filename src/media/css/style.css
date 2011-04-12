@@ -704,8 +704,9 @@ body{
 
 .how-to,
 #wrap .how-to{
-	background: #EEEEEE;
+	background: #FAF4B6;
 	border: none;
+	font-size: 0.95em;
 	padding: 5px;
 	-moz-box-shadow: 0 0 0;
 	-webkit-box-shadow: 0 0 0;
@@ -739,6 +740,17 @@ ul.navbar > li{
 	font-weight: bold;
 	padding: 3px 0;
 	text-align: center;
+}
+
+/* ~RESERVATIONS
+--------------------------------------*/
+
+span.past{
+	color: #CCCC00;
+}
+
+span.future{
+	color: #00FF00;
 }
 
 /* ~HEADER

@@ -56,6 +56,45 @@ abstract class View_Base extends Kostache_Layout
 	public $user;
 
 	/**
+	 * Stylesheets to add to the page.
+	 *
+	 * <code>
+	 * $styles[] = array(
+     *     'href'  => 'path/to/file',
+     *     'media' => 'media type to bind to',
+     *     'condition' => 'condition to be met before rendering',
+     * );
+	 * </code>
+	 *
+	 * @var array
+	 */
+	public $styles = array();
+
+	/**
+	 * Javascript files to add to the page.
+	 *
+	 * @var array
+	 */
+	public $scripts = array();
+
+	/**
+	 * Inline javascript to add.
+	 *
+	 * @var string
+	 */
+	public $inline_js;
+
+	/**
+	 * Builds an array of iteratable javascript files.
+	 *
+	 * @return array
+	 */
+	public function scripts()
+	{
+		return $this->build_array($this->scripts, 'src');
+	}
+
+	/**
 	 * Builds an array of presentable notifications.
 	 *
 	 * @return array

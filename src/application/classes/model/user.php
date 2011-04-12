@@ -11,8 +11,9 @@
 class Model_User extends ORM
 {
 	protected $_has_many = array(
-		'roles'       => array('model' => 'role', 'through' => 'roles_users'),
-		'user_tokens' => array('model' => 'user_token'),
+		'roles'        => array('model' => 'role', 'through' => 'roles_users'),
+		'reservations' => array('model' => 'reservation'),
+		'user_tokens'  => array('model' => 'user_token'),
 	);
 
 	protected $_created_column = array(
@@ -93,6 +94,28 @@ class Model_User extends ORM
 		$this->add('roles', ORM::factory('role', array('name' => Model_Role::LOGIN)));
 
 		return $this->send_email('confirm_registration');
+	}
+
+	/**
+	 * Validates and creates a new reservation. Binds it to this user upon
+	 * success.
+	 *
+	 * @param  array $values
+	 * @return bool
+	 */
+	public function add_reservation(array $values)
+	{
+		if ( ! $this->loaded())
+		{
+			throw new Kohana_Exception('Cannot add a reservation to an unloaded :model model.',
+				array(':model' => $this->_object_name));
+		}
+
+		// Override whatever was set
+		$values['user_id'] = $this->id;
+
+		return ORM::factory('reservation')
+			->create_reservation($values);
 	}
 
 	/**

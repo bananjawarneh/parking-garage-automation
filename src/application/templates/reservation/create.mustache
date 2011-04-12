@@ -1,0 +1,63 @@
+<div id="content">
+	<div class="module">
+		<h2>What time do you plan on arriving?</h2>
+		{{>errors}}
+		{{#form}}
+		<form action="reservation/create" method="post"class="tabular">
+			<div class="form-row">
+				<label for="start_time">Time of arrival</label>
+				<input type="text" name="start_time" id="start_time" value="{{start_time}}" />
+			</div>
+			<div class="form-row">
+				<label for="duration">Duration</label>
+				<select name="duration">
+					{{#durations}}
+					<option value="{{value}}" {{#selected}}selected="1"{{/selected}}>{{name}}</option>
+					{{/durations}}
+				</select>
+				<span class="suggestion">30 minute blocks (hours:minutes)</span>
+			</div>
+			<div class="form-row">
+				<label for="recurrence">Recurrence</label>
+				<select name="recurrence" id="recurrence">
+					<option value="">None</option>
+					{{#recurrences}}
+					<option value="{{value}}">{{name}}</option>
+					{{/recurrences}}
+				</select>
+			</div>
+			<div class="form-row">
+				<label for="end_recurrence">Recur until</label>
+				<input type="text" name="end_recurrence" id="end_recurrence" value="{{end_recurrence}}" />
+			</div>
+			<p class=" extra-info notice">Please Note: There is a 30 minute grace
+				period given to every reservation made. If for some reason you do
+				not show up for your reservation, you will still be charged for
+				this 30 minutes. Be sure to cancel before hand if you cannot make it.
+				<a href="#">Read more here</a>.
+			</p>
+			<div class="form-row center">
+				<input type="submit" value="Save" />
+			</div>
+		</form>
+		{{/form}}
+	</div>
+</div>
+<div id="sidebar">
+	<div class="how-to module">
+		<h4>How to reserve a spot</h4>
+		<ol>
+			<li>Choose your time of arrival. This can be set in plain english.
+				For instance, when making a reservation for tomorrow at 8pm, type
+				"tomorrow 8pm".
+			</li>
+			<li>Choose your duration. Reservations are set in 30 minute blocks.</li>
+			<li>If you'd like for your reservation to occur on multiple occasions,
+				set your level of recurrence.
+			</li>
+			<li>If you do set your reservation on a recurring schedule, set the
+				date you want the reservations to stop.
+			</li>
+		</ol>
+	</div>
+</div>
