@@ -568,6 +568,10 @@ ul ol{
 	margin:0;
 }
 
+.warning{
+	color: #FF3E3B;
+}
+
 .suggestion{
 	color: #777777;
 	font-size: 0.82em;
@@ -704,7 +708,7 @@ body{
 
 .how-to,
 #wrap .how-to{
-	background: #FAF4B6;
+	background: #E5E5E5;
 	border: none;
 	font-size: 0.95em;
 	padding: 5px;

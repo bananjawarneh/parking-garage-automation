@@ -74,6 +74,7 @@ class Model_Reservation extends ORM
 
 		if (isset($values['start_time'], $values['duration']) AND ! isset($values['end_time']))
 		{
+			// Build end time from start time and duration
 			$values['end_time'] = $values['start_time'] + (int) $values['duration'];
 		}
 
@@ -81,26 +82,75 @@ class Model_Reservation extends ORM
 	}
 
 	/**
-	 * Validates the data given, and upon success, saves it in the database.
+	 * Validates and saves a new reservation record. Also checks for an optional
+	 * recurring reservation.
 	 *
-	 * @param  array $value
+	 * @param  array $values
+	 * @param  bool  $belongs_to_recurrence Whether this belongs to a chain of recurrences
 	 * @return bool
 	 */
-	public function create_reservation(array $values)
+	public function create_reservation(array $values, $belongs_to_recurrence = FALSE)
 	{
 		$this->values($values, array(
 			'user_id',
 			'start_time',
 			'end_time',
-		))
-		->create();
+		));
 
-		if (isset($values['recurrence']) AND is_numeric($values['recurrence']))
+		if ($belongs_to_recurrence === FALSE)
 		{
-			$this->create_recurring_reservations($values);
+			// Validate optional recurrence
+			$this->create(self::recurring_validation($values));
+
+			if (isset($values['recurrence']) AND ! empty($values['recurrence']))
+			{
+				// This is indeed a recurring reservation
+				$this->create_recurring_reservations($values);
+			}
+		}
+		else
+		{
+			// Treat it as a regular one time reservation
+			$this->create();
 		}
 
 		return TRUE;
+	}
+
+	/**
+	 * Adds extra validation to recurring validations.
+	 * If a recurrence is set, a valid end date for recurrence must be set.
+	 *
+	 * @param  array $values
+	 * @return Validation
+	 */
+	protected static function recurring_validation(array $values)
+	{
+		return Validation::factory($values)
+			->rules('recurrence', array(
+				array('digit'),
+			))
+			->rules('end_recurrence', array(
+				array('Model_Reservation::end_recurrence_exists', array(':validation')),
+			));
+	}
+
+	/**
+	 * If recurrence is set, so must end_recurrence field.
+	 *
+	 * @param  Validation $array
+	 * @return void
+	 */
+	public static function end_recurrence_exists(Validation $array)
+	{
+		if (isset($array['recurrence']) AND ! empty($array['recurrence']))
+		{
+			if ( ! isset($array['end_recurrence']) OR strtotime($array['end_recurrence']) === FALSE)
+			{
+				// Empty or invalid end time for recurrence
+				$array->error('end_recurrence', 'not_empty');
+			}
+		}
 	}
 
 	/**
@@ -110,33 +160,34 @@ class Model_Reservation extends ORM
 	 * @return bool
 	 * @todo   although theres a max of 30 reservations, ensure that an end_recurrence date is set
 	 */
-	protected function create_recurring_reservations(array $values)
+	private function create_recurring_reservations(array $values)
 	{
-		$recurrence = (int) $values['recurrence'];
+		$recurrence = $values['recurrence'];
 		$max_date   = strtotime($values['end_recurrence']);
-
-		// Avoid any infinite loops
-		unset($values['recurrence']);
-
-		// Each recurring reservation should be tied to the one before it
+		$values     = array(
+			'user_id' => $this->user_id,
+		);
 		$previous_id = $this->id;
 
-		// Dont make more than 30 reservations at a time
-		for ($i = 1; $i <= 30; $i++)
+		// Dont make more than 28 reservations at a time?
+		for ($i = 1; $i <= 28; $i++)
 		{
-			// Shift the start time by the recurrence rate
-			$values['start_time'] = $this->start_time + ($i * $recurrence);
+			$shift = ($i * $recurrence);
 
+			// Shift the reservation time slot
+			$values['start_time'] = $this->start_time + $shift;
+			$values['end_time']   = $this->end_time   + $shift;
+			
 			if ($values['start_time'] >= $max_date)
 			{
 				break;
 			}
 
-			// Link this reservation to the one before it
+			// Link this reservation to the one before it (linked list)
 			$reservation = ORM::factory('reservation')
 				->set('recurring', TRUE)
 				->set('previous_id', $previous_id);
-			$reservation->create_reservation($values);
+			$reservation->create_reservation($values, TRUE);
 
 			$previous_id = $reservation->id;
 		}

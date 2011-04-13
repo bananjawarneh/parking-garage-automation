@@ -22,7 +22,7 @@
 				<select name="recurrence" id="recurrence">
 					<option value="">None</option>
 					{{#recurrences}}
-					<option value="{{value}}">{{name}}</option>
+					<option value="{{value}}" {{#selected}}selected="1"{{/selected}}>{{name}}</option>
 					{{/recurrences}}
 				</select>
 			</div>

@@ -72,14 +72,17 @@ class View_Reservation_Create extends View_Base
 			array(
 				'value' => Date::DAY,
 				'name'  => 'Daily',
+				'selected' => (Date::DAY == $this->form['recurrence']),
 			),
 			array(
 				'value' => Date::DAY * 7,
 				'name'  => 'Weekly',
+				'selected' => ((Date::DAY * 7) == $this->form['recurrence']),
 			),
 			array(
-				'value' => Date::DAY * 30,
+				'value' => Date::DAY * 28,
 				'name'  => 'Monthly (28 days)',
+				'selected' => ((Date::DAY * 28) == $this->form['recurrence']),
 			),
 		);
 	}
