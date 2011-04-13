@@ -159,6 +159,12 @@ if ( ! Route::cache())
 			));
 	}
 
+	Route::set('error', 'error/<action>', array('action' => '[0-9]++'))
+		->defaults(array(
+			'controller' => 'error',
+			'action'     => 404,
+		));
+
 	Route::set('user_profile', 'profile')
 		->defaults(array(
 			'controller' => 'user',

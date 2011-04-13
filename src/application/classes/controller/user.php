@@ -34,7 +34,7 @@ class Controller_User extends Controller_Base
 					$this->_user->force_login();
 
 					// Show a welcome message to new users
-					Session::instance()->set('new_user', TRUE);
+					Session::instance()->set(Session::NEW_USER, TRUE);
 
 					$this->request->redirect(Route::url('user_profile'));
 				}
@@ -102,5 +102,36 @@ class Controller_User extends Controller_Base
 
 		$this->view = Kostache_Layout::factory('user/profile')
 			->set('user', $this->_user);
+	}
+
+	/**
+	 * Displays a message to the user that they cannot perform any actions
+	 * until they confirm their account.
+	 */
+	public function action_unconfirmed()
+	{
+		if (Auth::instance()->logged_in(Model_Role::CONFIRMED))
+		{
+			// Lets not confuse the user
+			$this->request->redirect(Route::url('user_profile'));
+		}
+		
+		$this->view = Kostache_Layout::factory('user/unconfirmed');
+	}
+
+	/**
+	 * Resends the confirmation url that the user should have received
+	 * after registration, and reports the outcome of resending it.
+	 */
+	public function action_resend_confirmation()
+	{
+		if (Auth::instance()->logged_in(Model_Role::CONFIRMED))
+		{
+			// Dont even waste the time
+			$this->request->redirect(Route::url('user_profile'));
+		}
+
+		$this->view = Kostache_Layout::factory('user/resendconfirmation')
+			->set('outcome', $this->_user->send_email('confirm_registration'));
 	}
 } // End Controller_User

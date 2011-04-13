@@ -8,7 +8,7 @@
  * @copyright (c) 2011 The authors
  * @license   see LICENSE
  */
-class Controller_Reservation extends Controller_Member
+class Controller_Reservation extends Controller_Confirmed
 {
 	/**
 	 * Displays a create reservation form which the user fills out. Upon
@@ -26,7 +26,7 @@ class Controller_Reservation extends Controller_Member
 				if ($this->_user->add_reservation($_POST))
 				{
 					// Show success message on user profile
-					Session::instance()->set('created_reservation', TRUE);
+					Session::instance()->set(Session::NEW_RESERVATION, TRUE);
 
 					$this->request->redirect(Route::url('user_profile'));
 				}

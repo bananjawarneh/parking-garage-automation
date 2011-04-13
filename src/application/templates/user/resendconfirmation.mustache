@@ -1,0 +1,14 @@
+<div id="wrap" class="clearfix">
+	{{#outcome}}
+	<h1>Check your email</h1>
+	<div>Instructions on how to confirm your account have been sent to your email
+		address. Be sure to check your junk folder.
+	</div>
+	{{/outcome}}
+	{{^outcome}}
+	<h1>Whoops</h1>
+	<div>Something went wrong and we could not send instructions to the email you
+		have registered with us.
+	</div>
+	{{/outcome}}
+</div>

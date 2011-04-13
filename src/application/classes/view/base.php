@@ -101,6 +101,14 @@ abstract class View_Base extends Kostache_Layout
 	 */
 	public function notifications()
 	{
+		if (Auth::instance()->logged_in() AND ! Auth::instance()->logged_in(Model_Role::CONFIRMED))
+		{
+			// Add this as the last notification
+			$this->notifications[] = 'Your account has not yet been confirmed.
+				Please check your email for instructions to confirm your registration. '
+				. HTML::anchor('user/resend_confirmation', 'Resend Instructions');
+		}
+
 		return $this->build_array($this->notifications, 'notification');
 	}
 	
@@ -131,9 +139,13 @@ abstract class View_Base extends Kostache_Layout
 	 */
 	public function user()
 	{
-		if ($this->user !== NULL)
+		if ($this->user instanceof ORM)
 		{
-			return $this->user->as_array();
+			return array(
+				'first_name' => $this->user->first_name,
+				'last_name'  => $this->user->last_name,
+				'registration_date' => date('M g, Y', $this->user->registration_date),
+			);
 		}
 	}
 
