@@ -130,21 +130,21 @@ class View_Reservation_Create extends View_Base
 	 */
 	public function durations()
 	{
-		$duration = array();
+		$durations = array();
 		
 		foreach (range(1, 48) as $i)
 		{
 			$seconds = $i * 30 * 60;
 			$span = Date::span($seconds, 0, 'hours,minutes');
 
-			$duration[] = array(
+			$durations[] = array(
 				'value' => $seconds,
 				'name'  => str_pad($span['hours'], 2, 0, STR_PAD_LEFT).':'.str_pad($span['minutes'], 2, 0, STR_PAD_LEFT),
 				'selected' => ($seconds == $this->form['duration']),
 			);
 		}
 
-		return $duration;
+		return $durations;
 	}
 
 	/**

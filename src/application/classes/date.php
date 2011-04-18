@@ -26,7 +26,7 @@ abstract class Date extends Kohana_Date
 	 * not an absolute difference, so order of parameters counts.
 	 *
 	 * @param  mixed any date format
-	 * @param  mixed any date format, preferably after the first timestamp
+	 * @param  mixed any date format, preferably one after the first timestamp
 	 * @param  int
 	 * @return bool
 	 */
@@ -37,5 +37,23 @@ abstract class Date extends Kohana_Date
 		$time2 = ($time2 === (int) $time2) ? $time2 : strtotime($time2);
 
 		return (($time2 - $time1) >= $min_span);
+	}
+
+	/**
+	 * Checks if there is too much time between two timestamps. The difference is
+	 * not an absolute difference, so order of parameters counts.
+	 *
+	 * @param  mixed any date format
+	 * @param  mixed any date format, preferably after the first timestamp
+	 * @param  int
+	 * @return bool
+	 */
+	public static function max_span($time1, $time2, $max_span)
+	{
+		// Convert to timestamps if not already
+		$time1 = ($time1 === (int) $time1) ? $time1 : strtotime($time1);
+		$time2 = ($time2 === (int) $time2) ? $time2 : strtotime($time2);
+
+		return (($time2 - $time1) <= $max_span);
 	}
 } // End Date

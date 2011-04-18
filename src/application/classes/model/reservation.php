@@ -13,11 +13,17 @@ class Model_Reservation extends ORM
 	/** Min time difference between current time and start time, when creating */
 	const CURRENT_TIME_START_TIME_GAP = 1800;
 
+	/** Max time difference between current time and start time (12 weeks) */
+	const CURRENT_TIME_START_TIME_MAX_GAP = 7257600;
+
 	/** Min time difference between start and end of reservation (min length) */
 	const START_TIME_END_TIME_GAP = 1800;
 
 	/** Min time between current time and end time, when updating */
 	const CURRENT_TIME_END_TIME_GAP = 1800;
+
+	/** Can only extend/descrese reservations in discrete time increments */
+	const EXTENSION_TIME_BLOCK = 1800;
 
 	protected $_belongs_to = array(
 		'user' => array('model' => 'user'),
@@ -38,7 +44,8 @@ class Model_Reservation extends ORM
 	 * End time must not be empty, must be far enough from the start time, and
 	 * must fall on a half hour.
 	 *
-	 * If creating a new reservation, start_time must be far enough in the future.
+	 * If creating a new reservation, start_time must be far enough in the future,
+	 * but not TOO far.
 	 * When editing a reservation, end_time must be far enough in the future.
 	 *
 	 * @return array
@@ -66,6 +73,7 @@ class Model_Reservation extends ORM
 		{
 			// Create rules
 			$rules['start_time'][] = array(array($this, 'min_time_before_start'), array(':validation'));
+			$rules['start_time'][] = array(array($this, 'max_time_before_start'), array(':validation'));
 		}
 		else
 		{
@@ -118,6 +126,13 @@ class Model_Reservation extends ORM
 			$values['end_time'] = $values['start_time'] + (int) $values['duration'];
 		}
 
+		if (isset($values['extension']))
+		{
+			$values['extension']  = (int) $values['extension']; // Integer increments only
+			$values['extension'] *= self::EXTENSION_TIME_BLOCK;
+			$values['extension'] += $this->extension;
+		}
+
 		return parent::values($values, $expected);
 	}
 
@@ -153,6 +168,24 @@ class Model_Reservation extends ORM
 			// Treat it as a regular one time reservation
 			$this->create();
 		}
+
+		return TRUE;
+	}
+
+	/**
+	 * Validates and updates this reservation. The only edit that can be made
+	 * to a reservation is changing the length, either increasing or shortening
+	 * it.
+	 *
+	 * @param  array
+	 * @return bool
+	 */
+	public function update_reservation(array $values)
+	{
+		$this->values($values, array(
+			'extension',
+		))
+		->update();
 
 		return TRUE;
 	}
@@ -220,6 +253,21 @@ class Model_Reservation extends ORM
 		if ( ! Date::min_span(time(), $array['start_time'], self::CURRENT_TIME_START_TIME_GAP))
 		{
 			$array->error('start_time', 'min_time_before_start');
+		}
+	}
+
+	/**
+	 * Reservations can be made no further than a few months in advance.
+	 *
+	 * @param  Validation
+	 * @return void
+	 */
+	public function max_time_before_start(Validation $array)
+	{
+		// Check the time between current time and start time
+		if ( ! Date::max_span(time(), $array['start_time'], self::CURRENT_TIME_START_TIME_MAX_GAP))
+		{
+			$array->error('start_time', 'max_time_before_start');
 		}
 	}
 
