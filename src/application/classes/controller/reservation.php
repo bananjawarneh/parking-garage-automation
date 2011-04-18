@@ -11,6 +11,17 @@
 class Controller_Reservation extends Controller_Confirmed
 {
 	/**
+	 * Displays all of this users reservation, in paginated lists.
+	 *
+	 * @param int timestamp of the day to show reservations for
+	 */
+	public function action_list($day = NULL)
+	{
+		$this->view = Kostache_Layout::factory('reservation/list')
+			->set('day', $day);
+	}
+
+	/**
 	 * Displays a create reservation form which the user fills out. Upon
 	 * succesful creation, the page redirects to the user profile page where a
 	 * notification of success is shown.
@@ -42,6 +53,8 @@ class Controller_Reservation extends Controller_Confirmed
 	/**
 	 * Displays the edit reservation page, which allows a user to both extend
 	 * and cancel a reservation.
+	 *
+	 * @param int the reservation to edit
 	 */
 	public function action_edit($reservation_id = NULL)
 	{
@@ -75,5 +88,4 @@ class Controller_Reservation extends Controller_Confirmed
 			}
 		}
 	}
-
 } // End Controller_Reservation

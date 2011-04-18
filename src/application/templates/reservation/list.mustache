@@ -1,0 +1,28 @@
+<div id="wrap">
+	<div class="module">
+		<h4>Reservations {{#day}}for {{day}}{{/day}}</h4>
+		<table class="reservations">
+			<tr>
+				<th>Starts</th>
+				<th>Ends</th>
+				<th>Duration</th>
+				<th>Recurs</th>
+				<th>&nbsp</th>
+			</tr>
+			{{#reservations}}
+			<tr class="reservation">
+				<td>{{start_time}}</td>
+				<td>{{end_time}}</td>
+				<td>{{duration}}</td>
+				<td>
+					<strong>
+					{{#recurring}}Y{{/recurring}}
+					{{^recurring}}N{{/recurring}}
+					</strong>
+				</td>
+				<td><a href="{{edit_url}}">edit</a></td>
+			</tr>
+			{{/reservations}}
+		</table>
+	</div>
+</div>

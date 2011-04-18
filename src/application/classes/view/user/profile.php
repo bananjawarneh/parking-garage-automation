@@ -65,8 +65,8 @@ class View_User_Profile extends View_Base
 			$day = date('j', $reservation->start_time);
 
 			$days[$day] = array(
-				0 => '#',     // URL to link to
-				1 => 'event', // Class to add to calendar cell
+				0 => 'reservation/list/'.mktime(0, 0, 0, $month, $day), // Where to link to
+				1 => 'event', // Classname to add to day cell
 			);
 		}
 
@@ -77,31 +77,6 @@ class View_User_Profile extends View_Base
 		}
 
 		return Date::calendar(date('Y'), $month, $days);
-	}
-
-	/**
-	 * Returns an array of some of this users reservations.
-	 *
-	 * @return array
-	 */
-	public function reservations()
-	{
-		$reservations = array();
-		
-		foreach ($this->user->reservations->find_all() as $reservation)
-		{
-			$duration = Date::span($reservation->end_time, $reservation->start_time, 'hours,minutes');
-			
-			$reservations[] = array(
-				'start_time' => date('M jS, g:i a', $reservation->start_time),
-				'end_time'   => date('M jS, g:i a', $reservation->end_time),
-				'duration'   => $duration['hours'].'h '.$duration['minutes'].'m',
-				'recurring'  => $reservation->recurring,
-				'edit_url'   => URL::site('reservation/edit/'.$reservation->id),
-			);
-		}
-
-		return $reservations;
 	}
 
 	/**

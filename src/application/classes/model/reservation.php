@@ -104,7 +104,7 @@ class Model_Reservation extends ORM
 
 		if(isset($values['start_time']))
 		{
-			if ($values['start_time'] != (int) $values['start_time'])
+			if ($values['start_time'] !== (int) $values['start_time'])
 			{
 				// Convert to timestamp
 				$values['start_time'] = strtotime($values['start_time']);
@@ -113,7 +113,7 @@ class Model_Reservation extends ORM
 
 		if (isset($values['end_time']))
 		{
-			if ($values['end_time'] != (int) $values['end_time'])
+			if ($values['end_time'] !== (int) $values['end_time'])
 			{
 				// Convert to timestamp
 				$values['end_time'] = strtotime($values['end_time']);

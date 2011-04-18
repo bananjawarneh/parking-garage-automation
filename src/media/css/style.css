@@ -778,6 +778,28 @@ span.future{
 	color: #00FF00;
 }
 
+/* ~PAGINATION
+--------------------------------------*/
+
+a.more{
+	background: #FFFFFF;
+	border: 1px solid #CCCCCC;
+	color: #000000;
+	display: block;
+	margin: 10px auto;
+	padding: 5px;
+	text-align: center;
+	text-decoration: none;
+	width: 100px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+}
+
+a.more:hover{
+	background: #EEEEEE;
+}
+
 /* ~HEADER
 ------------------------------------------------------------------------------*/
 
