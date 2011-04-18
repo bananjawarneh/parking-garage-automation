@@ -56,4 +56,23 @@ abstract class Date extends Kohana_Date
 
 		return (($time2 - $time1) <= $max_span);
 	}
+
+	/**
+	 * Returns an HTML calendar.
+	 *
+	 * @param  int
+	 * @param  int
+	 * @param  array
+	 * @param  int
+	 * @param  string
+	 * @param  int
+	 * @param  array
+	 * @return string
+	 */
+	public static function calendar($year, $month, $days = array(), $day_name_length = 3, $month_href = NULL, $first_day = 0, $pn = array())
+	{
+		require_once Kohana::find_file('vendor', 'generate_calendar');
+
+		return generate_calendar($year, $month, $days, $day_name_length, $month_href, $first_day, $pn);
+	}
 } // End Date

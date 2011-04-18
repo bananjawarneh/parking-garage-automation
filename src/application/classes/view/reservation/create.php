@@ -14,13 +14,13 @@ class View_Reservation_Create extends View_Base
 
 	public $styles = array(
 		array(
-			'href'  => 'media/css/calendar.css',
+			'href'  => 'media/css/popup_calendar.css',
 			'media' => 'all',
 		),
 	);
 
 	public $scripts = array(
-		'media/js/calendar.js',
+		'media/js/popup_calendar.js',
 	);
 
 	public $inline_js = "
