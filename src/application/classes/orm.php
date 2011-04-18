@@ -13,7 +13,7 @@ class ORM extends Kohana_ORM
 	/**
 	 * Checks if a record exists with a given unique value.
 	 *
-	 * @param  mixed $value
+	 * @param  mixed
 	 * @return bool
 	 * @uses   ORM::unique_key
 	 */
@@ -35,7 +35,7 @@ class ORM extends Kohana_ORM
 	/**
 	 * Checks if a given unique value is available for use.
 	 *
-	 * @param  mixed $value
+	 * @param  mixed
 	 * @return bool
 	 * @uses   ORM::exists
 	 */
@@ -45,10 +45,12 @@ class ORM extends Kohana_ORM
 	}
 
 	/**
-	 * Determines the field by inspecting the value type.
+	 * Determines the field by inspecting the value type. Other models should
+	 * override this method to add their own checks.
 	 *
-	 * @param  mixed $value Unique value
-	 * @return string The field name that the value most likely belongs to
+	 * @param  mixed  unique value
+	 * @return string field name to which the value is most likely a type of
+	 *                e.g, john@email.com should return email
 	 */
 	protected function unique_key($value)
 	{

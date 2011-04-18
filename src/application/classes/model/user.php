@@ -73,8 +73,8 @@ class Model_User extends ORM
 	 * Validates user data. Upon success, data is stored in the database and a
 	 * confirmation email is sent out to the user.
 	 *
-	 * @uses   ORM::create To validate and insert data.
-	 * @param  array $values
+	 * @uses   ORM::create to validate and insert data.
+	 * @param  array
 	 * @return bool
 	 */
 	public function create_user(array $values)
@@ -100,7 +100,7 @@ class Model_User extends ORM
 	 * Validates and creates a new reservation. Binds it to this user upon
 	 * success.
 	 *
-	 * @param  array $values
+	 * @param  array
 	 * @return bool
 	 */
 	public function add_reservation(array $values)
@@ -122,7 +122,7 @@ class Model_User extends ORM
 	 * Validates the login form, and logs the user in upon success.
 	 *
 	 * @todo   throw exception is user is loaded already?
-	 * @param  array &$values
+	 * @param  array&
 	 * @return bool
 	 */
 	public function login(array &$values)
@@ -164,8 +164,8 @@ class Model_User extends ORM
 	/**
 	 * Sends different emails to the user.
 	 *
-	 * @param  string $type The type of email to send.
-	 * @param  array  $data Any extra data to add to the email.
+	 * @param  string the type of email to send
+	 * @param  array  any extra data to add to the email
 	 * @return bool
 	 */
 	public function send_email($type, array $data = array())
@@ -208,7 +208,7 @@ class Model_User extends ORM
 	 * Builds a confirmation url, which must be validated to complete a previous
 	 * action.
 	 *
-	 * @param  string $action User action to redirect to.
+	 * @param  string user action to redirect to
 	 * @return string
 	 */
 	protected function confirmation_url($action)
@@ -247,7 +247,7 @@ class Model_User extends ORM
 	 * Password must not be empty, between 6 and 15 characters, and must contain
 	 * at least 1 character and 1 number.
 	 *
-	 * @param  array $values
+	 * @param  array
 	 * @return Validation
 	 */
 	protected static function password_validation(array $values)

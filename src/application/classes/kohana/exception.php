@@ -13,7 +13,7 @@ class Kohana_Exception extends Kohana_Kohana_Exception
 	/**
 	 * Exception classes, and the actions responsible for them.
 	 *
-	 * @todo Add more exceptions to get more refined error messages.
+	 * @todo add more exceptions to get more refined error messages.
 	 * @var  array
 	 */
 	protected static $exceptions = array(
@@ -27,10 +27,10 @@ class Kohana_Exception extends Kohana_Kohana_Exception
 	 * <h4>Preconditions</h4>
 	 * <ul>
 	 *     <li>A route for an error controller, named "errors</li>
-	 *     <li>The error controller should have an action for each
+	 *     <li>The error controller should have an action for each error status</li>
 	 * </ul>
 	 * 
-	 * @param  Exception $e
+	 * @param  Exception
 	 * @return bool
 	 */
 	public static function handler(Exception $e)

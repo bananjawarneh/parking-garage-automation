@@ -5,7 +5,7 @@ return array(
 	// The only environment in which the web runner is allowed to run
 	// You can run tests from phpunit cli command regardless of this setting
 	// This can also be set to an array for multiple environments
-	'environment' => Kohana::DEVELOPMENT,
+	'environment' => Kohana::TESTING,
 
 	// This is the folder where we generate and zip all the reports for downloading
 	// Needs to be readable and writable

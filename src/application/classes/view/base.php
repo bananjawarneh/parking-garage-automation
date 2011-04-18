@@ -185,8 +185,8 @@ abstract class View_Base extends Kostache_Layout
 	/**
 	 * Builds a Mustache ready array.
 	 *
-	 * @param  array  $array
-	 * @param  string $name
+	 * @param  array
+	 * @param  string
 	 * @return array
 	 */
 	protected function build_array($array, $name)
