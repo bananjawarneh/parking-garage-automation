@@ -60,25 +60,25 @@ class Model_Reservation extends ORM
 			),
 			'start_time' => array(
 				array('not_empty'),
-				array(array($this, 'on_half_hour'), array(':validation', ':field')),
+				array('Model_Reservation::on_half_hour', array(':validation', ':field')),
 			),
 			'end_time' => array(
 				array('not_empty'),
-				array(array($this, 'min_reservation_length'), array(':validation')),
-				array(array($this, 'on_half_hour'), array(':validation', ':field')),
+				array('Model_Reservation::min_reservation_length', array(':validation')),
+				array('Model_Reservation::on_half_hour', array(':validation', ':field')),
 			),
 		);
 
 		if ( ! $this->loaded())
 		{
 			// Create rules
-			$rules['start_time'][] = array(array($this, 'min_time_before_start'), array(':validation'));
-			$rules['start_time'][] = array(array($this, 'max_time_before_start'), array(':validation'));
+			$rules['start_time'][] = array('Model_Reservation::min_time_before_start', array(':validation'));
+			$rules['start_time'][] = array('Model_Reservation::max_time_before_start', array(':validation'));
 		}
 		else
 		{
 			// Update rules
-			$rules['end_time'][] = array(array($this, 'min_time_before_end'), array(':validation'));
+			$rules['end_time'][] = array('Model_Reservation::min_time_before_end', array(':validation'));
 		}
 
 		return $rules;
@@ -223,6 +223,12 @@ class Model_Reservation extends ORM
 				// Empty or invalid end time for recurrence
 				$array->error('end_recurrence', 'not_empty');
 			}
+
+			if ( ! Date::max_span(time(), $array['end_recurrence'], self::CURRENT_TIME_START_TIME_MAX_GAP))
+			{
+				// Too far in the future
+				$array->error('end_recurrence', 'max_time_before_start');
+			}
 		}
 	}
 
@@ -232,7 +238,7 @@ class Model_Reservation extends ORM
 	 * @param  Validation
 	 * @return void
 	 */
-	public function min_reservation_length(Validation $array)
+	public static function min_reservation_length(Validation $array)
 	{
 		// Check time between start time and end time
 		if ( ! Date::min_span($array['start_time'], $array['end_time'], self::START_TIME_END_TIME_GAP))
@@ -247,7 +253,7 @@ class Model_Reservation extends ORM
 	 * @param  Validation
 	 * @return void
 	 */
-	public function min_time_before_start(Validation $array)
+	public static function min_time_before_start(Validation $array)
 	{
 		// Check the time between current time and start time
 		if ( ! Date::min_span(time(), $array['start_time'], self::CURRENT_TIME_START_TIME_GAP))
@@ -262,7 +268,7 @@ class Model_Reservation extends ORM
 	 * @param  Validation
 	 * @return void
 	 */
-	public function max_time_before_start(Validation $array)
+	public static function max_time_before_start(Validation $array)
 	{
 		// Check the time between current time and start time
 		if ( ! Date::max_span(time(), $array['start_time'], self::CURRENT_TIME_START_TIME_MAX_GAP))
@@ -277,7 +283,7 @@ class Model_Reservation extends ORM
 	 * @param  Validation
 	 * @return void
 	 */
-	public function min_time_before_end(Validation $array)
+	public static function min_time_before_end(Validation $array)
 	{
 		// Check time between current time and end time
 		if ( ! Date::min_span(time(), $array['end_time'], self::CURRENT_TIME_END_TIME_GAP))
@@ -293,7 +299,7 @@ class Model_Reservation extends ORM
 	 * @param Validation
 	 * @param string
 	 */
-	public function on_half_hour(Validation $array, $field)
+	public static function on_half_hour(Validation $array, $field)
 	{
 		$time_block = 1800;
 
