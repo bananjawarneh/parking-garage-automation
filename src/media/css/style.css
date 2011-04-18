@@ -756,6 +756,20 @@ ul.navbar > li{
 /* ~RESERVATIONS
 --------------------------------------*/
 
+table.reservations{
+	text-align: center;
+}
+
+table.reservations td,
+table.reservations th{
+	padding: 2px 1px;
+}
+
+table.reservations .reservation{
+	color: #555555;
+	font-size: 0.9em;
+}
+
 span.past{
 	color: #CCCC00;
 }

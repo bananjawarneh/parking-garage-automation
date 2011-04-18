@@ -31,8 +31,13 @@ class View_User_Profile extends View_Base
 		
 		foreach ($this->user->reservations->find_all() as $reservation)
 		{
+			$duration = Date::span($reservation->end_time, $reservation->start_time, 'hours,minutes');
+			
 			$reservations[] = array(
-				'start_time' => date('M j @ g:i a', $reservation->start_time),
+				'start_time' => date('M jS, g:i a', $reservation->start_time),
+				'end_time'   => date('M jS, g:i a', $reservation->end_time),
+				'duration'   => $duration['hours'].'h '.$duration['minutes'].'m',
+				'recurring'  => $reservation->recurring,
 			);
 		}
 
@@ -46,7 +51,7 @@ class View_User_Profile extends View_Base
 	 */
 	public function render()
 	{
-		$this->partial('reservation', 'partials/reservation');
+		$this->partial('reservations', 'partials/reservations');
 
 		if (Session::instance()->get_once(Session::NEW_USER))
 		{
