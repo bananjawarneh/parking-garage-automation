@@ -124,6 +124,11 @@ class View_User_Profile extends View_Base
 			$this->notifications[] = 'Your reservation has been created successfully.';
 		}
 
+		if (Session::instance()->get_once(Session::EDIT_RESERVATION))
+		{
+			$this->notifications[] = 'Your reservation has been edited successfully.';
+		}
+
 		return parent::render();
 	}
 } // End View_User_Profile

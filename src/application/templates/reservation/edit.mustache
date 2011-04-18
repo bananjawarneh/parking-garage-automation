@@ -1,0 +1,34 @@
+<div id="content">
+	<div class="module">
+		<h2>Change duration</h2>
+		{{>errors}}
+		{{#reservation}}
+		<ul>
+			<li>Start time: {{start_time}}</li>
+			<li>End time: {{end_time}}</li>
+			<li>Duration: {{duration}}</li>
+		</ul>
+		{{/reservation}}
+		{{#form}}
+		<form action="{{action}}" method="post" class="tabular">
+			<div class="form-row">
+				<label for="extension">Extension</label>
+				<select name="extension">
+					{{#extensions}}
+					<option value="{{value}}" {{#selected}}selected="1"{{/selected}}>{{name}}</option>
+					{{/extensions}}
+				</select>
+				<span class="suggestion">30 minute blocks (hours:minutes)</span>
+			</div>
+			<div class="form-row center">
+				<input type="submit" value="Save" />
+			</div>
+		</form>
+		{{/form}}
+	</div>
+</div>
+<div id="sidebar">
+	<div class="module">
+		<h2>Cancel reservation</h2>
+	</div>
+</div>

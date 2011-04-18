@@ -12,6 +12,7 @@
  */
 abstract class Session extends Kohana_Session
 {
-	const NEW_USER        = 'new_user';
-	const NEW_RESERVATION = 'new_reservation';
+	const NEW_USER         = 'new_user';
+	const NEW_RESERVATION  = 'new_reservation';
+	const EDIT_RESERVATION = 'edit_reservation';
 } // End Session

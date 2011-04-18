@@ -33,8 +33,8 @@ abstract class Date extends Kohana_Date
 	public static function min_span($time1, $time2, $min_span)
 	{
 		// Convert to timestamps if not already
-		$time1 = ($time1 === (int) $time1) ? $time1 : strtotime($time1);
-		$time2 = ($time2 === (int) $time2) ? $time2 : strtotime($time2);
+		$time1 = ($time1 == (int) $time1) ? $time1 : strtotime($time1);
+		$time2 = ($time2 == (int) $time2) ? $time2 : strtotime($time2);
 
 		return (($time2 - $time1) >= $min_span);
 	}

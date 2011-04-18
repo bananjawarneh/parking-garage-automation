@@ -104,7 +104,7 @@ class Model_Reservation extends ORM
 
 		if(isset($values['start_time']))
 		{
-			if ($values['start_time'] !== (int) $values['start_time'])
+			if ($values['start_time'] != (int) $values['start_time'])
 			{
 				// Convert to timestamp
 				$values['start_time'] = strtotime($values['start_time']);
@@ -113,7 +113,7 @@ class Model_Reservation extends ORM
 
 		if (isset($values['end_time']))
 		{
-			if ($values['end_time'] !== (int) $values['end_time'])
+			if ($values['end_time'] != (int) $values['end_time'])
 			{
 				// Convert to timestamp
 				$values['end_time'] = strtotime($values['end_time']);
@@ -126,11 +126,9 @@ class Model_Reservation extends ORM
 			$values['end_time'] = $values['start_time'] + (int) $values['duration'];
 		}
 
-		if (isset($values['extension']))
+		if (isset($values['extension']) AND ! isset($values['end_time']))
 		{
-			$values['extension']  = (int) $values['extension']; // Integer increments only
-			$values['extension'] *= self::EXTENSION_TIME_BLOCK;
-			$values['extension'] += $this->extension;
+			$values['end_time'] = $this->end_time + ($values['extension'] * self::EXTENSION_TIME_BLOCK);
 		}
 
 		return parent::values($values, $expected);
@@ -183,7 +181,7 @@ class Model_Reservation extends ORM
 	public function update_reservation(array $values)
 	{
 		$this->values($values, array(
-			'extension',
+			'end_time',
 		))
 		->update();
 

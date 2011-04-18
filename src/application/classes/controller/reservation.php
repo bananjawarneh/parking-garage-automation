@@ -38,4 +38,42 @@ class Controller_Reservation extends Controller_Confirmed
 			}
 		}
 	}
+
+	/**
+	 * Displays the edit reservation page, which allows a user to both extend
+	 * and cancel a reservation.
+	 */
+	public function action_edit($reservation_id = NULL)
+	{
+		$reservation = $this->_user->reservations->where('id', '=', $reservation_id)->find();
+
+		if ( ! $reservation->loaded())
+		{
+			// Fishy business here
+			$this->request->redirect(Route::url('user_profile'));
+		}
+
+		$this->view = Kostache_Layout::factory('reservation/edit')
+			->set('reservation_id', $reservation_id);
+
+		if ( ! empty($_POST))
+		{
+			try
+			{
+				if ($reservation->update_reservation($_POST))
+				{
+					// Show success message on user profile
+					Session::instance()->set(Session::EDIT_RESERVATION, TRUE);
+
+					$this->request->redirect(Route::url('user_profile'));
+				}
+			}
+			catch (ORM_Validation_Exception $e)
+			{
+				$this->view->set('form', $_POST);
+				$this->view->set('errors', $e->errors(''));
+			}
+		}
+	}
+
 } // End Controller_Reservation
