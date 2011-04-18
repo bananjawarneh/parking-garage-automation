@@ -17,10 +17,16 @@ return array
 			 *
 			 * Ports and sockets may be appended to the hostname.
 			 */
-			'hostname'   => 'localhost',
-			'database'   => 'park-a-lot',
-			'username'   => 'park-a-lot',
-			'password'   => 'softENG452',
+			'hostname' => (Kohana::$environment === Kohana::PRODUCTION)
+			           ?  'mysql15.000webhost.com'
+			           :  'localhost',
+			'database' => (Kohana::$environment === Kohana::PRODUCTION)
+			           ?  'a5521442_parking'
+			           :  'park-a-lot',
+			'username' => (Kohana::$environment === Kohana::PRODUCTION)
+			           ?  'a5521442_softENG'
+			           :  'park-a-lot',
+			'password'   => 'soft452ENG',
 			'persistent' => FALSE,
 		),
 		'table_prefix' => '',
