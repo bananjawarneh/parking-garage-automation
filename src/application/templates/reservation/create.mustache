@@ -5,8 +5,28 @@
 		{{#form}}
 		<form action="reservation/create" method="post"class="tabular">
 			<div class="form-row">
-				<label for="start_time">Time of arrival</label>
-				<input type="text" name="start_time" id="start_time" value="{{start_time}}" />
+				<label for="date">Date of arrival</label>
+				<input type="text" name="date" id="start_time" value="{{date}}" />
+			</div>
+			<div class="form-row">
+				<label for="time[hour]">Start time</label>
+				<select name="time[hour]">
+					{{#hours}}
+					<option value="{{value}}" {{#selected}}selected="1"{{/selected}}>{{name}}</option>
+					{{/hours}}
+				</select>
+				:
+				<select name="time[minute]">
+					{{#minutes}}
+					<option value="{{value}}" {{#selected}}selected="1"{{/selected}}>{{name}}</option>
+					{{/minutes}}
+				</select>
+				&nbsp;
+				<select name="time[meridian]">
+					{{#meridians}}
+					<option value="{{value}}" {{#selected}}selected="1"{{/selected}}>{{name}}</option>
+					{{/meridians}}
+				</select>
 			</div>
 			<div class="form-row">
 				<label for="duration">Duration</label>
@@ -47,9 +67,9 @@
 	<div class="how-to module">
 		<h4>How to reserve a spot</h4>
 		<ol>
-			<li>Choose your time of arrival. This can be set in plain english.
-				For instance, when making a reservation for tomorrow at 8pm, type
-				"tomorrow 8pm".
+			<li>Choose your date of arrival. This can be set in plain english.
+				For instance, when making a reservation for tomorrow, you can
+				just type "tomorrow".
 			</li>
 			<li>Choose your duration. Reservations are set in 30 minute blocks.</li>
 			<li>If you'd like for your reservation to occur on multiple occasions,

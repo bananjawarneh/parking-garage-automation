@@ -30,11 +30,97 @@ class View_Reservation_Create extends View_Base
 		});";
 
 	public $form = array(
-		'start_time' => NULL,
+		'date' => NULL,
+		'time' => array(
+			'hour'     => NULL,
+			'minute'   => NULL,
+			'meridian' => NULL,
+		),
 		'duration'   => NULL,
 		'recurrence' => NULL,
 		'end_recurrence' => NULL,
 	);
+
+	/**
+	 * Default the start time to exactly three hours in the future.
+	 *
+	 * @return array
+	 */
+	public function form()
+	{
+		if ($this->form['date'] == NULL)
+		{
+			// Show these as defaults
+			$this->form['date'] = date('m/j/Y', time() + (3 * Date::HOUR));
+			$this->form['time']['hour']     = date('g', time() + (3 * Date::HOUR));
+			$this->form['time']['meridian'] = date('a', time() + (3 * Date::HOUR));
+		}
+
+		return $this->form;
+	}
+
+	/**
+	 * Returns an array of hours.
+	 *
+	 * @return array
+	 */
+	public function hours()
+	{
+		$hours = array();
+
+		foreach (Date::hours() as $k => $v)
+		{
+			$hours[] = array(
+				'value' => $v,
+				'name'  => $k,
+				'selected' => ($v == $this->form['time']['hour']),
+			);
+		}
+
+		return $hours;
+	}
+
+	/**
+	 * Returns an array of minutes, in 30 minute blocks.
+	 *
+	 * @return array
+	 */
+	public function minutes()
+	{
+		$minutes = array();
+
+		foreach (Date::minutes(30) as $k => $v)
+		{
+			$minutes[] = array(
+				'value' => $v,
+				'name'  => $v,
+				'selected' => ($v == $this->form['time']['minute']),
+			);
+		}
+
+		return $minutes;
+	}
+
+	/**
+	 * Returns an array of meridians.
+	 *
+	 * @return array
+	 */
+	public function meridians()
+	{
+		$meridians = array();
+
+		foreach (Date::meridians() as $k => $v)
+		{
+			$meridians[] = array(
+				'value' => $k,
+				'name'  => $v,
+				'selected' => ($v == $this->form['time']['meridian']),
+			);
+		}
+
+		return $meridians;
+	}
 
 	/**
 	 * Returns an array of reservation durations. 30 minute increments from

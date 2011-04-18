@@ -10,6 +10,15 @@
  */
 class Model_Reservation extends ORM
 {
+	/** Min time difference between current time and start time, when creating */
+	const CURRENT_TIME_START_TIME_GAP = 1800;
+
+	/** Min time difference between start and end of reservation (min length) */
+	const START_TIME_END_TIME_GAP = 1800;
+
+	/** Min time between current time and end time, when updating */
+	const CURRENT_TIME_END_TIME_GAP = 1800;
+
 	protected $_belongs_to = array(
 		'user' => array('model' => 'user'),
 	);
@@ -19,41 +28,72 @@ class Model_Reservation extends ORM
 		'format' => TRUE,
 	);
 
+	protected $_sorting = array(
+		'start_time' => 'ASC',
+	);
+
 	/**
 	 * User must not be empty and must exist.
-	 * Start time must not be empty.
-	 * End time must not be empty.
+	 * Start time must not be empty, and must fall on a half hour.
+	 * End time must not be empty, must be far enough from the start time, and
+	 * must fall on a half hour.
+	 *
+	 * If creating a new reservation, start_time must be far enough in the future.
+	 * When editing a reservation, end_time must be far enough in the future.
 	 *
 	 * @return array
-	 * @todo   this is far from enough rules
 	 * @todo   check for an abundance of pre existing reservations for the reqeusted duration
 	 */
 	public function rules()
 	{
-		return array(
+		$rules = array(
 			'user_id' => array(
 				array('not_empty'),
 				array(array(ORM::factory('user'), 'exists'), array(':value', 'id')),
 			),
 			'start_time' => array(
 				array('not_empty'),
+				array(array($this, 'on_half_hour'), array(':validation', ':field')),
 			),
 			'end_time' => array(
 				array('not_empty'),
+				array(array($this, 'min_reservation_length'), array(':validation')),
+				array(array($this, 'on_half_hour'), array(':validation', ':field')),
 			),
 		);
+
+		if ( ! $this->loaded())
+		{
+			// Create rules
+			$rules['start_time'][] = array(array($this, 'min_time_before_start'), array(':validation'));
+		}
+		else
+		{
+			// Update rules
+			$rules['end_time'][] = array(array($this, 'min_time_before_end'), array(':validation'));
+		}
+
+		return $rules;
 	}
 
 	/**
 	 * Sets the end time using the start time and duration. Transforms any time
 	 * given to a timestamp.
 	 *
-	 * @param  array $values
-	 * @param  array $expected
+	 * @param  array
+	 * @param  array
 	 * @return ORM
 	 */
 	public function values(array $values, array $expected = NULL)
 	{
+		if (isset($values['date']) AND isset($values['time']))
+		{
+			// Build start time from date and time
+			$values['start_time'] = $values['date'].' '
+			                      . $values['time']['hour'].':'.$values['time']['minute']
+			                      . $values['time']['meridian'];
+		}
+
 		if(isset($values['start_time']))
 		{
 			if ($values['start_time'] !== (int) $values['start_time'])
@@ -85,8 +125,8 @@ class Model_Reservation extends ORM
 	 * Validates and saves a new reservation record. Also checks for an optional
 	 * recurring reservation.
 	 *
-	 * @param  array $values
-	 * @param  bool  $belongs_to_recurrence Whether this belongs to a chain of recurrences
+	 * @param  array
+	 * @param  bool  whether this already belongs to a chain of recurrences
 	 * @return bool
 	 */
 	public function create_reservation(array $values, $belongs_to_recurrence = FALSE)
@@ -121,7 +161,7 @@ class Model_Reservation extends ORM
 	 * Adds extra validation to recurring validations.
 	 * If a recurrence is set, a valid end date for recurrence must be set.
 	 *
-	 * @param  array $values
+	 * @param  array
 	 * @return Validation
 	 */
 	protected static function recurring_validation(array $values)
@@ -138,7 +178,7 @@ class Model_Reservation extends ORM
 	/**
 	 * If recurrence is set, so must end_recurrence field.
 	 *
-	 * @param  Validation $array
+	 * @param  Validation
 	 * @return void
 	 */
 	public static function end_recurrence_exists(Validation $array)
@@ -154,11 +194,72 @@ class Model_Reservation extends ORM
 	}
 
 	/**
+	 * Reservations must be a minimum length of time.
+	 *
+	 * @param  Validation
+	 * @return void
+	 */
+	public function min_reservation_length(Validation $array)
+	{
+		// Check time between start time and end time
+		if ( ! Date::min_span($array['start_time'], $array['end_time'], self::START_TIME_END_TIME_GAP))
+		{
+			$array->error('end_time', 'min_reservation_length');
+		}
+	}
+
+	/**
+	 * Reservations must be made far enough in advance.
+	 *
+	 * @param  Validation
+	 * @return void
+	 */
+	public function min_time_before_start(Validation $array)
+	{
+		// Check the time between current time and start time
+		if ( ! Date::min_span(time(), $array['start_time'], self::CURRENT_TIME_START_TIME_GAP))
+		{
+			$array->error('start_time', 'min_time_before_start');
+		}
+	}
+
+	/**
+	 * Reservations can only be edited enough time prior to their ending.
+	 *
+	 * @param  Validation
+	 * @return void
+	 */
+	public function min_time_before_end(Validation $array)
+	{
+		// Check time between current time and end time
+		if ( ! Date::min_span(time(), $array['end_time'], self::CURRENT_TIME_END_TIME_GAP))
+		{
+			$array->error('end_time', 'min_time_before_end');
+		}
+	}
+
+	/**
+	 * Ensures that the time chosen falls on a half hour, and isnt just any
+	 * free form time. i.e, 8:30, and not 8:29.
+	 *
+	 * @param Validation
+	 * @param string
+	 */
+	public function on_half_hour(Validation $array, $field)
+	{
+		$time_block = 1800;
+
+		if ($array[$field] % $time_block !== 0)
+		{
+			$array->error($field, 'on_half_hour');
+		}
+	}
+
+	/**
 	 * Sets this reservation as recurring and creates multiple duplicates.
 	 *
-	 * @param  array $values
+	 * @param  array
 	 * @return bool
-	 * @todo   although theres a max of 30 reservations, ensure that an end_recurrence date is set
 	 */
 	private function create_recurring_reservations(array $values)
 	{
