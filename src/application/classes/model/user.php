@@ -205,6 +205,50 @@ class Model_User extends ORM
 	}
 
 	/**
+	 * Confirms user registration.
+	 *
+	 * @param  array GET parameters
+	 * @return bool
+	 */
+	public function confirm_create_user(array $params)
+	{
+		if ( ! $this->check_confirmation($params))
+		{
+			return FALSE;
+		}
+
+		if ( ! $this->has('roles', ORM::factory('role', array('name' => Model_Role::CONFIRMED))))
+		{
+			// User is now confirmed
+			$this->add('roles', ORM::factory('role', array('name' => Model_Role::CONFIRMED)));
+		}
+
+		return TRUE;
+	}
+
+	/**
+	 * Checks the confirmation url, using the id and token generated.
+	 *
+	 * @param  array GET parameters
+	 * @return bool
+	 */
+	protected function check_confirmation(array $params)
+	{
+		if ( ! isset($params['id'], $params['token']))
+		{
+			return FALSE;
+		}
+
+		if ( ! $this->clear()->where('id', '=', $params['id'])->find()->loaded())
+		{
+			// ID not found
+			return FALSE;
+		}
+
+		return ($params['token'] === $this->generate_token());
+	}
+
+	/**
 	 * Builds a confirmation url, which must be validated to complete a previous
 	 * action.
 	 *
@@ -220,7 +264,7 @@ class Model_User extends ORM
 		}
 
 		// ex: http://site.com/user/confirm_registration?id=34&token=12323kl...
-		$url = Route::url('default', array('action' => $action))
+		$url = Route::url('default', array('controller' => 'user', 'action' => $action))
 			 . URL::query(array(
 				 'id'    => $this->id,
 				 'time'  => time(),

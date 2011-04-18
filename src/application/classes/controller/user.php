@@ -125,13 +125,38 @@ class Controller_User extends Controller_Base
 	 */
 	public function action_resend_confirmation()
 	{
-		if (Auth::instance()->logged_in(Model_Role::CONFIRMED))
+		if ( ! Auth::instance()->logged_in())
 		{
-			// Dont even waste the time
+			// User must be logged in first
+			$this->request->redirect('user/login?return_to='.$this->request->uri());
+		}
+		else if (Auth::instance()->logged_in(Model_Role::CONFIRMED))
+		{
+			// Users already confirmed
 			$this->request->redirect(Route::url('user_profile'));
 		}
 
 		$this->view = Kostache_Layout::factory('user/resendconfirmation')
 			->set('outcome', $this->_user->send_email('confirm_registration'));
+	}
+
+	/**
+	 * User confirmation. Users must be logged in first.
+	 */
+	public function action_confirm_registration()
+	{
+		if ( ! Auth::instance()->logged_in())
+		{
+			// User must be logged in first
+			$this->request->redirect('user/login?return_to='.$this->request->uri().URL::query($_GET));
+		}
+		else if (Auth::instance()->logged_in(Model_Role::CONFIRMED))
+		{
+			// Users already confirmed
+			$this->request->redirect(Route::url('user_profile'));
+		}
+
+		$this->view = Kostache_Layout::factory('user/confirmregistration')
+			->set('outcome', $this->_user->confirm_create_user($_GET));
 	}
 } // End Controller_User
