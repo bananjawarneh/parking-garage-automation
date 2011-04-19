@@ -34,6 +34,11 @@ class Model_Reservation extends ORM
 		'format' => TRUE,
 	);
 
+	protected $_updated_column = array(
+		'column' => 'last_edited',
+		'format' => TRUE,
+	);
+
 	protected $_sorting = array(
 		'start_time' => 'ASC',
 	);
@@ -321,6 +326,9 @@ class Model_Reservation extends ORM
 			'user_id' => $this->user_id,
 		);
 		$previous_id = $this->id;
+
+		// Add one more day to account for the last day of the recurrence
+		$max_date += Date::DAY;
 
 		// Dont make more than 28 reservations at a time?
 		for ($i = 1; $i <= 28; $i++)

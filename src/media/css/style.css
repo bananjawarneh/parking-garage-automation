@@ -737,6 +737,18 @@ ul.navbar > li{
 	padding: 0;
 }
 
+/* ~STRIPPED LISTS
+--------------------------------------*/
+
+ul.strip{
+	list-style: none;
+	margin-left: 0;
+}
+
+ul.strip > li{
+	margin: 0;
+}
+
 /* ~NOTIFICATIONS
 --------------------------------------*/
 
@@ -769,7 +781,7 @@ table.reservations th{
 }
 
 table.reservations th{
-	background: #2277BB;
+	background: #000000;
 	color: #FFFFFF;
 }
 
@@ -783,7 +795,7 @@ table.reservations .reservation{
 }
 
 .future{
-	background: #BFF250;
+	background: #D5F590;
 }
 
 .current{

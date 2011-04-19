@@ -1,6 +1,6 @@
 <div id="wrap" class="clearfix">
+	<h4>Reservations</h4>
 	<div id="content">
-		<h4>Reservations</h4>
 		{{>calendar_reservations}}
 		<a class="more" href="reservation/list">View All</a>
 	</div>
@@ -8,8 +8,15 @@
 		<div class="module">
 			{{#user}}
 			<h4>{{full_name}}</h4>
-			<p>Member Since: {{registration_date}}</p>
+			<ul class="strip">
+				<li>Member Since: {{registration_date}}</li>
+				<li>Reservatoins made: {{total_reservations}}</li>
+			</ul>
 			{{/user}}
+			<ul>
+				<li><a href="reservation/list">View all reservations</a></li>
+				<li><a href="reservation/create">Create a new reservation</a></li>
+			</ul>
 		</div>
 	</div>
 </div>

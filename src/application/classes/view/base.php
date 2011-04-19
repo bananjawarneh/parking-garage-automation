@@ -133,23 +133,6 @@ abstract class View_Base extends Kostache_Layout
 	}
 
 	/**
-	 * Returns data about the logged in user.
-	 *
-	 * @return array
-	 */
-	public function user()
-	{
-		if ($this->user instanceof ORM)
-		{
-			return array(
-				'first_name' => $this->user->first_name,
-				'last_name'  => $this->user->last_name,
-				'registration_date' => date('M g, Y', $this->user->registration_date),
-			);
-		}
-	}
-
-	/**
 	 * Determines if the user is logged in.
 	 *
 	 * @return bool

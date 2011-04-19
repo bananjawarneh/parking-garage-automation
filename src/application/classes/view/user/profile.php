@@ -28,6 +28,24 @@ class View_User_Profile extends View_Base
 	}
 
 	/**
+	 * Returns data about the logged in user.
+	 *
+	 * @return array
+	 */
+	public function user()
+	{
+		if ($this->user instanceof ORM)
+		{
+			return array(
+				'first_name' => $this->user->first_name,
+				'last_name'  => $this->user->last_name,
+				'registration_date'  => date('M g, Y', $this->user->registration_date),
+				'total_reservations' => $this->user->reservations->count_all(),
+			);
+		}
+	}
+
+	/**
 	 * Returns a calendar highlighting this months reservations.
 	 *
 	 * @return string
