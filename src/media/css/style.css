@@ -653,6 +653,7 @@ body{
 	background: #FFFFFF;
 	margin-bottom: 15px;
 	padding: 12px;
+	position: relative;
 	-webkit-border-radius: 8px;
 	-moz-border-radius: 8px;
 	border-radius: 8px;
@@ -760,9 +761,16 @@ table.reservations{
 	text-align: center;
 }
 
+table.reservations,
 table.reservations td,
 table.reservations th{
+	border-color: #888888;
 	padding: 2px 1px;
+}
+
+table.reservations th{
+	background: #2277BB;
+	color: #FFFFFF;
 }
 
 table.reservations .reservation{
@@ -770,12 +778,27 @@ table.reservations .reservation{
 	font-size: 0.9em;
 }
 
-span.past{
-	color: #CCCC00;
+.past{
+	background: #D5D5D5;
 }
 
-span.future{
-	color: #00FF00;
+.future{
+	background: #BFF250;
+}
+
+.current{
+	background: #F25050;
+	color: #FFFFFF;
+}
+
+.color-guide{
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+
+.color-guide span{
+	padding: 2px;
 }
 
 /* ~PAGINATION

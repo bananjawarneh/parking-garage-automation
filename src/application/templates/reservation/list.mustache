@@ -1,6 +1,11 @@
 <div id="wrap">
 	<div class="module">
 		<h4>Reservations {{#day}}for {{day}}{{/day}}</h4>
+		<div class="color-guide">
+			<span class="past">past</span>
+			<span class="current">current</span>
+			<span class="future">future</span>
+		</div>
 		<table class="reservations">
 			<tr>
 				<th>Starts</th>
@@ -10,7 +15,7 @@
 				<th>&nbsp</th>
 			</tr>
 			{{#reservations}}
-			<tr class="reservation">
+			<tr class="reservation {{class}}">
 				<td>{{start_time}}</td>
 				<td>{{end_time}}</td>
 				<td>{{duration}}</td>

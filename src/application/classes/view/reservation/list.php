@@ -36,12 +36,26 @@ class View_Reservation_List extends View_Base
 		{
 			$duration = Date::span($reservation->end_time, $reservation->start_time, 'hours,minutes');
 
+			if ($reservation->start_time > time())
+			{
+				$class = 'future';
+			}
+			else if ($reservation->end_time < time())
+			{
+				$class = 'past';
+			}
+			else
+			{
+				$class = 'current';
+			}
+
 			$reservations[] = array(
-				'start_time' => date('M jS, g:i a', $reservation->start_time),
-				'end_time'   => date('M jS, g:i a', $reservation->end_time),
+				'start_time' => date('l M jS, g:i a', $reservation->start_time),
+				'end_time'   => date('l M jS, g:i a', $reservation->end_time),
 				'duration'   => $duration['hours'].'h '.$duration['minutes'].'m',
 				'recurring'  => $reservation->recurring,
 				'edit_url'   => URL::site('reservation/edit/'.$reservation->id),
+				'class'      => $class,
 			);
 		}
 
