@@ -41,6 +41,7 @@ class Model_Reservation extends ORM
 
 	protected $_sorting = array(
 		'start_time' => 'ASC',
+		'end_time'   => 'ASC',
 	);
 
 	/**
@@ -330,8 +331,8 @@ class Model_Reservation extends ORM
 		// Add one more day to account for the last day of the recurrence
 		$max_date += Date::DAY;
 
-		// Dont make more than 28 reservations at a time?
-		for ($i = 1; $i <= 28; $i++)
+		// Dont make more than 84 reservations at a time, which is 12 weeks for daily
+		for ($i = 1; $i <= 84; $i++)
 		{
 			$shift = ($i * $recurrence);
 
