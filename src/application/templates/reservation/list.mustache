@@ -7,6 +7,7 @@
 			<span class="future">future</span>
 			<span class="cancelled">cancelled</span>
 		</div>
+		{{#reservations_exist}}
 		<table class="reservations">
 			<tr>
 				<th>Starts</th>
@@ -33,5 +34,8 @@
 			</tr>
 			{{/reservations}}
 		</table>
+		{{/reservations_exist}}
+		{{^reservations_exist}}<em>You don't have any reservations to show.</em>{{/reservations_exist}}
+		<a href="reservation/create" class="more">Add Reservation</a>
 	</div>
 </div>

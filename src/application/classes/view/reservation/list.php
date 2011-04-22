@@ -67,6 +67,11 @@ class View_Reservation_List extends View_Base
 		return $reservations;
 	}
 
+	public function reservations_exist()
+	{
+		return (bool) $this->user->reservations->count_all();
+	}
+
 	public function day()
 	{
 		if ($this->day !== NULL)

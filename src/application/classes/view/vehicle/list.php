@@ -28,4 +28,9 @@ class View_Vehicle_List extends View_Base
 
 		return $vehicles;
 	}
+
+	public function vehicles_exist()
+	{
+		return (bool) $this->user->vehicles->count_all();
+	}
 } // End View_Vehicle_List
