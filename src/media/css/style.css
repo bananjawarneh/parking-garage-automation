@@ -828,6 +828,12 @@ table.reservations .reservation{
 	background: #FFDD9E;
 }
 
+.non-recurring{
+	background: #2277BB;
+	color: #FFFFFF;
+	padding: 2px;
+}
+
 .color-guide{
 	position: absolute;
 	top: 0;
