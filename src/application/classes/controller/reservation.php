@@ -57,7 +57,7 @@ class Controller_Reservation extends Controller_Confirmed
 			catch (ORM_Validation_Exception $e)
 			{
 				$this->view->set('form', $_POST);
-				$this->view->set('errors', $e->errors(''));
+				$this->view->set('errors', $e->errors('models'));
 			}
 		}
 	}
@@ -110,7 +110,7 @@ class Controller_Reservation extends Controller_Confirmed
 			catch (ORM_Validation_Exception $e)
 			{
 				$this->view->set('form', $_POST);
-				$this->view->set('errors', $e->errors(''));
+				$this->view->set('errors', $e->errors('models'));
 			}
 		}
 		else if (isset($_GET['cancel']))

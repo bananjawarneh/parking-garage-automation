@@ -45,7 +45,7 @@ class Controller_User extends Controller_Base
 			catch (ORM_Validation_Exception $e)
 			{
 				$this->view->set('form', $_POST);
-				$this->view->set('errors', $e->errors(''));
+				$this->view->set('errors', $e->errors('models'));
 			}
 		}
 	}
@@ -75,7 +75,7 @@ class Controller_User extends Controller_Base
 			else
 			{
 				$this->view->set('form', $_POST);
-				$this->view->set('errors', $post->errors(''));
+				$this->view->set('errors', $post->errors('login'));
 			}
 		}
 	}

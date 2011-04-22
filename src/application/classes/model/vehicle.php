@@ -33,14 +33,26 @@ class Model_Vehicle extends ORM
 			),
 			'license_plate' => array(
 				array('strtoupper', array(':value')),
-				array('str_replace', array(' ', '-', ':value')),
+				array('preg_replace', array('/[\s_\/-]/', '-', ':value')),
 			),
 		);
 	}
 
+	public function labels()
+	{
+		$labels = array();
+
+		foreach ($this->_object as $field => $value)
+		{
+			$labels[$field] = str_replace('_', ' ', ucfirst($field));
+		}
+
+		return $labels;
+	}
+
 	/**
 	 * User must not be empty, and must exist.
-	 * License plate must not be empty, must be between 3 and 7 characters, can
+	 * License plate must not be empty, must be between 3 and 8 characters, can
 	 * only consist of letters, numbers, and dashes, and must not already be taken.
 	 *
 	 * @return array
@@ -55,7 +67,7 @@ class Model_Vehicle extends ORM
 			'license_plate' => array(
 				array('not_empty'),
 				array('min_length', array(':value', 3)),
-				array('max_length', array(':value', 7)),
+				array('max_length', array(':value', 8)),
 				array('regex', array(':value', '#^[A-Za-z0-9/_-]+$#')),
 				array(array($this, 'vehicle_available'), array(':validation')),
 			),

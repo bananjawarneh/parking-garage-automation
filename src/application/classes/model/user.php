@@ -40,6 +40,18 @@ class Model_User extends ORM
 		);
 	}
 
+	public function labels()
+	{
+		$labels = array();
+
+		foreach ($this->_object as $field => $value)
+		{
+			$labels[$field] = str_replace('_', ' ', ucfirst($field));
+		}
+
+		return $labels;
+	}
+
 	/**
 	 * First name must not be empty, and between 2 and 30 characters long.
 	 * Last name must not be empty, and between 2 and 40 chararacters long.
@@ -156,7 +168,11 @@ class Model_User extends ORM
 
 		$values = Validation::factory($values)
 			->rule('email', 'not_empty')
-			->rule('password', 'not_empty');
+			->rule('password', 'not_empty')
+			->labels(array(
+				'email'    => 'Email',
+				'password' => 'Password',
+			));
 
 		if ( ! $values->check())
 		{
@@ -343,7 +359,11 @@ class Model_User extends ORM
 				array('regex', array(':value', '/^(?=.*[0-9])(?=.*[a-zA-Z]).+$/')),
 			))
 			->rules('password_confirm', array(
-				array('matches', array(':validation', ':field', 'password')),
+				array('matches', array(':validation', 'password', ':field')),
+			))
+			->labels(array(
+				'password'         => 'Password',
+				'password_confirm' => 'Password confirmation',
 			));
 	}
 
