@@ -46,7 +46,7 @@ class View_User_Profile extends View_Base
 	}
 
 	/**
-	 * Returns a calendar highlighting this months reservations.
+	 * Returns a calendar(s) of reservations.
 	 *
 	 * @return string
 	 */
@@ -56,10 +56,12 @@ class View_User_Profile extends View_Base
 			'this_month' => $this->user->reservations
 				->where('start_time', '>', time())
 				->where('start_time', '<', mktime(0, 0, 0, date('n') + 1, 0))
+				->where('active', '=', TRUE)
 				->find_all(),
 			'next_month' => $this->user->reservations
 				->where('start_time', '>', mktime(0, 0, 0, date('n') + 1, 0))
 				->where('start_time', '<', mktime(0, 0, 0, date('n') + 2, 0))
+				->where('active', '=', TRUE)
 				->find_all(),
 		);
 
@@ -122,9 +124,32 @@ class View_User_Profile extends View_Base
 			$this->notifications[] = 'Your reservation has been edited successfully.';
 		}
 
+		if (Session::instance()->get_once(Session::CANCEL_RESERVATION))
+		{
+			$this->notifications[] = 'Your reservation has been cancelled successfully.';
+		}
+
 		if (Session::instance()->get_once(Session::NEW_VEHICLE))
 		{
 			$this->notifications[] = 'Your vehicle has been added successfully.';
+		}
+
+		if (Session::instance()->get_once(Session::SUCCESSFUL_RESEND_USER_CONFIRMATION))
+		{
+			$this->notifications[] = 'Confirmation instructions have been sent to your email address.';
+		}
+		else if (Session::instance()->get_once(Session::FAILED_RESEND_USER_CONFIRMATION))
+		{
+			$this->notifications[] = 'Sorry, we could not send confirmation instructions to you at this time.';
+		}
+
+		if (Session::instance()->get_once(Session::SUCCESSFUL_USER_CONFIRMATION))
+		{
+			$this->notifications[] = 'Your account is now confirmed.';
+		}
+		else if (Session::instance()->get_once(Session::FAILED_USER_CONFIRMATION))
+		{
+			$this->notifications[] = 'Sorry, we could not confirm your account. Please be sure follow the directions we sent you.';
 		}
 
 		return parent::render();

@@ -364,8 +364,17 @@ a.button img{
 	float: none;
 }
 
+input[type='radio'],
+input[type='checkbox']{
+	margin: 0;
+}
+
 .form-row{
 	margin: 0.5em 0 1em;
+}
+
+.form-row .label{
+	font-variant: small-caps;
 }
 
 /* ~READ ONLY FIELDS
@@ -468,6 +477,14 @@ ol{
 ol ol,
 ul ol{
 	margin-left: 2.5em;
+}
+
+dl dt{
+	margin-top: 5px;
+}
+
+dl dd{
+	margin-left: 2em;
 }
 
 /* ~TEXT CLASSES
@@ -807,6 +824,10 @@ table.reservations .reservation{
 	color: #FFFFFF;
 }
 
+.cancelled{
+	background: #FFBC40;
+}
+
 .color-guide{
 	position: absolute;
 	top: 0;
@@ -821,7 +842,7 @@ table.reservations .reservation{
 --------------------------------------*/
 
 a.more{
-	background: #FFFFFF;
+	background: #EEEEEE;
 	border: 1px solid #CCCCCC;
 	color: #000000;
 	display: block;
@@ -836,7 +857,7 @@ a.more{
 }
 
 a.more:hover{
-	background: #EEEEEE;
+	background: #CCCCCC;
 }
 
 /* ~HEADER

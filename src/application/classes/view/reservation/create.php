@@ -30,9 +30,8 @@ class View_Reservation_Create extends View_Base
 		});";
 
 	public $form = array(
-		'vehicle_id' => NULL,
-		'date'       => NULL,
-		'time'       => array(
+		'date' => NULL,
+		'time' => array(
 			'hour'     => NULL,
 			'minute'   => NULL,
 			'meridian' => NULL,
@@ -58,22 +57,6 @@ class View_Reservation_Create extends View_Base
 		}
 
 		return $this->form;
-	}
-
-	public function vehicles()
-	{
-		$vehicles = array();
-
-		foreach ($this->user->vehicles->find_all() as $vehicle)
-		{
-			$vehicles[] = array(
-				'value' => $vehicle->id,
-				'name'  => $vehicle->license_plate,
-				'selected' => ($vehicle->id == $this->form['vehicle_id']),
-			);
-		}
-
-		return $vehicles;
 	}
 
 	/**

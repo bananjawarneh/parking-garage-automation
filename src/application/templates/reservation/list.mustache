@@ -1,10 +1,11 @@
 <div id="wrap">
 	<div class="module">
-		<h4>Reservations {{#day}}for {{day}}{{/day}}</h4>
+		<h4>View Reservations {{#day}}for {{day}}{{/day}}</h4>
 		<div class="color-guide">
 			<span class="past">past</span>
 			<span class="current">current</span>
 			<span class="future">future</span>
+			<span class="cancelled">cancelled</span>
 		</div>
 		<table class="reservations">
 			<tr>
@@ -25,7 +26,10 @@
 					{{^recurring}}N{{/recurring}}
 					</strong>
 				</td>
-				<td><a href="{{edit_url}}">edit</a></td>
+				<td>
+					{{#active}}<a href="{{edit_url}}">edit</a>{{/active}}
+					{{^active}}&mdash{{/active}}
+				</td>
 			</tr>
 			{{/reservations}}
 		</table>

@@ -11,7 +11,7 @@
 		</ul>
 		{{/reservation}}
 		{{#form}}
-		<form action="{{action}}" method="post" class="tabular">
+		<form action="" method="post" class="tabular">
 			<div class="form-row">
 				<label for="extension">Extension</label>
 				<select name="extension">
@@ -21,8 +21,16 @@
 				</select>
 				<span class="suggestion">30 minute blocks (hours:minutes)</span>
 			</div>
+			{{#recurring}}
+			<div class="form-row">
+				<label for="update_all">Update Recurrence</label>
+				<span class="label">Yes <input type="radio" name="update_all" value="1" /></span>
+				<span class="label">No <input type="radio" name="update_all" value="0" checked="1" /></span>
+				<span class="suggestion">&ndash extend the remaining reservations in this recurrence?</span>
+			</div>
+			{{/recurring}}
 			<div class="form-row center">
-				<input name="_action" type="submit" value="Update" />
+				<input type="submit" name="update" value="Update Reservation" />
 			</div>
 		</form>
 		{{/form}}
@@ -38,13 +46,20 @@
 		<div class="center"><a class="button" href="{{action}}?cancel">Cancel</a></div>
 		{{/ask_confirmation}}
 		{{#ask_confirmation}}
-		<form action="{{action}}" method="post">
+		<form action="" method="post">
 			<div class="center">
 				<strong>Are you sure?</strong>
 			</div>
+			{{#recurring}}
+			<div class="form-row">
+				<label for="update_all">Cancel Recurrence</label>
+				<span class="label">Yes <input type="radio" name="cancel_all" value="1" /></span>
+				<span class="label">No <input type="radio" name="cancel_all" value="0" checked="1" /></span>
+			</div>
+			{{/recurring}}
 			<div class="form-row center">
-				<input name="confirm" type="submit" value="Yes" />
-				<input name="confirm" type="submit" value="No" />
+				<input name="cancel" type="submit" value="Yes" />
+				<input name="cancel" type="submit" value="No" />
 			</div>
 		</form>
 		{{/ask_confirmation}}

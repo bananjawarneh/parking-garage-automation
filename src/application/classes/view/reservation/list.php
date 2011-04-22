@@ -36,7 +36,11 @@ class View_Reservation_List extends View_Base
 		{
 			$duration = Date::span($reservation->end_time, $reservation->start_time, 'hours,minutes');
 
-			if ($reservation->start_time > time())
+			if ($reservation->active == FALSE)
+			{
+				$class = 'cancelled';
+			}
+			else if ($reservation->start_time > time())
 			{
 				$class = 'future';
 			}
@@ -50,6 +54,7 @@ class View_Reservation_List extends View_Base
 			}
 
 			$reservations[] = array(
+				'active'     => $reservation->active,
 				'start_time' => date('l M jS, g:i a', $reservation->start_time),
 				'end_time'   => date('l M jS, g:i a', $reservation->end_time),
 				'duration'   => $duration['hours'].'h '.$duration['minutes'].'m',

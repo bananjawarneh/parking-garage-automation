@@ -11,12 +11,24 @@
 class Controller_Reservation extends Controller_Confirmed
 {
 	/**
-	 * Displays all of this users reservation, in paginated lists.
+	 * Displays all reservations belonging to the logged in user, or filters
+	 * by a given day.
 	 *
-	 * @param int timestamp of the day to show reservations for
+	 * @param int $day timestamp of the day to show reservations for
 	 */
 	public function action_list($day = NULL)
 	{
+		if ($day !== NULL)
+		{
+			$day = (int) $day;
+
+			if ($day === 0)
+			{
+				// Somethinf fishy, dont filter by day
+				$day = NULL;
+			}
+		}
+
 		$this->view = Kostache_Layout::factory('reservation/list')
 			->set('day', $day);
 	}
@@ -28,14 +40,6 @@ class Controller_Reservation extends Controller_Confirmed
 	 */
 	public function action_create()
 	{
-		if ($this->_user->vehicles->count_all() <= 0)
-		{
-			// User must register a vehicle first
-			Session::instance()->set(Session::NO_VEHICLE, TRUE);
-
-			$this->request->redirect('vehicle/add');
-		}
-
 		$this->view = Kostache_Layout::factory('reservation/create');
 
 		if ( ! empty($_POST))
@@ -62,7 +66,7 @@ class Controller_Reservation extends Controller_Confirmed
 	 * Displays the edit reservation page, which allows a user to both extend
 	 * and cancel a reservation.
 	 *
-	 * @param int the reservation to edit
+	 * @param int $reservation_id the reservation to edit
 	 */
 	public function action_edit($reservation_id = NULL)
 	{
@@ -77,11 +81,11 @@ class Controller_Reservation extends Controller_Confirmed
 		$this->view = Kostache_Layout::factory('reservation/edit')
 			->set('reservation_id', $reservation_id);
 
-		if ( ! empty($_POST) OR ! empty($_GET))
+		if ( ! empty($_POST))
 		{
 			try
 			{
-				if (Arr::get($_POST, '_action') === 'Update')
+				if (isset($_POST['update']))
 				{
 					if ($reservation->update_reservation($_POST))
 					{
@@ -91,14 +95,16 @@ class Controller_Reservation extends Controller_Confirmed
 						$this->request->redirect(Route::url('user_profile'));
 					}
 				}
-				else if (Arr::get($_GET, 'cancel') !== NULL)
+				else if (Arr::get($_POST, 'cancel') == 'Yes')
 				{
-					$this->view->ask_confirmation = TRUE;
-				}
-				else if (Arr::get($_POST, 'confirm') === 'Yes')
-				{
-					// Cancel the reservation
-					$reservation->cancel_reservation();
+					// Cancel reservation
+					if ($reservation->cancel_reservation($_POST))
+					{
+						// Show success message on user profile
+						Session::instance()->set(Session::CANCEL_RESERVATION, TRUE);
+
+						$this->request->redirect(Route::url('user_profile'));
+					}
 				}
 			}
 			catch (ORM_Validation_Exception $e)
@@ -106,6 +112,10 @@ class Controller_Reservation extends Controller_Confirmed
 				$this->view->set('form', $_POST);
 				$this->view->set('errors', $e->errors(''));
 			}
+		}
+		else if (isset($_GET['cancel']))
+		{
+			$this->view->ask_confirmation = TRUE;
 		}
 	}
 } // End Controller_Reservation

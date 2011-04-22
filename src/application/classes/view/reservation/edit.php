@@ -39,6 +39,11 @@ class View_Reservation_Edit extends View_Base
 		);
 	}
 
+	public function recurring()
+	{
+		return (bool) $this->reservation->recurring;
+	}
+
 	public function extensions()
 	{
 		$extensions = array();

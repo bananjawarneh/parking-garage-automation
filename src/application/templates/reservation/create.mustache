@@ -1,6 +1,6 @@
 <div id="content">
 	<div class="module">
-		<h2>What time do you plan on arriving?</h2>
+		<h4>What time do you plan on arriving?</h4>
 		{{>errors}}
 		{{#form}}
 		<form action="reservation/create" method="post"class="tabular">
@@ -38,15 +38,6 @@
 				<span class="suggestion">30 minute blocks (hours:minutes)</span>
 			</div>
 			<div class="form-row">
-				<label for="vehicle_id">Vehicle</label>
-				<select name="vehicle_id">
-					{{#vehicles}}
-					<option value="{{value}}" {{#selected}}selected="1"{{/selected}}>{{name}}</option>
-					{{/vehicles}}
-				</select>
-				<span class="suggestion">please arrive for your reservation in this vehicle</span>
-			</div>
-			<div class="form-row">
 				<label for="recurrence">Recurrence</label>
 				<select name="recurrence" id="recurrence">
 					<option value="">None</option>
@@ -66,7 +57,7 @@
 				<a href="#">Read more here</a>.
 			</p>
 			<div class="form-row center">
-				<input type="submit" value="Save" />
+				<input type="submit" value="Reserve Spot" />
 			</div>
 		</form>
 		{{/form}}

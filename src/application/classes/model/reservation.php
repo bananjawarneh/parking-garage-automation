@@ -68,10 +68,6 @@ class Model_Reservation extends ORM
 				array('not_empty'),
 				array(array(ORM::factory('user'), 'exists'), array(':value', 'id')),
 			),
-			'vehicle_id' => array(
-				array('not_empty'),
-				array(array(ORM::factory('vehicle'), 'exists'), array(':value', 'id')),
-			),
 			'start_time' => array(
 				array('not_empty'),
 				array('Model_Reservation::on_half_hour', array(':validation', ':field')),
@@ -102,9 +98,7 @@ class Model_Reservation extends ORM
 	 * Sets the end time using the start time and duration. Transforms any time
 	 * given to a timestamp.
 	 *
-	 * @param  array
-	 * @param  array
-	 * @return ORM
+	 * @see ORM::values
 	 */
 	public function values(array $values, array $expected = NULL)
 	{
@@ -152,15 +146,15 @@ class Model_Reservation extends ORM
 	 * Validates and saves a new reservation record. Also checks for an optional
 	 * recurring reservation.
 	 *
-	 * @param  array
-	 * @param  bool  whether this already belongs to a chain of recurrences
+	 * @param  array $values
+	 * @param  bool  $belongs_to_recurrence whether this belongs to a chain of
+	 *                                      recurrences, or is the parent reservation
 	 * @return bool
 	 */
 	public function create_reservation(array $values, $belongs_to_recurrence = FALSE)
 	{
 		$this->values($values, array(
 			'user_id',
-			'vehicle_id',
 			'start_time',
 			'end_time',
 		));
@@ -190,16 +184,52 @@ class Model_Reservation extends ORM
 	 * to a reservation is changing the length, either increasing or shortening
 	 * it.
 	 *
-	 * @param  array
+	 * @param  array $values
+	 * @param  bool  $parent_reservation whether this is the parent reservation
 	 * @return bool
-	 * @todo   take recurring reservations into account
 	 */
-	public function update_reservation(array $values)
+	public function update_reservation(array $values, $parent_reservation = TRUE)
 	{
 		$this->values($values, array(
 			'end_time',
 		))
 		->update();
+
+		if ($this->recurring)
+		{
+			$next_reservation = ORM::factory('reservation')
+				->where('previous_id', '=', $this->id)
+				->where('recurring', '=', TRUE)
+				->find();
+			
+			if (Arr::get($values, 'update_all') == 1)
+			{
+				if ($next_reservation->loaded())
+				{
+					// Update all reservations in recurrence
+					$next_reservation->update_reservation($values, FALSE);
+				}
+			}
+			else
+			{
+				if ($next_reservation->loaded())
+				{
+					// Close the chain
+					$next_reservation
+						->set('previous_id', $this->previous_id)
+						->save();
+				}
+
+				// Break out of recurrence
+				$this->set('recurring', FALSE)->save();
+			}
+		}
+
+		if ($parent_reservation)
+		{
+			// Break all ties with previous reservations in the recurrence
+			$this->set('previous_id', NULL)->save();
+		}
 
 		return TRUE;
 	}
@@ -207,16 +237,67 @@ class Model_Reservation extends ORM
 	/**
 	 * Cancels this reservation by changing its status.
 	 *
+	 * @param  array $values
 	 * @return bool
 	 * @todo   take recurring reservations into account
 	 */
-	public function cancel_reservation(){}
+	public function cancel_reservation(array $values, $parent_reservation = TRUE)
+	{
+		if ($parent_reservation)
+		{
+			$validation = Validation::factory($this->as_array())
+				->rule('start_time', array($this, 'min_time_before_cancel'), array(':validation'));
+
+			$this->set('active', FALSE)->update($validation);
+		}
+		
+		if ($this->recurring)
+		{
+			$next_reservation = ORM::factory('reservation')
+				->where('previous_id', '=', $this->id)
+				->where('recurring', '=', TRUE)
+				->find();
+
+			if (Arr::get($values, 'cancel_all') == 1)
+			{
+				if ($next_reservation->loaded())
+				{
+					// Re run the function
+					$next_reservation->cancel_reservation($values, FALSE);
+
+					// Delete the entire chain
+					$next_reservation->delete();
+				}
+			}
+			else
+			{
+				if ($next_reservation->loaded())
+				{
+					// Close the chain
+					$next_reservation
+						->set('previous_id', $this->previous_id)
+						->save();
+				}
+
+				// Break out of recurrence
+				$this->set('recurring', FALSE)->save();
+			}
+		}
+
+		if ($parent_reservation)
+		{
+			// Break all ties with previous reservations in the recurrence
+			$this->set('previous_id', NULL)->save();
+		}
+
+		return TRUE;
+	}
 
 	/**
 	 * Adds extra validation to recurring validations.
 	 * If a recurrence is set, a valid end date for recurrence must be set.
 	 *
-	 * @param  array
+	 * @param  array $values
 	 * @return Validation
 	 */
 	protected static function recurring_validation(array $values)
@@ -233,7 +314,7 @@ class Model_Reservation extends ORM
 	/**
 	 * If recurrence is set, so must end_recurrence field.
 	 *
-	 * @param  Validation
+	 * @param  Validation $array
 	 * @return void
 	 */
 	public static function end_recurrence_exists(Validation $array)
@@ -257,7 +338,7 @@ class Model_Reservation extends ORM
 	/**
 	 * Reservations must be a minimum length of time.
 	 *
-	 * @param  Validation
+	 * @param  Validation $array
 	 * @return void
 	 */
 	public static function min_reservation_length(Validation $array)
@@ -272,7 +353,7 @@ class Model_Reservation extends ORM
 	/**
 	 * Reservations must be made far enough in advance.
 	 *
-	 * @param  Validation
+	 * @param  Validation $array
 	 * @return void
 	 */
 	public static function min_time_before_start(Validation $array)
@@ -287,7 +368,7 @@ class Model_Reservation extends ORM
 	/**
 	 * Reservations can be made no further than a few months in advance.
 	 *
-	 * @param  Validation
+	 * @param  Validation $array
 	 * @return void
 	 */
 	public static function max_time_before_start(Validation $array)
@@ -302,7 +383,7 @@ class Model_Reservation extends ORM
 	/**
 	 * Reservations can only be edited enough time prior to their ending.
 	 *
-	 * @param  Validation
+	 * @param  Validation $array
 	 * @return void
 	 */
 	public static function min_time_before_end(Validation $array)
@@ -315,11 +396,27 @@ class Model_Reservation extends ORM
 	}
 
 	/**
+	 * Reservations can only be cancelled enough time prior to their starting.
+	 *
+	 * @param  Validation $array
+	 * @return void
+	 */
+	public function min_time_before_cancel(Validation $array)
+	{
+		// Check time between current time and start time
+		if ( ! Date::min_span(time(), $array['start_time'], self::CURRENT_TIME_START_TIME_GAP))
+		{
+			$array->error('start_time', 'min_time_before_cancel');
+		}
+	}
+
+	/**
 	 * Ensures that the time chosen falls on a half hour, and isnt just any
 	 * free form time. i.e, 8:30, and not 8:29.
 	 *
-	 * @param Validation
-	 * @param string
+	 * @param  Validation $array
+	 * @param  string     $field
+	 * @return void
 	 */
 	public static function on_half_hour(Validation $array, $field)
 	{
@@ -327,14 +424,20 @@ class Model_Reservation extends ORM
 
 		if ($array[$field] % $time_block !== 0)
 		{
+			// Not a multiple of 1800 seconds (30 minutes)
 			$array->error($field, 'on_half_hour');
 		}
+	}
+
+	private function cancel_recurring_reservations()
+	{
+		
 	}
 
 	/**
 	 * Sets this reservation as recurring and creates multiple duplicates.
 	 *
-	 * @param  array
+	 * @param  array $values
 	 * @return bool
 	 */
 	private function create_recurring_reservations(array $values)
