@@ -816,7 +816,7 @@ table.reservations .reservation{
 }
 
 .future{
-	background: #D5F590;
+	background: #D7FAE8;
 }
 
 .current{
@@ -825,7 +825,7 @@ table.reservations .reservation{
 }
 
 .cancelled{
-	background: #FFBC40;
+	background: #FFDD9E;
 }
 
 .color-guide{
@@ -857,7 +857,7 @@ a.more{
 }
 
 a.more:hover{
-	background: #CCCCCC;
+	background: #DDDDDD;
 }
 
 /* ~HEADER
