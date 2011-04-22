@@ -7,6 +7,7 @@
 			<li>Start time: {{start_time}}</li>
 			<li>End time: {{end_time}}</li>
 			<li>Duration: {{duration}}</li>
+			<li>Recurring: {{recurring}}</li>
 		</ul>
 		{{/reservation}}
 		{{#form}}
@@ -21,7 +22,7 @@
 				<span class="suggestion">30 minute blocks (hours:minutes)</span>
 			</div>
 			<div class="form-row center">
-				<input type="submit" value="Save" />
+				<input name="_action" type="submit" value="Update" />
 			</div>
 		</form>
 		{{/form}}
@@ -30,5 +31,22 @@
 <div id="sidebar">
 	<div class="module">
 		<h2>Cancel reservation</h2>
+		<p>Can't make your reservation? It's better to cancel now than to pay
+			for the mandatory grace period.
+		</p>
+		{{^ask_confirmation}}
+		<div class="center"><a class="button" href="{{action}}?cancel">Cancel</a></div>
+		{{/ask_confirmation}}
+		{{#ask_confirmation}}
+		<form action="{{action}}" method="post">
+			<div class="center">
+				<strong>Are you sure?</strong>
+			</div>
+			<div class="form-row center">
+				<input name="confirm" type="submit" value="Yes" />
+				<input name="confirm" type="submit" value="No" />
+			</div>
+		</form>
+		{{/ask_confirmation}}
 	</div>
 </div>

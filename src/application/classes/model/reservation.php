@@ -29,6 +29,10 @@ class Model_Reservation extends ORM
 		'user' => array('model' => 'user'),
 	);
 
+	protected $_has_one = array(
+		'vehicle' => array('model' => 'vehicle'),
+	);
+
 	protected $_created_column = array(
 		'column' => 'date_added',
 		'format' => TRUE,
@@ -63,6 +67,10 @@ class Model_Reservation extends ORM
 			'user_id' => array(
 				array('not_empty'),
 				array(array(ORM::factory('user'), 'exists'), array(':value', 'id')),
+			),
+			'vehicle_id' => array(
+				array('not_empty'),
+				array(array(ORM::factory('vehicle'), 'exists'), array(':value', 'id')),
 			),
 			'start_time' => array(
 				array('not_empty'),
@@ -152,6 +160,7 @@ class Model_Reservation extends ORM
 	{
 		$this->values($values, array(
 			'user_id',
+			'vehicle_id',
 			'start_time',
 			'end_time',
 		));
@@ -183,6 +192,7 @@ class Model_Reservation extends ORM
 	 *
 	 * @param  array
 	 * @return bool
+	 * @todo   take recurring reservations into account
 	 */
 	public function update_reservation(array $values)
 	{
@@ -193,6 +203,14 @@ class Model_Reservation extends ORM
 
 		return TRUE;
 	}
+
+	/**
+	 * Cancels this reservation by changing its status.
+	 *
+	 * @return bool
+	 * @todo   take recurring reservations into account
+	 */
+	public function cancel_reservation(){}
 
 	/**
 	 * Adds extra validation to recurring validations.

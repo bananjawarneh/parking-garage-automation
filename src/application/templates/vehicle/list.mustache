@@ -1,0 +1,27 @@
+<div id="content">
+	<div class="module">
+		<h4>Registered Vehicles</h4>
+		<table class="reservations">
+			<tr>
+				<th>State</th>
+				<th>License Plate</th>
+				<th>Added</th>
+			</tr>
+			{{#vehicles}}
+			<tr>
+				<td>{{state}}</td>
+				<td>{{license_plate}}</td>
+				<td>{{date_added}}</td>
+			</tr>
+			{{/vehicles}}
+		</table>
+		<a href="vehicle/add" class="more">Add Vehicle</a>
+	</div>
+</div>
+<div id="sidebar">
+	<div class="how-to module">
+		<p>These are the vehicles we will look for when you show up to confirm
+			that it's you. If you see an error in any of them, remove them from
+			your account and re-add them correctly.</p>
+	</div>
+</div>

@@ -204,6 +204,11 @@ a[href^="aim:"]{
 	background-image: url(../images/icons/im.png);
 }
 
+a.button{
+	color: #000000;
+	text-decoration: none;
+}
+
 /* ~HEADERS
 ------------------------------------------------------------------------------*/
 
@@ -781,12 +786,11 @@ table.reservations th{
 }
 
 table.reservations th{
-	background: #000000;
+	background: #2277BB;
 	color: #FFFFFF;
 }
 
 table.reservations .reservation{
-	color: #555555;
 	font-size: 0.9em;
 }
 
@@ -810,7 +814,7 @@ table.reservations .reservation{
 }
 
 .color-guide span{
-	padding: 2px;
+	padding: 2px 3px;
 }
 
 /* ~PAGINATION

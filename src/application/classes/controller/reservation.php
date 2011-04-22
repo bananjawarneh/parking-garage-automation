@@ -28,6 +28,14 @@ class Controller_Reservation extends Controller_Confirmed
 	 */
 	public function action_create()
 	{
+		if ($this->_user->vehicles->count_all() <= 0)
+		{
+			// User must register a vehicle first
+			Session::instance()->set(Session::NO_VEHICLE, TRUE);
+
+			$this->request->redirect('vehicle/add');
+		}
+
 		$this->view = Kostache_Layout::factory('reservation/create');
 
 		if ( ! empty($_POST))
@@ -69,16 +77,28 @@ class Controller_Reservation extends Controller_Confirmed
 		$this->view = Kostache_Layout::factory('reservation/edit')
 			->set('reservation_id', $reservation_id);
 
-		if ( ! empty($_POST))
+		if ( ! empty($_POST) OR ! empty($_GET))
 		{
 			try
 			{
-				if ($reservation->update_reservation($_POST))
+				if (Arr::get($_POST, '_action') === 'Update')
 				{
-					// Show success message on user profile
-					Session::instance()->set(Session::EDIT_RESERVATION, TRUE);
+					if ($reservation->update_reservation($_POST))
+					{
+						// Show success message on user profile
+						Session::instance()->set(Session::EDIT_RESERVATION, TRUE);
 
-					$this->request->redirect(Route::url('user_profile'));
+						$this->request->redirect(Route::url('user_profile'));
+					}
+				}
+				else if (Arr::get($_GET, 'cancel') !== NULL)
+				{
+					$this->view->ask_confirmation = TRUE;
+				}
+				else if (Arr::get($_POST, 'confirm') === 'Yes')
+				{
+					// Cancel the reservation
+					$reservation->cancel_reservation();
 				}
 			}
 			catch (ORM_Validation_Exception $e)

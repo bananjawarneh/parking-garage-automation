@@ -2,8 +2,6 @@
 /**
  * Defines different session flags.
  *
- * @todo is this the right place to define these constants?
- *
  * @package    Park-a-Lot
  * @subpackage Session
  * @author     Abdul Hassan
@@ -14,5 +12,7 @@ abstract class Session extends Kohana_Session
 {
 	const NEW_USER         = 'new_user';
 	const NEW_RESERVATION  = 'new_reservation';
+	const NEW_VEHICLE      = 'new_vehicle';
 	const EDIT_RESERVATION = 'edit_reservation';
+	const NO_VEHICLE       = 'no_vehicle';
 } // End Session

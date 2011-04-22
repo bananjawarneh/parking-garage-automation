@@ -1,0 +1,37 @@
+<div id="content">
+	<div class="module">
+		<h2>Register a new vehicle</h2>
+		{{>errors}}
+		{{#form}}
+		<form action="vehicle/add" method="post" class="tabular">
+			<div class="form-row">
+				<label for="license_plate">Plate Number</label>
+				<input type="text" name="license_plate" id="license_plate" value="{{license_plate}}" />
+			</div>
+			<div class="form-row">
+				<label for="state">State</label>
+				<select name="state">
+					{{#states}}
+					<option value="{{value}}" {{#selected}}selected="1"{{/selected}}>{{name}}</option>
+					{{/states}}
+				</select>
+			</div>
+			<div class="form-row center">
+				<input type="submit" value="Save" />
+			</div>
+		</form>
+		{{/form}}
+	</div>
+</div>
+<div id="sidebar">
+	<div class="how-to module">
+		<h4>How to add a vehicle</h4>
+		<p>Registering a vehicle is required for us to be able to recongnize you
+			when you arrive at one of our parking lots.</p>
+		<ol>
+			<li>Provide your license plate number. Use dashes (&ndash) instead of
+				spaces.</li>
+			<li>Select the state your vehicle is registered in.</li>
+		</ol>
+	</div>
+</div>

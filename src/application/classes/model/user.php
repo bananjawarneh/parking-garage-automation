@@ -14,6 +14,7 @@ class Model_User extends ORM
 		'roles'        => array('model' => 'role', 'through' => 'roles_users'),
 		'reservations' => array('model' => 'reservation'),
 		'user_tokens'  => array('model' => 'user_token'),
+		'vehicles'     => array('model' => 'vehicle'),
 	);
 
 	protected $_created_column = array(
@@ -116,6 +117,27 @@ class Model_User extends ORM
 
 		return ORM::factory('reservation')
 			->create_reservation($values);
+	}
+
+	/**
+	 * Validates and saves a new vehicle, and binds it to this user.
+	 *
+	 * @param array
+	 * @return bool
+	 */
+	public function add_vehicle(array $values)
+	{
+		if ( ! $this->loaded())
+		{
+			throw new Kohana_Exception('Cannot add a vehicle to an unloaded :model model.',
+				array(':model' => $this->_object_name));
+		}
+
+		// Override whatever was set
+		$values['user_id'] = $this->id;
+
+		return ORM::factory('vehicle')
+			->create_vehicle($values);
 	}
 
 	/**

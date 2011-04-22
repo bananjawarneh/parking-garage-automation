@@ -122,6 +122,11 @@ class View_User_Profile extends View_Base
 			$this->notifications[] = 'Your reservation has been edited successfully.';
 		}
 
+		if (Session::instance()->get_once(Session::NEW_VEHICLE))
+		{
+			$this->notifications[] = 'Your vehicle has been added successfully.';
+		}
+
 		return parent::render();
 	}
 } // End View_User_Profile

@@ -10,10 +10,16 @@
  */
 class View_Reservation_Edit extends View_Base
 {
+	public $title = 'Edit Reservation';
+
 	public $reservation_id;
 
+	public $reservation;
+
+	public $ask_confirmation = FALSE;
+
 	public $form = array(
-		'extension' => NULL,
+		'extension' => 2,
 	);
 
 	public function action()
@@ -23,14 +29,13 @@ class View_Reservation_Edit extends View_Base
 
 	public function reservation()
 	{
-		$reservation = ORM::factory('reservation')->where('id', '=', $this->reservation_id)->find();
-
-		$duration = Date::span($reservation->end_time, $reservation->start_time, 'hours,minutes');
+		$duration = Date::span($this->reservation->end_time, $this->reservation->start_time, 'hours,minutes');
 
 		return array(
-			'start_time' => date('M jS, g:i a', $reservation->start_time),
-			'end_time'   => date('M jS, g:i a', $reservation->end_time),
+			'start_time' => date('M jS, g:i a', $this->reservation->start_time),
+			'end_time'   => date('M jS, g:i a', $this->reservation->end_time),
 			'duration'   => $duration['hours'].'h '.$duration['minutes'].'m',
+			'recurring'  => ($this->reservation->recurring) ? 'Y' : 'N',
 		);
 	}
 
@@ -52,10 +57,17 @@ class View_Reservation_Edit extends View_Base
 			$extensions[] = array(
 				'value' => $i,
 				'name'  => $name.' '.str_pad($span['hours'], 2, 0, STR_PAD_LEFT).':'.str_pad($span['minutes'], 2, 0, STR_PAD_LEFT),
-				'selected' => ($seconds == $this->form['extension']),
+				'selected' => ($i == $this->form['extension']),
 			);
 		}
 
 		return $extensions;
+	}
+
+	public function render()
+	{
+		$this->reservation = ORM::factory('reservation')->where('id', '=', $this->reservation_id)->find();
+
+		return parent::render();
 	}
 } // End View_Reservation_Edit

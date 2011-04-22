@@ -14,34 +14,46 @@ class ORM extends Kohana_ORM
 	 * Checks if a record exists with a given unique value.
 	 *
 	 * @param  mixed
+	 * @param  string
+	 * @param  array
 	 * @return bool
 	 * @uses   ORM::unique_key
 	 */
-	public function exists($value, $field = NULL)
+	public function exists($value, $field = NULL, array $extra = NULL)
 	{
 		if ($field === NULL)
 		{
 			$field = $this->unique_key($value);
 		}
 
-		return (bool) DB::select(array('COUNT("id")', 'total'))
+		$return = DB::select(array('COUNT("id")', 'total'))
 			->from($this->_table_name)
 			->where($field, '=', $value)
-			->where($this->_primary_key, '!=', $this->pk())
-			->execute()
-			->get('total');
+			->where($this->_primary_key, '!=', $this->pk());
+
+		if ($extra !== NULL)
+		{
+			foreach ($extra as $key => $value)
+			{
+				$return->where($key, '=', $value);
+			}
+		}
+
+		return (bool) $return->execute()->get('total');
 	}
 
 	/**
 	 * Checks if a given unique value is available for use.
 	 *
 	 * @param  mixed
+	 * @param  string
+	 * @param  array
 	 * @return bool
 	 * @uses   ORM::exists
 	 */
-	public function available($value)
+	public function available($value, $field, array $extra = NULL)
 	{
-		return ( ! $this->exists($value));
+		return ( ! $this->exists($value, $field, $extra));
 	}
 
 	/**
