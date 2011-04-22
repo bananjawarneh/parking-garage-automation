@@ -1,9 +1,9 @@
 <div id="wrap" class="clearfix">
 	<div id="content">
-		<h2>Sign up for an account. It's quick and painless.</h2>
+		<h4>Sign up for an account, it's quick and painless.</h4>
 		{{>errors}}
 		{{#form}}
-		<form action="user/register" method="post" class="tabular">
+		<form action="" method="post" class="tabular">
 			<div class="form-row">
 				<label for="first_name">First Name</label>
 				<input type="text" name="first_name" id="first_name" value="{{first_name}}" />
@@ -36,8 +36,8 @@
 				cancelled.
 			</p>
 			<div class="form-row center">
-				<input type="submit" value="Sign up" />
-				<div><strong>Already have an account?</strong> <a href="user/login">Login</a></div>
+				<input type="submit" name="register" value="Sign up" />
+				<div><strong>Already have an account?</strong> <a href="user/login">Login</a>.</div>
 			</div>
 		</form>
 		{{/form}}
@@ -45,8 +45,7 @@
 	<div id="sidebar">
 		<div class="how-to module">
 			<h4>Why sign up?</h4>
-			<p>
-				As a registered user, you get to reserve parking
+			<p>As a registered user, you get to reserve parking
 				in any one of our Park-a-Lot parking lots. Don't have enough time
 				to reserve parking ahead of time? Just stop in for on the spot
 				parking and we'll add it to your monthly bill.

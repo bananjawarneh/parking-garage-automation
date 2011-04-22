@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 /**
- * User model
+ * User model.
  *
  * @package   Park-a-Lot
  * @category  Model
@@ -23,7 +23,8 @@ class Model_User extends ORM
 	);
 
 	/**
-	 * Password should be encrypted before its stored.
+	 * All data should be trimmed, and password should be encrypted before its
+	 * stored.
 	 *
 	 * @return array
 	 */
@@ -74,8 +75,7 @@ class Model_User extends ORM
 	 * Validates user data. Upon success, data is stored in the database and a
 	 * confirmation email is sent out to the user.
 	 *
-	 * @uses   ORM::create to validate and insert data.
-	 * @param  array
+	 * @param  array $values
 	 * @return bool
 	 */
 	public function create_user(array $values)
@@ -101,7 +101,7 @@ class Model_User extends ORM
 	 * Validates and creates a new reservation. Binds it to this user upon
 	 * success.
 	 *
-	 * @param  array
+	 * @param  array $values
 	 * @return bool
 	 */
 	public function add_reservation(array $values)
@@ -122,7 +122,7 @@ class Model_User extends ORM
 	/**
 	 * Validates and saves a new vehicle, and binds it to this user.
 	 *
-	 * @param array
+	 * @param array $values
 	 * @return bool
 	 */
 	public function add_vehicle(array $values)
@@ -143,12 +143,17 @@ class Model_User extends ORM
 	/**
 	 * Validates the login form, and logs the user in upon success.
 	 *
-	 * @todo   throw exception is user is loaded already?
-	 * @param  array&
+	 * @param  array &$values transformed into a validation object
 	 * @return bool
 	 */
 	public function login(array &$values)
 	{
+		if ($this->loaded())
+		{
+			throw new Kohana_Exception('Cannot log in using an already loaded :model model.',
+				array(':model' => $this->_object_name));
+		}
+
 		$values = Validation::factory($values)
 			->rule('email', 'not_empty')
 			->rule('password', 'not_empty');
@@ -180,14 +185,20 @@ class Model_User extends ORM
 	 */
 	public function force_login()
 	{
-		Auth::instance()->force_login($this);
+		if ( ! $this->loaded())
+		{
+			throw new Kohana_Exception('Cannot log in an unloaded :model model.',
+				array(':model' => $this->_object_name));
+		}
+
+		return Auth::instance()->force_login($this);
 	}
 
 	/**
 	 * Sends different emails to the user.
 	 *
-	 * @param  string the type of email to send
-	 * @param  array  any extra data to add to the email
+	 * @param  string $type the type of email to send
+	 * @param  array  $data any extra data to add to the email
 	 * @return bool
 	 */
 	public function send_email($type, array $data = array())
@@ -229,7 +240,7 @@ class Model_User extends ORM
 	/**
 	 * Confirms user registration.
 	 *
-	 * @param  array GET parameters
+	 * @param  array $params
 	 * @return bool
 	 */
 	public function confirm_create_user(array $params)
@@ -249,21 +260,27 @@ class Model_User extends ORM
 	}
 
 	/**
-	 * Checks the confirmation url, using the id and token generated.
+	 * Validated the confirmation url.
 	 *
-	 * @param  array GET parameters
+	 * @param  array $params
 	 * @return bool
 	 */
 	protected function check_confirmation(array $params)
 	{
+		if ( ! $this->loaded())
+		{
+			throw new Kohana_Exception('Cannot use unloaded :model to check confirmation.',
+				array(':model' => $this->_object_name));
+		}
+		
 		if ( ! isset($params['id'], $params['token']))
 		{
 			return FALSE;
 		}
 
-		if ( ! $this->clear()->where('id', '=', $params['id'])->find()->loaded())
+		if ($this->id !== $params['id'])
 		{
-			// ID not found
+			// User cannot confirm someone elses notice
 			return FALSE;
 		}
 
@@ -274,7 +291,7 @@ class Model_User extends ORM
 	 * Builds a confirmation url, which must be validated to complete a previous
 	 * action.
 	 *
-	 * @param  string user action to redirect to
+	 * @param  string $action user controller action to redirect to
 	 * @return string
 	 */
 	protected function confirmation_url($action)
@@ -298,7 +315,7 @@ class Model_User extends ORM
 	}
 
 	/**
-	 * Generates a token, used for different purposes.
+	 * Generates a confirmation token.
 	 *
 	 * @return string
 	 */
@@ -313,7 +330,7 @@ class Model_User extends ORM
 	 * Password must not be empty, between 6 and 15 characters, and must contain
 	 * at least 1 character and 1 number.
 	 *
-	 * @param  array
+	 * @param  array $values
 	 * @return Validation
 	 */
 	protected static function password_validation(array $values)

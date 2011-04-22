@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 /**
- * User must be logged in to gain further access.
+ * Member controller, ensures that a user is logged in before going further.
  *
  * @package   Park-a-Lot
  * @category  Controller

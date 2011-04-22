@@ -10,7 +10,12 @@
  */
 class Model_Role extends Model_Auth_Role
 {
-	const LOGIN     = 'login';
+	/** User can login */
+	const LOGIN = 'login';
+
+	/** User is a confirmed user */
 	const CONFIRMED = 'confirmed';
-	const ADMIN     = 'admin';
+
+	/** User is an administrator */
+	const ADMIN = 'admin';
 } // End Model_Role

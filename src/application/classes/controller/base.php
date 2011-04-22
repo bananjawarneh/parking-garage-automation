@@ -25,6 +25,12 @@ abstract class Controller_Base extends Controller
 	 */
 	protected $_user;
 
+	/**
+	 * Insantiates the user object, either loaded with data for the currently
+	 * logged in user, or an empty user object.
+	 *
+	 * @return void
+	 */
 	public function before()
 	{
 		// Get currently logged in user, or create a new user instance

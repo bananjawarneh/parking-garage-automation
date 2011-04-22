@@ -1,9 +1,9 @@
 <div id="content">
 	<div class="module">
-		<h2>Sign in to manage your account</h2>
+		<h4>Sign in to manage your account</h4>
 		{{>errors}}
 		{{#form}}
-		<form action="user/login" method="post" class="tabular">
+		<form action="" method="post" class="tabular">
 			{{#return_to}}<input type="hidden" name="return_to" value="{{return_to}}" />{{/return_to}}
 			<div class="form-row">
 				<label for="email">Email</label>
@@ -19,7 +19,7 @@
 				<span class="suggestion">valid for 2 weeks</span>
 			</div>
 			<div class="form-row center">
-				<input type="submit" value="Sign in" />
+				<input type="submit" name="login" value="Sign in" />
 				or <a href="user/register">Sign up</a>
 			</div>
 		</form>

@@ -11,21 +11,20 @@
 class Controller_User extends Controller_Base
 {
 	/**
-	 * Users fill out a registration form. Upon succesful submission, a user is
-	 * created and the user is redirected to a welcoming message.
+	 * Displays and receives a registration form. Redisplays the form data and
+	 * shows any errors if there are any. Upon success, redirects to user profile.
 	 */
 	public function action_register()
 	{
 		if (Auth::instance()->logged_in())
 		{
-			// Cant register twice
 			$this->request->redirect(Route::url('user_profile'));
 		}
 		
 		$this->view = Kostache_Layout::factory('user/register');
 
-		if ( ! empty($_POST))
-		{			
+		if (isset($_POST['register']))
+		{
 			try
 			{
 				if ($this->_user->create_user($_POST))
@@ -40,7 +39,7 @@ class Controller_User extends Controller_Base
 				}
 				else
 				{
-					// internal error
+					// TODO internal error, email did not send
 				}
 			}
 			catch (ORM_Validation_Exception $e)
@@ -52,19 +51,21 @@ class Controller_User extends Controller_Base
 	}
 
 	/**
-	 * Allows user to log in to their profile.
+	 * Displays and receives a login form. Redisplays the form with data and
+	 * errors if they exist. Upon success, the user is redirected to their user
+	 * profile.
 	 */
 	public function action_login()
 	{
 		if (Auth::instance()->logged_in())
 		{
-			// Lets not waste our time
 			$this->request->redirect(Route::url('user_profile'));
 		}
 
 		$this->view = Kostache_Layout::factory('user/login');
 
-		if ( ! empty($_POST) AND $post = $_POST)
+		// Login method takes a reference, dont transform the POST array
+		if (isset($_POST['login']) AND $post = $_POST)
 		{
 			if ($this->_user->login($post))
 			{
@@ -86,7 +87,6 @@ class Controller_User extends Controller_Base
 	{
 		Auth::instance()->logout(TRUE);
 
-		// Redirect to login page
 		$this->request->redirect('user/login');
 	}
 
@@ -100,8 +100,7 @@ class Controller_User extends Controller_Base
 			$this->request->redirect(Route::url('login'));
 		}
 
-		$this->view = Kostache_Layout::factory('user/profile')
-			->set('user', $this->_user);
+		$this->view = Kostache_Layout::factory('user/profile');
 	}
 
 	/**
@@ -112,7 +111,6 @@ class Controller_User extends Controller_Base
 	{
 		if (Auth::instance()->logged_in(Model_Role::CONFIRMED))
 		{
-			// Lets not confuse the user
 			$this->request->redirect(Route::url('user_profile'));
 		}
 		
@@ -120,43 +118,54 @@ class Controller_User extends Controller_Base
 	}
 
 	/**
-	 * Resends the confirmation url that the user should have received
-	 * after registration, and reports the outcome of resending it.
+	 * Resends user confirmation, and redirects to users profile page.
 	 */
 	public function action_resend_confirmation()
 	{
 		if ( ! Auth::instance()->logged_in())
 		{
-			// User must be logged in first
 			$this->request->redirect('user/login?return_to='.$this->request->uri());
 		}
 		else if (Auth::instance()->logged_in(Model_Role::CONFIRMED))
 		{
-			// Users already confirmed
 			$this->request->redirect(Route::url('user_profile'));
 		}
 
-		$this->view = Kostache_Layout::factory('user/resendconfirmation')
-			->set('outcome', $this->_user->send_email('confirm_registration'));
+		if ($this->_user->send_email('confirm_registration'))
+		{
+			Session::instance()->set(Session::SUCCESSFUL_RESEND_USER_CONFIRMATION, TRUE);
+		}
+		else
+		{
+			Session::instance()->set(Session::FAILED_RESEND_USER_CONFIRMATION, TRUE);
+		}
+
+		$this->request->redirect(Route::url('user_profile'));
 	}
 
 	/**
-	 * User confirmation. Users must be logged in first.
+	 * Confirms user registration, and redirects to users profile page.
 	 */
 	public function action_confirm_registration()
 	{
 		if ( ! Auth::instance()->logged_in())
 		{
-			// User must be logged in first
 			$this->request->redirect('user/login?return_to='.$this->request->uri().URL::query($_GET));
 		}
 		else if (Auth::instance()->logged_in(Model_Role::CONFIRMED))
 		{
-			// Users already confirmed
 			$this->request->redirect(Route::url('user_profile'));
 		}
 
-		$this->view = Kostache_Layout::factory('user/confirmregistration')
-			->set('outcome', $this->_user->confirm_create_user($_GET));
+		if ($this->_user->confirm_create_user($_GET))
+		{
+			Session::instance()->set(Session::SUCCESSFUL_USER_CONFIRMATION, TRUE);
+		}
+		else
+		{
+			Session::instance()->set(Session::FAILED_USER_CONFIRMATION, TRUE);
+		}
+
+		$this->request->redirect(Route::url('user_profile'));
 	}
 } // End Controller_User

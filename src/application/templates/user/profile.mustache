@@ -1,6 +1,6 @@
 <div id="wrap" class="clearfix">
-	<h4>Reservations</h4>
 	<div id="content">
+		<h4>Upcoming Reservations</h4>
 		{{>calendar_reservations}}
 		<a class="more" href="reservation/list">View All</a>
 	</div>
@@ -9,16 +9,19 @@
 			{{#user}}
 			<h4>{{full_name}}</h4>
 			<ul class="strip">
-				<li>Member Since: {{registration_date}}</li>
-				<li>Reservatoins made: {{total_reservations}}</li>
+				<li>Member since: {{registration_date}}</li>
+				<li>Total reservatoins: {{total_reservations}}</li>
 			</ul>
 			{{/user}}
-			<ul>
-				<li><a href="reservation/list">View all reservations</a></li>
-				<li><a href="reservation/create">Create a new reservation</a></li>
-				<li><a href="vehicle/list">View all vehicles</a></li>
-				<li><a href="vehicle/add">Add a new vehicle</a></li>
-			</ul>
+			<hr />
+			<dl>
+				<dt>Reservations</dt>
+				<dd><a href="reservation/list">List all reservations</a></dd>
+				<dd><a href="reservation/create">Create a new reservation</a></dd>
+				<dt>Vehicles</dt>
+				<dd><a href="vehicle/list">List all vehicles</a></dd>
+				<dd><a href="vehicle/add">Add a new vehicle</a></dd>
+			</dl>
 		</div>
 	</div>
 </div>

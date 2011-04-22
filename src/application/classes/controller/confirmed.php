@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 /**
- * User must be logged in and a confirmed member to gian further access.
+ * Confirmed controller, ensures that a user is confirmed before going further.
  *
  * @package   Park-a-Lot
  * @category  Controller
@@ -16,7 +16,7 @@ abstract class Controller_Confirmed extends Controller_Member
 
 		if ( ! Auth::instance()->logged_in(Model_Role::CONFIRMED))
 		{
-			// Reroute to unconfirmed user action
+			// Redirect to show a message
 			$this->request->redirect('user/unconfirmed');
 		}
 	}

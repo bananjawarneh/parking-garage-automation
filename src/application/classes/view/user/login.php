@@ -22,8 +22,8 @@ class View_User_Login extends View_Base
 	 * @var array
 	 */
 	public $tips = array(
-		'When creating a reservation, theres no need to type in a date for start
-			time or end time, plain english works just fine. For example, when
+		'When creating a reservation, theres no need to type in a date for any
+			date fields, plain english works just fine. For example, when
 			reserving a spot for tomorrow, just type "tomorrow".',
 		'When creating or cancelling a reservation, you must do so at least
 			30 minutes prior to your expected time of arrival. When extending a
