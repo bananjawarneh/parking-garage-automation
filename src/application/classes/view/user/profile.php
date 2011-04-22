@@ -55,12 +55,12 @@ class View_User_Profile extends View_Base
 		$reservations = array(
 			'this_month' => $this->user->reservations
 				->where('start_time', '>', time())
-				->where('start_time', '<', mktime(0, 0, 0, date('n') + 1, 0))
+				->where('start_time', '<', mktime(24, 0, 0, date('n') + 1, 0))
 				->where('active', '=', TRUE)
 				->find_all(),
 			'next_month' => $this->user->reservations
-				->where('start_time', '>', mktime(0, 0, 0, date('n') + 1, 0))
-				->where('start_time', '<', mktime(0, 0, 0, date('n') + 2, 0))
+				->where('start_time', '>', mktime(24, 0, 0, date('n') + 1, 0))
+				->where('start_time', '<', mktime(24, 0, 0, date('n') + 2, 0))
 				->where('active', '=', TRUE)
 				->find_all(),
 		);
