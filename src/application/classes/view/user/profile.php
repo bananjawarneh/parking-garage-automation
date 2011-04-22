@@ -134,6 +134,11 @@ class View_User_Profile extends View_Base
 			$this->notifications[] = 'Your vehicle has been added successfully.';
 		}
 
+		if (Session::instance()->get_once(Session::REMOVE_VEHICLE))
+		{
+			$this->notifications[] = 'Your vehicle has been removed successfully.';
+		}
+
 		if (Session::instance()->get_once(Session::SUCCESSFUL_RESEND_USER_CONFIRMATION))
 		{
 			$this->notifications[] = 'Confirmation instructions have been sent to your email address.';

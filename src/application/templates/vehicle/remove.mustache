@@ -1,0 +1,12 @@
+<div id="wrap">
+	<div class="module">
+		<h4>Are you sure you want to remove this vehicle?</h4>
+		{{#vehicle}}<em>License plate {{license_plate}} in the state of {{state}}.</em>{{/vehicle}}
+		<form action="" method="post">
+			<div class="form-row center">
+				<input type="submit" name="remove" value="Yes" />
+				<input type="submit" name="remove" value="No" />
+			</div>
+		</form>
+	</div>
+</div>

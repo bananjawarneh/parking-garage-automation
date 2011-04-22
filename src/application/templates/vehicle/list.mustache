@@ -7,12 +7,14 @@
 				<th>State</th>
 				<th>License Plate</th>
 				<th>Added</th>
+				<th>&mdash;</th>
 			</tr>
 			{{#vehicles}}
 			<tr>
 				<td>{{state}}</td>
 				<td>{{license_plate}}</td>
 				<td>{{date_added}}</td>
+				<td><a href="{{delete_url}}">remove</a></td>
 			</tr>
 			{{/vehicles}}
 		</table>

@@ -46,4 +46,36 @@ class Controller_Vehicle extends Controller_Confirmed
 	{
 		$this->view = Kostache_Layout::factory('vehicle/list');
 	}
+
+	/**
+	 * Confirms that the user wants to delete the vehicle.
+	 *
+	 * @param int $vehicle_id vehicle to delete
+	 */
+	public function action_remove($vehicle_id = NULL)
+	{
+		$vehicle = $this->_user->vehicles->where('id', '=', $vehicle_id)->find();
+
+		if ( ! $vehicle->loaded())
+		{
+			// Fishy business here
+			$this->request->redirect(Route::url('user_profile'));
+		}
+
+		$this->view = Kostache_Layout::factory('vehicle/remove')
+			->set('vehicle_id', $vehicle_id);
+
+		if (isset($_POST['remove']))
+		{
+			if ($_POST['remove'] == 'Yes' AND $vehicle->delete())
+			{
+				// Show success message on user profile
+				Session::instance()->set(Session::REMOVE_VEHICLE, TRUE);
+
+				$this->request->redirect(Route::url('user_profile'));
+			}
+
+			$this->request->redirect(Route::url('user_profile'));
+		}
+	}
 } // End Controller_Vehicle

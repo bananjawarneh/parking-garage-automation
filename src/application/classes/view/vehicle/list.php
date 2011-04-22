@@ -22,7 +22,7 @@ class View_Vehicle_List extends View_Base
 				'license_plate' => $vehicle->license_plate,
 				'state'         => $vehicle->state,
 				'date_added'    => date('M jS, g:i a', $vehicle->date_added),
-				//'delete_url'    => URL::site('vehicle/remove/'.$vehicle->id),
+				'delete_url'    => URL::site('vehicle/remove/'.$vehicle->id),
 			);
 		}
 
