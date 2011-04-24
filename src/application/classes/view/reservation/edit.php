@@ -69,6 +69,12 @@ class View_Reservation_Edit extends View_Base
 		return $extensions;
 	}
 
+	public function can_cancel()
+	{
+		return Date::min_span(time(), $this->reservation->start_time,
+			Model_Reservation::CURRENT_TIME_START_TIME_GAP);
+	}
+
 	public function render()
 	{
 		$this->reservation = ORM::factory('reservation')->where('id', '=', $this->reservation_id)->find();

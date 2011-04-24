@@ -61,6 +61,8 @@ class View_Reservation_List extends View_Base
 				'recurring'  => $reservation->recurring,
 				'edit_url'   => URL::site('reservation/edit/'.$reservation->id),
 				'class'      => $class,
+				'editable'   => Date::min_span(time(), $reservation->end_time,
+					Model_Reservation::CURRENT_TIME_END_TIME_GAP),
 			);
 		}
 

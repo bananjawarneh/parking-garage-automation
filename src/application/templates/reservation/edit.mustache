@@ -39,29 +39,36 @@
 <div id="sidebar">
 	<div class="module">
 		<h2>Cancel reservation</h2>
-		<p>Can't make your reservation? It's better to cancel now than to pay
-			for the mandatory grace period.
+		{{#can_cancel}}
+			<p>Can't make your reservation? It's better to cancel now than to pay
+				for the mandatory grace period.
+			</p>
+			{{^ask_confirmation}}
+			<div class="center"><a class="button" href="{{action}}?cancel">Cancel</a></div>
+			{{/ask_confirmation}}
+			{{#ask_confirmation}}
+			<form action="" method="post">
+				<div class="center">
+					<strong>Are you sure?</strong>
+				</div>
+				{{#recurring}}
+				<div class="form-row">
+					<label for="update_all">Cancel Recurrence</label>
+					<span class="label">Yes <input type="radio" name="cancel_all" value="1" /></span>
+					<span class="label">No <input type="radio" name="cancel_all" value="0" checked="1" /></span>
+				</div>
+				{{/recurring}}
+				<div class="form-row center">
+					<input name="cancel" type="submit" value="Yes" />
+					<input name="cancel" type="submit" value="No" />
+				</div>
+			</form>
+			{{/ask_confirmation}}
+		{{/can_cancel}}
+		{{^can_cancel}}
+		<p>Sorry, it's too late to cancel this reservation. All cancellations
+			must be made at least 30 minutes prior to the start of the reservation.
 		</p>
-		{{^ask_confirmation}}
-		<div class="center"><a class="button" href="{{action}}?cancel">Cancel</a></div>
-		{{/ask_confirmation}}
-		{{#ask_confirmation}}
-		<form action="" method="post">
-			<div class="center">
-				<strong>Are you sure?</strong>
-			</div>
-			{{#recurring}}
-			<div class="form-row">
-				<label for="update_all">Cancel Recurrence</label>
-				<span class="label">Yes <input type="radio" name="cancel_all" value="1" /></span>
-				<span class="label">No <input type="radio" name="cancel_all" value="0" checked="1" /></span>
-			</div>
-			{{/recurring}}
-			<div class="form-row center">
-				<input name="cancel" type="submit" value="Yes" />
-				<input name="cancel" type="submit" value="No" />
-			</div>
-		</form>
-		{{/ask_confirmation}}
+		{{/can_cancel}}
 	</div>
 </div>

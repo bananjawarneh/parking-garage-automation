@@ -28,7 +28,10 @@
 					</strong>
 				</td>
 				<td>
-					{{#active}}<a href="{{edit_url}}">edit</a>{{/active}}
+					{{#active}}
+						{{#editable}}<a href="{{edit_url}}">edit</a>{{/editable}}
+						{{^editable}}&mdash;{{/editable}}
+					{{/active}}
 					{{^active}}&mdash{{/active}}
 				</td>
 			</tr>
