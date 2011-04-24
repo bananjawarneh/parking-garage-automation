@@ -10,7 +10,7 @@
  */
 class View_Reservation_Create extends View_Base
 {
-	public $title = 'Create a new reservation';
+	public $title = 'New Reservation';
 
 	public $styles = array(
 		array(

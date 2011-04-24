@@ -10,7 +10,7 @@
  */
 class View_Vehicle_Add extends View_Base
 {
-	public $title = 'Add a vehicle to your account';
+	public $title = 'Register Vehicle';
 
 	public $form = array(
 		'license_plate' => NULL,
