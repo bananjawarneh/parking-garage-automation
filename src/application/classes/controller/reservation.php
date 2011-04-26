@@ -30,7 +30,8 @@ class Controller_Reservation extends Controller_Confirmed
 		}
 
 		$this->view = Kostache_Layout::factory('reservation/list')
-			->set('day', $day);
+			->set('day', $day)
+			->set('filter', Arr::get($_GET, 'f'));
 	}
 
 	/**

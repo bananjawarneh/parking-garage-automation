@@ -841,8 +841,11 @@ table.reservations .reservation{
 	right: 0;
 }
 
-.color-guide span{
+.color-guide a{
+	cursor: arrow;
+	display: inline-block;
 	padding: 2px 3px;
+	text-decoration: none;
 }
 
 /* ~PAGINATION

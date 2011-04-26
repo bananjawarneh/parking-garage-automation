@@ -1,12 +1,15 @@
 <div id="wrap">
 	<div class="module">
-		<h4>View Reservations {{#day}}for {{day}}{{/day}}</h4>
+		<h4>View {{filter}} Reservations {{#day}}for {{day}}{{/day}}</h4>
+		{{#filters}}
 		<div class="color-guide">
-			<span class="past">past</span>
-			<span class="current">current</span>
-			<span class="future">future</span>
-			<span class="cancelled">cancelled</span>
+			<a href="{{past}}" class="past">past</a>
+			<a href="{{current}}" class="current">current</a>
+			<a href="{{future}}" class="future">future</a>
+			<a href="{{cancelled}}" class="cancelled">cancelled</a>
+			<a href="reservation/list">view all</a>
 		</div>
+		{{/filters}}
 		{{#reservations_exist}}
 		<table class="reservations">
 			<tr>
@@ -32,7 +35,7 @@
 						{{#editable}}<a href="{{edit_url}}">edit</a>{{/editable}}
 						{{^editable}}&mdash;{{/editable}}
 					{{/active}}
-					{{^active}}&mdash{{/active}}
+					{{^active}}&mdash;{{/active}}
 				</td>
 			</tr>
 			{{/reservations}}

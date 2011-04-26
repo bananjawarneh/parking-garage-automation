@@ -13,6 +13,20 @@ class View_Reservation_List extends View_Base
 	public $title = 'View All Reservations';
 
 	public $day;
+
+	public $filter;
+
+	public function filters()
+	{
+		$current_uri = Request::current()->uri();
+		
+		return array(
+			'past'      => $current_uri.URL::query(array('f' => 'past')),
+			'current'   => $current_uri.URL::query(array('f' => 'current')),
+			'future'    => $current_uri.URL::query(array('f' => 'future')),
+			'cancelled' => $current_uri.URL::query(array('f' => 'cancelled')),
+		);
+	}
 	
 	/**
 	 * Returns an array of some of this users reservations.
@@ -30,6 +44,46 @@ class View_Reservation_List extends View_Base
 			$_reservations
 				->where('start_time', '>', $this->day)
 				->where('start_time', '<', $this->day + Date::DAY);
+		}
+
+		if ($this->filter !== NULL)
+		{
+			switch ($this->filter)
+			{
+				case 'past':
+					$_reservations
+						->where('end_time', '<', time())
+						->where('active', '=', TRUE);
+				break;
+
+				case 'current':
+					$_reservations
+						->where('start_time', '<', time())
+						->where('end_time', '>', time())
+						->where('active', '=', TRUE);
+				break;
+
+				case 'future':
+					$_reservations
+						->where('start_time', '>', time())
+						->where('active', '=', TRUE);
+				break;
+
+				case 'cancelled':
+					$_reservations
+						->where('active', '=', FALSE);
+				break;
+
+				default:
+					// Invalid filter
+					$this->filter = NULL;
+				break;
+			}
+		}
+
+		if ($this->filter !== NULL)
+		{
+			$this->filter = ucfirst($this->filter);
 		}
 
 		foreach ($_reservations->find_all() as $reservation)
