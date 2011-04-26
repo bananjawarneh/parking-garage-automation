@@ -26,7 +26,7 @@
 				<label for="update_all">Update Recurrence</label>
 				<span class="label">Yes <input type="radio" name="update_all" value="1" /></span>
 				<span class="label">No <input type="radio" name="update_all" value="0" checked="1" /></span>
-				<span class="suggestion">&ndash; extend the remaining reservations in this recurrence?</span>
+				<span class="suggestion">&ndash; only reservations occuring after this one will be affected</span>
 			</div>
 			{{/recurring}}
 			<div class="form-row center">
@@ -56,6 +56,7 @@
 					<label for="update_all">Cancel Recurrence</label>
 					<span class="label">Yes <input type="radio" name="cancel_all" value="1" /></span>
 					<span class="label">No <input type="radio" name="cancel_all" value="0" checked="1" /></span>
+					<div class="suggestion center">only reservations occuring after this one will be affected</div>
 				</div>
 				{{/recurring}}
 				<div class="form-row center">
