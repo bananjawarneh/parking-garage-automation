@@ -16,16 +16,26 @@ class View_Reservation_List extends View_Base
 
 	public $filter;
 
+	public $reservations = array();
+
+	private $_ran = FALSE;
+
 	public function filters()
 	{
-		$current_uri = Request::current()->uri();
-		
-		return array(
-			'past'      => $current_uri.URL::query(array('f' => 'past')),
-			'current'   => $current_uri.URL::query(array('f' => 'current')),
-			'future'    => $current_uri.URL::query(array('f' => 'future')),
-			'cancelled' => $current_uri.URL::query(array('f' => 'cancelled')),
-		);
+		// Only show filters if viewing all reservations, or viewing todays. Otherwise,
+		// all reservations are either in the past or the future.
+		if ($this->day === NULL OR ($this->day < strtotime('tomorrow')) AND ($this->day >= strtotime('today')))
+		{
+			$current_uri = Request::current()->uri();
+
+			return array(
+				'past'      => $current_uri.URL::query(array('f' => 'past')),
+				'current'   => $current_uri.URL::query(array('f' => 'current')),
+				'future'    => $current_uri.URL::query(array('f' => 'future')),
+				'cancelled' => $current_uri.URL::query(array('f' => 'cancelled')),
+				'all'       => $current_uri,
+			);
+		}
 	}
 	
 	/**
@@ -35,13 +45,16 @@ class View_Reservation_List extends View_Base
 	 */
 	public function reservations()
 	{
-		$reservations = array();
+		if ($this->_ran)
+		{
+			return $this->reservations;
+		}
 
-		$_reservations = $this->user->reservations;
+		$reservations = $this->user->reservations;
 
 		if ($this->day !== NULL)
 		{
-			$_reservations
+			$reservations
 				->where('start_time', '>', $this->day)
 				->where('start_time', '<', $this->day + Date::DAY);
 		}
@@ -51,26 +64,26 @@ class View_Reservation_List extends View_Base
 			switch ($this->filter)
 			{
 				case 'past':
-					$_reservations
+					$reservations
 						->where('end_time', '<', time())
 						->where('active', '=', TRUE);
 				break;
 
 				case 'current':
-					$_reservations
+					$reservations
 						->where('start_time', '<', time())
 						->where('end_time', '>', time())
 						->where('active', '=', TRUE);
 				break;
 
 				case 'future':
-					$_reservations
+					$reservations
 						->where('start_time', '>', time())
 						->where('active', '=', TRUE);
 				break;
 
 				case 'cancelled':
-					$_reservations
+					$reservations
 						->where('active', '=', FALSE);
 				break;
 
@@ -86,7 +99,7 @@ class View_Reservation_List extends View_Base
 			$this->filter = ucfirst($this->filter);
 		}
 
-		foreach ($_reservations->find_all() as $reservation)
+		foreach ($reservations->find_all() as $reservation)
 		{
 			$duration = Date::span($reservation->end_time, $reservation->start_time, 'hours,minutes');
 
@@ -107,7 +120,7 @@ class View_Reservation_List extends View_Base
 				$class = 'current';
 			}
 
-			$reservations[] = array(
+			$this->reservations[] = array(
 				'active'     => $reservation->active,
 				'start_time' => date('l M jS, g:i a', $reservation->start_time),
 				'end_time'   => date('l M jS, g:i a', $reservation->end_time),
@@ -120,12 +133,14 @@ class View_Reservation_List extends View_Base
 			);
 		}
 
-		return $reservations;
+		$this->_ran = TRUE;
+
+		return $this->reservations;
 	}
 
 	public function reservations_exist()
 	{
-		return (bool) $this->user->reservations->count_all();
+		return ! empty($this->reservations);
 	}
 
 	public function day()
@@ -134,5 +149,13 @@ class View_Reservation_List extends View_Base
 		{
 			return date('l F jS, Y', $this->day);
 		}
+	}
+
+	public function render()
+	{
+		// Perform the search for reservations
+		$this->reservations();
+
+		return parent::render();
 	}
 } // End View_Reservation_List
