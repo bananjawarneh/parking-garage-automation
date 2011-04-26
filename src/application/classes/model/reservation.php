@@ -89,6 +89,9 @@ class Model_Reservation extends ORM
 				array('not_empty'),
 				array(array(ORM::factory('user'), 'exists'), array(':value', 'id')),
 			),
+			'vehicle_id' => array(
+				array(array(ORM::factory('vehicle'), 'exists'), array(':value', 'id')),
+			),
 			'start_time' => array(
 				array('not_empty'),
 				array('Model_Reservation::on_half_hour', array(':validation', ':field')),
@@ -160,6 +163,11 @@ class Model_Reservation extends ORM
 			$values['end_time'] = $this->end_time + ($values['extension'] * self::EXTENSION_TIME_BLOCK);
 		}
 
+		if (isset($values['vehicle_id']) AND empty($values['vehicle_id']))
+		{
+			$values['vehicle_id'] = NULL;
+		}
+
 		return parent::values($values, $expected);
 	}
 
@@ -176,6 +184,7 @@ class Model_Reservation extends ORM
 	{
 		$this->values($values, array(
 			'user_id',
+			'vehicle_id',
 			'start_time',
 			'end_time',
 		));
@@ -450,11 +459,6 @@ class Model_Reservation extends ORM
 		}
 	}
 
-	private function cancel_recurring_reservations()
-	{
-		
-	}
-
 	/**
 	 * Sets this reservation as recurring and creates multiple duplicates.
 	 *
@@ -466,7 +470,8 @@ class Model_Reservation extends ORM
 		$recurrence = $values['recurrence'];
 		$max_date   = strtotime($values['end_recurrence']);
 		$values     = array(
-			'user_id' => $this->user_id,
+			'user_id'    => $this->user_id,
+			'vehicle_id' => $this->vehicle_id,
 		);
 		$previous_id = $this->id;
 
