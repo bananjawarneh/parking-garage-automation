@@ -24,4 +24,6 @@ abstract class Session extends Kohana_Session
 	const NEW_VEHICLE    = 'new_vehicle';
 	const NO_VEHICLE     = 'no_vehicle';
 	const REMOVE_VEHICLE = 'remove_vehicle';
+
+	const PRICE_PLAN_ACTIVATED = 'price_plan_activated';
 } // End Session

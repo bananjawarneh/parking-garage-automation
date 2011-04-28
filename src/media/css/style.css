@@ -268,9 +268,8 @@ fieldset{
 }
 
 legend{
-	color: #000000;
 	font-size: 1.2em;
-	font-weight: bold;
+	font-weight: normal;
 	padding-right: 5px;
 }
 
@@ -846,6 +845,20 @@ table.reservations .reservation{
 	display: inline-block;
 	padding: 2px 3px;
 	text-decoration: none;
+}
+
+/* ~ADMIN
+--------------------------------------*/
+
+.admin-options{
+	position: absolute;
+	top: 0px;
+	right: 0px;
+}
+
+.admin-options a{
+	display: inline-block;
+	padding: 2px 6px;
 }
 
 /* ~PAGINATION

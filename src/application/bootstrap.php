@@ -177,6 +177,13 @@ if ( ! Route::cache())
 			'action'     => 'login',
 		));
 
+	Route::set('admin', 'admin(/<controller>(/<action>(/<id>)))')
+		->defaults(array(
+			'directory'  => 'admin',
+			'controller' => 'garage',
+			'action'     => 'usage',
+		));
+
 	Route::set('default', '(<controller>(/<action>(/<id>)))')
 		->defaults(array(
 			'controller' => 'home',

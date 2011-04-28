@@ -132,6 +132,11 @@ abstract class View_Base extends Kostache_Layout
 		return $this->build_array($this->errors, 'error');
 	}
 
+	public function logged_in_admin()
+	{
+		return Auth::instance()->logged_in(Model_Role::ADMIN);
+	}
+
 	/**
 	 * Determines if the user is logged in.
 	 *

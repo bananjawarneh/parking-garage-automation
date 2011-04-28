@@ -157,6 +157,11 @@ class View_User_Profile extends View_Base
 			$this->notifications[] = 'Sorry, we could not confirm your account. Please be sure follow the directions we sent you.';
 		}
 
+		if (Session::instance()->get_once(Session::PRICE_PLAN_ACTIVATED))
+		{
+			$this->notifications[] = 'Price plan has been activated successfully.';
+		}
+
 		return parent::render();
 	}
 } // End View_User_Profile
