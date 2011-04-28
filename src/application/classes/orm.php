@@ -11,6 +11,23 @@
 class ORM extends Kohana_ORM
 {
 	/**
+	 * Build labels using field names.
+	 *
+	 * @return array
+	 */
+	public function labels()
+	{
+		$labels = array();
+
+		foreach ($this->_object as $field => $value)
+		{
+			$labels[$field] = str_replace('_', ' ', ucfirst($field));
+		}
+
+		return $labels;
+	}
+
+	/**
 	 * Checks if a record exists with a given unique value.
 	 *
 	 * @param  mixed  $value unique value

@@ -40,18 +40,6 @@ class Model_User extends ORM
 		);
 	}
 
-	public function labels()
-	{
-		$labels = array();
-
-		foreach ($this->_object as $field => $value)
-		{
-			$labels[$field] = str_replace('_', ' ', ucfirst($field));
-		}
-
-		return $labels;
-	}
-
 	/**
 	 * First name must not be empty, and between 2 and 30 characters long.
 	 * Last name must not be empty, and between 2 and 40 chararacters long.

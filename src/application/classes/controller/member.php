@@ -20,4 +20,4 @@ abstract class Controller_Member extends Controller_Base
 			$this->request->redirect('user/login?return_to='.$this->request->uri());
 		}
 	}
-} // End Controller_Template_Member
+} // End Controller_Member

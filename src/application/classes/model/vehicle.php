@@ -38,18 +38,6 @@ class Model_Vehicle extends ORM
 		);
 	}
 
-	public function labels()
-	{
-		$labels = array();
-
-		foreach ($this->_object as $field => $value)
-		{
-			$labels[$field] = str_replace('_', ' ', ucfirst($field));
-		}
-
-		return $labels;
-	}
-
 	/**
 	 * User must not be empty, and must exist.
 	 * License plate must not be empty, must be between 3 and 8 characters, can

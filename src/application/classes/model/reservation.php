@@ -57,18 +57,6 @@ class Model_Reservation extends ORM
 		);
 	}
 
-	public function labels()
-	{
-		$labels = array();
-
-		foreach ($this->_object as $field => $value)
-		{
-			$labels[$field] = str_replace('_', ' ', ucfirst($field));
-		}
-
-		return $labels;
-	}
-
 	/**
 	 * User must not be empty and must exist.
 	 * Start time must not be empty, and must fall on a half hour.
