@@ -17,6 +17,11 @@ class View_Vehicle_Add extends View_Base
 		'state'         => NULL,
 	);
 
+	/**
+	 * Returns an array of US states, for vehicle license plates.
+	 *
+	 * @return array
+	 */
 	public function states()
 	{
 		$states = array();

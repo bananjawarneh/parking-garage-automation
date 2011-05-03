@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 /**
- * Garage admin controller, allows admin to view garage usage history and set
- * prices for the customers.
+ * Manage garage controller, serves the administrator interface to set prices,
+ * view garage usage, etc.
  * 
  * @package   Park-a-Lot
  * @category  
@@ -11,14 +11,18 @@
  */
 class Controller_Admin_Garage extends Controller_Admin
 {
+	/**
+	 * Displays garage usage statistics. Percentage of overstays, understays,
+	 * and no shows. Also allows the admin to see when peak hours are.
+	 */
 	public function action_usage()
 	{
 		$this->view = Kostache_Layout::factory('admin/garage/usage');
 	}
 
 	/**
-	 * Displays a form to either create a new price plan, or activate an
-	 * existing price plan.
+	 * Allows garage managers set price plans. Price plans can either be newly
+	 * created, or recycled (reused).
 	 */
 	public function action_price()
 	{
@@ -36,12 +40,12 @@ class Controller_Admin_Garage extends Controller_Admin
 
 					if ($price_plan->loaded())
 					{
-						// Activate the existing plan
+						// Activate the price plan
 						$price_plan->activate();
 
 						// Show a success message
 						Session::instance()->set(Session::PRICE_PLAN_ACTIVATED, TRUE);
-
+						
 						$this->request->redirect(Route::url('user_profile'));
 					}
 				}

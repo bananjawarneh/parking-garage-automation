@@ -19,6 +19,11 @@ class View_Admin_Garage_Price extends View_Admin_Base
 		'minimim_price' => NULL,
 	);
 
+	/**
+	 * Returns the existing price plans.
+	 *
+	 * @return array
+	 */
 	public function price_plans()
 	{
 		$price_plans = array();
@@ -37,6 +42,12 @@ class View_Admin_Garage_Price extends View_Admin_Base
 		return $price_plans;
 	}
 
+	/**
+	 * Flag to check whether or not price plans exist, before trying to
+	 * display them.
+	 *
+	 * @return array
+	 */
 	public function price_plans_exist()
 	{
 		return (bool) ORM::factory('priceplan')->count_all();

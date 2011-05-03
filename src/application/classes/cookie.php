@@ -8,5 +8,6 @@
  */
 class Cookie extends Kohana_Cookie
 {
+	// A salt is required to set cookies
 	public static $salt = 'Parka L0t Garage Syst3m 2013';
 } // End Cookie

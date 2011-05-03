@@ -1,9 +1,9 @@
 <div id="content">
-	{{>errors}}
 	{{#form}}
 	<form action="" method="post" class="tabular">
 		<fieldset>
 			<legend>Create a new price plan</legend>
+			{{>errors}}
 			<div class="form-row">
 				<label for="member_price">Member Price</label>
 				<input type="text" name="member_price" id="member_price" maxlength="5" value="{{member_price}}" />
@@ -15,10 +15,12 @@
 			<div class="form-row">
 				<label for="discount_rate">Discount Rate</label>
 				<input type="text" name="discount_rate" id="discount_rate" maxlength="4" value="{{discount_rate}}" />
+				<span class="suggestion">optional</span>
 			</div>
 			<div class="form-row">
 				<label for="min_price">Minimum Price</label>
 				<input type="text" name="min_price" id="min_price" maxlength="5" value="{{min_price}}" />
+				<span class="suggestion">optional</span>
 			</div>
 			<div class="form-row center">
 				<input type="submit" name="set_price_plan" value="Save Price Plan" />
@@ -62,7 +64,7 @@
 			<li>Set the hourly rate for a reservation.</li>
 			<li>Set the hourly rate for a walk-in.</li>
 			<li>Set the discount rate, the rate in which registered members gain
-				discounts. (optional)</li>
+				discounts.</li>
 			<li>As a safety measure, set the minumum allowable price to charge.</li>
 		</ol>
 	</div>

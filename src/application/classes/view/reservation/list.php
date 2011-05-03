@@ -20,6 +20,12 @@ class View_Reservation_List extends View_Base
 
 	private $_ran = FALSE;
 
+	/**
+	 * Returns an array of reservation filters, so the user can view different
+	 * types of reservations (future, past, etc.).
+	 *
+	 * @return array
+	 */
 	public function filters()
 	{
 		// Only show filters if viewing all reservations, or viewing todays. Otherwise,
@@ -138,11 +144,21 @@ class View_Reservation_List extends View_Base
 		return $this->reservations;
 	}
 
+	/**
+	 * Flag to check if reservations exist before trying to display them.
+	 *
+	 * @return bool
+	 */
 	public function reservations_exist()
 	{
 		return ! empty($this->reservations);
 	}
 
+	/**
+	 * Formats the day filter into a human readable date format.
+	 *
+	 * @return string
+	 */
 	public function day()
 	{
 		if ($this->day !== NULL)

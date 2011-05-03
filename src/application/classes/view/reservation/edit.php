@@ -22,11 +22,21 @@ class View_Reservation_Edit extends View_Base
 		'extension' => 2,
 	);
 
+	/**
+	 * Returns the value to be used as the forms action attribute.
+	 *
+	 * @return string
+	 */
 	public function action()
 	{
 		return 'reservation/edit/'.$this->reservation_id;
 	}
 
+	/**
+	 * Returns the reservation being edited.
+	 *
+	 * @return array
+	 */
 	public function reservation()
 	{
 		$duration = Date::span($this->reservation->end_time, $this->reservation->start_time, 'hours,minutes');
@@ -39,11 +49,22 @@ class View_Reservation_Edit extends View_Base
 		);
 	}
 
+	/**
+	 * Flag to tell whether this is a recurring reservation or not.
+	 *
+	 * @return bool
+	 */
 	public function recurring()
 	{
 		return (bool) $this->reservation->recurring;
 	}
 
+	/**
+	 * Returns an array of acceptable extensions (and reductions) to the reservation
+	 * duration.
+	 *
+	 * @return array
+	 */
 	public function extensions()
 	{
 		$extensions = array();
@@ -69,6 +90,12 @@ class View_Reservation_Edit extends View_Base
 		return $extensions;
 	}
 
+	/**
+	 * Flag to tell whether or not the user can still cancel this reservation.
+	 * No need to show a cancel button if its not possible to cancel.
+	 *
+	 * @return bool
+	 */
 	public function can_cancel()
 	{
 		return Date::min_span(time(), $this->reservation->start_time,

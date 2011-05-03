@@ -18,6 +18,7 @@ class Controller_User extends Controller_Base
 	{
 		if (Auth::instance()->logged_in())
 		{
+			// Lets not waste time
 			$this->request->redirect(Route::url('user_profile'));
 		}
 		
@@ -37,10 +38,6 @@ class Controller_User extends Controller_Base
 
 					$this->request->redirect(Route::url('user_profile'));
 				}
-				else
-				{
-					// TODO internal error, email did not send
-				}
 			}
 			catch (ORM_Validation_Exception $e)
 			{
@@ -59,17 +56,17 @@ class Controller_User extends Controller_Base
 	{
 		if (Auth::instance()->logged_in())
 		{
+			// Lets not waste time
 			$this->request->redirect(Route::url('user_profile'));
 		}
 
 		$this->view = Kostache_Layout::factory('user/login');
 
-		// Login method takes a reference, dont transform the POST array
 		if (isset($_POST['login']) AND $post = $_POST)
 		{
 			if ($this->_user->login($post))
 			{
-				// Redirect to the return_to address if set, otherwise the user profile
+				// If set, redirect to the page that redirected here
 				$this->request->redirect(Arr::get($_POST, 'return_to', Route::url('user_profile')));
 			}
 			else
@@ -124,10 +121,12 @@ class Controller_User extends Controller_Base
 	{
 		if ( ! Auth::instance()->logged_in())
 		{
+			// Must be logged in so we know who to send email to
 			$this->request->redirect('user/login?return_to='.$this->request->uri());
 		}
 		else if (Auth::instance()->logged_in(Model_Role::CONFIRMED))
 		{
+			// Already confirmed, lets not waste time
 			$this->request->redirect(Route::url('user_profile'));
 		}
 
@@ -150,10 +149,12 @@ class Controller_User extends Controller_Base
 	{
 		if ( ! Auth::instance()->logged_in())
 		{
+			// Must be logged in first
 			$this->request->redirect('user/login?return_to='.$this->request->uri().URL::query($_GET));
 		}
 		else if (Auth::instance()->logged_in(Model_Role::CONFIRMED))
 		{
+			// Already confirmed. Lets not waste our time
 			$this->request->redirect(Route::url('user_profile'));
 		}
 

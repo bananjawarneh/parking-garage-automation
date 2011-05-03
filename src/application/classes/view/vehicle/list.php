@@ -12,6 +12,11 @@ class View_Vehicle_List extends View_Base
 {
 	public $title = 'List Registered Vehicles';
 
+	/**
+	 * Returns an array of all this users vehicles.
+	 *
+	 * @return array
+	 */
 	public function vehicles()
 	{
 		$vehicles = array();
@@ -29,6 +34,11 @@ class View_Vehicle_List extends View_Base
 		return $vehicles;
 	}
 
+	/**
+	 * Flag to check whether vehicles exist before trying to display them.
+	 *
+	 * @return bool
+	 */
 	public function vehicles_exist()
 	{
 		return (bool) $this->user->vehicles->count_all();

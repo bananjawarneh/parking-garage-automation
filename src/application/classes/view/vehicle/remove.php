@@ -16,6 +16,11 @@ class View_Vehicle_Remove extends View_Base
 
 	public $vehicle;
 
+	/**
+	 * Returns teh vehicle being removed.
+	 *
+	 * @return array
+	 */
 	public function vehicle()
 	{
 		return array(

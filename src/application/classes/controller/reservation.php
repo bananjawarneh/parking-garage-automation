@@ -12,7 +12,7 @@ class Controller_Reservation extends Controller_Confirmed
 {
 	/**
 	 * Displays all reservations belonging to the logged in user, or filters
-	 * by a given day.
+	 * by a given day or reservation status.
 	 *
 	 * @param int $day timestamp of the day to show reservations for
 	 */
@@ -49,7 +49,7 @@ class Controller_Reservation extends Controller_Confirmed
 			{
 				if ($this->_user->add_reservation($_POST))
 				{
-					// Show success message on user profile
+					// Show success message
 					Session::instance()->set(Session::NEW_RESERVATION, TRUE);
 
 					$this->request->redirect(Route::url('user_profile'));
@@ -90,7 +90,7 @@ class Controller_Reservation extends Controller_Confirmed
 				{
 					if ($reservation->update_reservation($_POST))
 					{
-						// Show success message on user profile
+						// Show success message
 						Session::instance()->set(Session::EDIT_RESERVATION, TRUE);
 
 						$this->request->redirect(Route::url('user_profile'));
@@ -101,7 +101,7 @@ class Controller_Reservation extends Controller_Confirmed
 					// Cancel reservation
 					if ($reservation->cancel_reservation($_POST))
 					{
-						// Show success message on user profile
+						// Show success message
 						Session::instance()->set(Session::CANCEL_RESERVATION, TRUE);
 
 						$this->request->redirect(Route::url('user_profile'));
@@ -116,6 +116,7 @@ class Controller_Reservation extends Controller_Confirmed
 		}
 		else if (isset($_GET['cancel']))
 		{
+			// Ask for a confirmation before cancelling anything
 			$this->view->ask_confirmation = TRUE;
 		}
 	}

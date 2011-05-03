@@ -23,6 +23,7 @@ class View_Reservation_Create extends View_Base
 		'media/js/popup_calendar.js',
 	);
 
+	// Prepares the popup calendars
 	public $inline_js = "
 		$(document).ready(function(){
 			start_time = new Epoch('epoch_popup', 'popup', document.getElementById('start_time'), false);
@@ -60,6 +61,11 @@ class View_Reservation_Create extends View_Base
 		return $this->form;
 	}
 
+	/**
+	 * Returns all vehicles registered by the user.
+	 *
+	 * @return array
+	 */
 	public function vehicles()
 	{
 		$vehicles = array();
