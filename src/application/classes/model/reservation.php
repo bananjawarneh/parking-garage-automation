@@ -25,6 +25,12 @@ class Model_Reservation extends ORM
 	/** Can only extend/descrese reservations in discrete time increments */
 	const EXTENSION_TIME_BLOCK = 1800;
 
+	/** Time after reservation ends to consider this an overstay */
+	const OVERSTAY_PERIOD = 900;
+
+	/** Time before reservation ends to consider this an understay */
+	const UNDERSTAY_PERIOD = 900;
+
 	protected $_belongs_to = array(
 		'user' => array('model' => 'user'),
 	);

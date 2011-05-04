@@ -1,2 +1,27 @@
-There is no usage, so this page is blank. Should fill database with mock data
-in order to demonstrate this.
+<div id="content">
+	{{#statistics_exist}}
+		<p><em>Garage Statistics</em></p>
+		{{#statistics}}
+		<div>Total number of <strong>completed reservations</strong> to date: {{total_reservations}}</div>
+		<div>Total number of <strong>walk ins</strong> to date: {{total_walkins}}</div>
+		<div>Average parking <strong>length</strong>: {{average_duration}}</div>
+		{{#total_reservations}}
+		<div>Percentage of reservations that end up as <strong>overstays</strong>: {{overstay_percentage}}%</div>
+		<div>Percentage of reservations that end up as <strong>understays</strong>: {{understay_percentage}}%</div>
+		<div>Percentage of reservations that end <strong>on time</strong>: {{ontime_percentage}}%</div>
+		{{/total_reservations}}
+		{{/statistics}}
+	{{/statistics_exist}}
+	{{^statistics_exist}}
+		<em>There is not enough data to show statistics for.</em>
+	{{/statistics_exist}}
+</div>
+<div id="sidebar">
+	<div class="how-to module">
+		<h4>What is this?</h4>
+		<p>As an administrator, you can view some helpful statistics about
+			your garage. View such things as the average time spent parking, or
+			the percentage of overstays/understays (for reservations), along
+			with other garage statistics.</p>
+	</div>
+</div>
