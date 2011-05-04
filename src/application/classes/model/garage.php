@@ -62,7 +62,22 @@ class Model_Garage extends ORM
 			'open'          => TRUE,
 		))
 		->update();
-		
-		return $this->parking->close_parking();
+
+		if ($this->parking->loaded())
+		{
+			$this->parking->close_parking();
+		}
+
+		return TRUE;
+	}
+
+	public function clear_garage()
+	{
+		foreach (ORM::factory('garage')->where('open', '=', FALSE)->find_all() as $spot)
+		{
+			$spot->clear_spot();
+		}
+
+		return TRUE;
 	}
 } // End Model_Garage

@@ -25,6 +25,32 @@ class Controller_Simulation extends Controller_Base
 	}
 
 	/**
+	 * Allows an administrator to clear out the garage. Whether or not this
+	 * is likely to happen in an actual garage is still unknown, but for
+	 * simulation, this may come in handy. Must be logged in as an admin first.
+	 */
+	public function action_cleargarage()
+	{
+		if ( ! Auth::instance()->logged_in(Model_Role::ADMIN))
+		{
+			// Dont have the proper credentials
+			$this->request->redirect('simulation');
+		}
+
+		$this->view = Kostache_Layout::factory('simulation/cleargarage');
+
+		if (isset($_POST['confirm']))
+		{
+			ORM::factory('garage')->clear_garage();
+
+			// Show a success message
+			Session::instance()->set(Session::CLEAR_GARAGE, TRUE);
+
+			$this->request->redirect('simulation/display');
+		}
+	}
+
+	/**
 	 * Displays the contents of the garage. I.e, how many people are in the
 	 * garage, what spots are taken, and what spots are open.
 	 */

@@ -33,4 +33,5 @@ abstract class Session extends Kohana_Session
 	// Simulation related
 	const SIMULATION = 'simulation';
 	const NEW_PARKING = 'new_parking';
+	const CLEAR_GARAGE = 'clear_garage';
 } // End Session

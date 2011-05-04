@@ -89,6 +89,11 @@ class View_Simulation_Display extends View_Simulation_Base
 								   . 'way you did when you entered the garage.';
 		}
 
+		if (Session::instance()->get_once(Session::CLEAR_GARAGE))
+		{
+			$this->notifications[] = 'The garage has been succesfully cleared out.';
+		}
+
 		return parent::render();
 	}
 } // End View_Simulation_Display
