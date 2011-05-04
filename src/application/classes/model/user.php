@@ -11,6 +11,7 @@
 class Model_User extends ORM
 {
 	protected $_has_many = array(
+		'parking'      => array('model' => 'parking'),
 		'roles'        => array('model' => 'role', 'through' => 'roles_users'),
 		'reservations' => array('model' => 'reservation'),
 		'user_tokens'  => array('model' => 'user_token'),
@@ -261,6 +262,58 @@ class Model_User extends ORM
 		}
 
 		return TRUE;
+	}
+
+	/**
+	 * Tallies up the amount the user owes as of right now.
+	 *
+	 * @return int
+	 */
+	public function current_bill()
+	{
+		$total_price = $no_shows = 0;
+
+		// This months (past) reservations
+		$past_reservations = $this->reservations
+			->where('start_time', '>=', mktime(24, 0, 0, date('n'), 0))
+			->where('end_time', '<=', time())
+			->find_all();
+
+		foreach ($past_reservations as $reservation)
+		{
+			if ( ! $reservation->parking->loaded())
+			{
+				// A parking record was never created => user never showed
+				$no_shows++;
+			}
+		}
+
+		$active_price_plan = Model_PricePlan::active_price_plan();
+
+		if ($active_price_plan->loaded())
+		{
+			// 30 minutes for each no show
+			$hours = $no_shows * 1800 / 3600;
+
+			// Charge no shows the current price
+			$total_price += $hours * $active_price_plan->member_price;
+		}
+
+		// This months parking
+		$parking = $this->parking
+			->where('arrival_time', '>=', mktime(24, 0, 0, date('n'), 0))
+			->where('departure_time', '!=', NULL)
+			->find_all();
+
+		foreach ($parking as $session)
+		{
+			$price_plan = ORM::factory('priceplan', $session->price_plan_id);
+			$duration = ($session->departure_time - $session->arrival_time);
+			$hours    = $duration / 3600;
+			$total_price += $hours * $price_plan->member_price;
+		}
+
+		return (float) $total_price;
 	}
 
 	/**

@@ -41,6 +41,7 @@ class View_User_Profile extends View_Base
 				'last_name'  => $this->user->last_name,
 				'registration_date'  => date('M g, Y', $this->user->registration_date),
 				'total_reservations' => $this->user->reservations->count_all(),
+				'current_bill' => number_format($this->user->current_bill(), 2),
 			);
 		}
 	}
