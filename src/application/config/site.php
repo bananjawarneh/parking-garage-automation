@@ -9,7 +9,7 @@ return array(
 		 *   error    - where error messages are sent
 		 */
 		'incoming' => 'incoming@park-a-lot.com',
-		'outgoing' => 'outgoing@park-a-lot.com',
+		'outgoing' => 'no-reply@park-a-lot.com',
 		'error'    => 'errors@park-a-lot.com',
 	),
 );
