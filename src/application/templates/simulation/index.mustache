@@ -1,0 +1,30 @@
+<div id="content">
+	<h4>Enter your license plate information</h4>
+	{{^open_spots}}
+		<div class="notice">Sorry, but our garage is full at the moment.</div>
+	{{/open_spots}}
+	<form action="" method="post" class="tabular">
+		{{>errors}}
+		<div class="form-row">
+			<label for="license_plate">Plate Number</label>
+			<input type="text" name="license_plate" id="license_plate" />
+		</div>
+		<div class="form-row">
+			<label for="state">State</label>
+			<select name="state">
+				{{#states}}
+				<option value="{{value}}">{{name}}</option>
+				{{/states}}
+			</select>
+		</div>
+		<div class="form-row center">
+			<input type="submit" name="check" value="Continue" />
+		</div>
+	</form>
+</div>
+<div id="sidebar">
+	<div class="module how-to">
+		<p><strong>Note:</strong> In a real parking garage, the camera sensors would attempt to read
+			your license plate information automatically.</p>
+	</div>
+</div>

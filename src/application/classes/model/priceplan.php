@@ -53,6 +53,18 @@ class Model_PricePlan extends ORM
 	}
 
 	/**
+	 * Returns the active price plan.
+	 *
+	 * @return ORM
+	 */
+	public static function active_price_plan()
+	{
+		return ORM::factory('priceplan')
+			->where('active', '=', TRUE)
+			->find();
+	}
+
+	/**
 	 * Validates and creates a new price plan.
 	 *
 	 * @param  array $values

@@ -1,0 +1,30 @@
+<div id="content">
+	<h4>Recognized Vehicle</h4>
+	{{#reservations_exist}}
+	<em>Please check which reservation you are here to fulfill.</em>
+	<form action="simulation/park" method="post" class="tabular">
+		{{#reservations}}
+		<div class="clearfix" style="border-bottom: 1px dotted #CCCCCC; padding: 5px 0;">
+			<span>{{start_time}} to {{end_time}}</span>
+			<input type="radio" name="reservation_id" value="{{id}}" checked="1" class="r-float" />
+		</div>
+		{{/reservations}}
+		<div class="form-row center">
+			<input type="submit" name="reservation" value="Continue" />
+		</div>
+	</form>
+	{{/reservations_exist}}
+	{{^reservations_exist}}
+		<em>We could not find any reservations ready to be fulfilled. Please park 
+			as a walk-in.</em>
+		<a href="simulation/walkin" class="more">Walk In</a>
+	{{/reservations_exist}}
+</div>
+<div id="sidebar">
+	<div class="how-to module">
+		When a users vehicle is recognized by our system, we search our database
+		to see if there are any recent/upcoming reservations. If we find any, we
+		ask the user which reservation they want to fulfill, otherwise we ask the
+		user to park as a walk in.
+	</div>
+</div>

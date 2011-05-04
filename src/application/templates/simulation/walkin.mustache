@@ -1,0 +1,18 @@
+<div id="content">
+	<h4>Walk In Parking</h4>
+	{{#registered_user}}
+		<em>You will be charged for this on your monthly bill.</em>
+	{{/registered_user}}
+	{{^registered_user}}
+		<p>You will be charged for this when you exit the garage.</p>
+	{{/registered_user}}
+	<a href="simulation/park" class="more">Park</a>
+</div>
+<div id="sidebar">
+	<div class="how-to module">
+		Any parking that is not reserved ahead of time is considered walk in parking.
+		Registered customers can park as walk ins and they will be charged accordingly
+		on their monthly bill. Unregistered customers will be charged as they
+		exit the garage.
+	</div>
+</div>

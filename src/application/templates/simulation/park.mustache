@@ -1,0 +1,21 @@
+<div id="content">
+	{{#vehicle_exists}}
+		<em>Your vehicle is already in our garage.</em>
+		<p>Be sure to exit before you attempt to park again.</p>
+	{{/vehicle_exists}}
+	{{#no_spots}}
+		<em>Our garage is full, and we cannot offer parking right now.</em>
+		{{#reservation}}
+		<em>Your account has been credited for this reservation.</em>
+		{{/reservation}}
+		<p>Sorry for the inconvenience</p>
+	{{/no_spots}}
+</div>
+<div id="sidebar">
+	<div class="module how-to">
+		There are two possible reasons a user may end up here. Either their vehicle
+		is already in our garage, or there are no open spots in our garage. Obviously,
+		in an actual garage, a user cannot enter the garage with a vehicle that
+		is already in our garage.
+	</div>
+</div>

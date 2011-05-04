@@ -861,6 +861,44 @@ table.reservations .reservation{
 	padding: 2px 6px;
 }
 
+/* ~GARAGE MAP
+--------------------------------------*/
+
+.garage-map{
+	margin: 0 auto;
+	width: 80%;
+}
+
+.garage-map,
+.garage-map th,
+.garage-map td{
+	border-color: #CCCCCC;
+}
+
+.garage-map{
+	font-size: 1.2em;
+	font-weight: bold;
+	text-align: center;
+}
+
+.garage-map th,
+.garage-map td{
+	color: #FFFFFF;
+	padding: 3px;
+}
+
+.garage-map th{
+	background: #2277BB;
+}
+
+.garage-map .open{
+	background: #70E01B;
+}
+
+.garage-map .taken{
+	background: #E01B4C;
+}
+
 /* ~PAGINATION
 --------------------------------------*/
 
