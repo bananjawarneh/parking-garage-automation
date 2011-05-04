@@ -22,6 +22,9 @@ class View_Simulation_Exit extends View_Simulation_Base
 		{
 			$end_time = $this->parking->departure_time;
 			$this->exited = TRUE;
+
+			// Set departure time
+			$info['departure_time'] = date('M jS, g:i a', $this->parking->departure_time);
 		}
 		else
 		{
@@ -30,13 +33,24 @@ class View_Simulation_Exit extends View_Simulation_Base
 
 		$seconds  = $end_time - $this->parking->arrival_time;
 		$duration = Date::span(0, $seconds, 'hours,minutes');
+
+		if ($this->parking->user_id === NULL)
+		{
+			$price_plan = ORM::factory('priceplan', $this->parking->price_plan_id);
+
+			if ($price_plan->loaded())
+			{
+				// Show cost for unregistered users
+				$info['cost'] = ($seconds / 3600) * $price_plan->guest_price;
+				$info['cost'] = number_format($info['cost'], 2);
+			}
+		}
 		
-		$info = array(
-			'license_plate'  => $this->garage->license_plate,
-			'state'          => $this->garage->state,
-			'arrival_time'   => date('M jS, g:i a',  $this->parking->arrival_time),
-			'departure_time' => date('M jS, g:i a',  $this->parking->departure_time),
-			'duration'       => $duration['hours'].'h '.$duration['minutes'].'m',
+		$info += array(
+			'license_plate' => $this->garage->license_plate,
+			'state'         => $this->garage->state,
+			'arrival_time'  => date('M jS, g:i a', $this->parking->arrival_time),
+			'duration'      => $duration['hours'].'h '.$duration['minutes'].'m',
 		);
 
 		return $info;

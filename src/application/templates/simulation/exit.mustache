@@ -11,6 +11,9 @@
 		<li>Time of departure: {{departure_time}}</li>
 		{{/departure_time}}
 		<li>Duration: {{duration}}</li>
+		{{#cost}}
+		<li>Amount Due: ${{cost}}</li>
+		{{/cost}}
 	</ul>
 	{{/info}}
 	{{^exited}}
@@ -27,7 +30,7 @@
 <div id="sidebar">
 	<div class="how-to module">
 		In an actual garage, at this point, unregistered customers will be charged
-		for their time spent parking. Registered customers are welcome to leave
+		for their time spent parking and would . Registered customers are welcome to leave
 		as their time spent parking will be tacked on to their monthly bill.
 	</div>
 </div>
