@@ -36,6 +36,7 @@ class Model_Reservation extends ORM
 	);
 
 	protected $_has_one = array(
+		'parking' => array('model' => 'parking'),
 		'vehicle' => array('model' => 'vehicle'),
 	);
 

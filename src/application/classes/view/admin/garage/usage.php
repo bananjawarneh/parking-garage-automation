@@ -17,7 +17,8 @@ class View_Admin_Garage_Usage extends View_Admin_Base
 		$parking = ORM::factory('parking')->find_all();
 
 		// Track overstays, understays, etc.
-		$total = $total_res = $overstays = $understays = $ontime = $average_duration = 0;
+		$total = $total_res = $overstays = $understays = 
+		$on_time = $no_shows = $average_duration = 0;
 
 		// Track durations
 		$durations = range(0, 25);
@@ -46,7 +47,7 @@ class View_Admin_Garage_Usage extends View_Admin_Base
 				}
 				else
 				{
-					$ontime++;
+					$on_time++;
 				}
 
 				$total_res++;
@@ -57,12 +58,27 @@ class View_Admin_Garage_Usage extends View_Admin_Base
 			$total++;
 		}
 
+		// Look for past reservations
+		$reservations = ORM::factory('reservation')
+			->where('end_time', '<=', time())
+			->find_all();
+
+		foreach ($reservations as $res)
+		{
+			if ( ! $res->parking->loaded())
+			{
+				// A parking record does not exist
+				$no_shows++;
+			}
+		}
+
 		$average_duration = Date::span(0, ($average_duration / $total), 'hours,minutes,seconds');
 
 		$stats = array(
 			'total'              => $total,
 			'total_reservations' => $total_res,
 			'total_walkins'      => ($total - $total_res),
+			'total_no_shows'     => $no_shows,
 			'average_duration'   => $average_duration['hours'].'h '.$average_duration['minutes'].'m '.$average_duration['seconds'].'s',
 		);
 
@@ -71,7 +87,7 @@ class View_Admin_Garage_Usage extends View_Admin_Base
 			$stats += array(
 				'overstay_percentage'  => 100 * $overstays / $total_res,
 				'understay_percentage' => 100 * $understays / $total_res,
-				'ontime_percentage'    => 100 * $ontime / $total_res,
+				'ontime_percentage'    => 100 * $on_time / $total_res,
 			);
 		}
 
