@@ -32,7 +32,7 @@ class View_Simulation_Exit extends View_Simulation_Base
 		}
 
 		$seconds  = $end_time - $this->parking->arrival_time;
-		$duration = Date::span(0, $seconds, 'hours,minutes');
+		$duration = Date::span(0, $seconds, 'hours,minutes,seconds');
 
 		if ($this->parking->user_id === NULL)
 		{
@@ -50,7 +50,7 @@ class View_Simulation_Exit extends View_Simulation_Base
 			'license_plate' => $this->garage->license_plate,
 			'state'         => $this->garage->state,
 			'arrival_time'  => date('M jS, g:i a', $this->parking->arrival_time),
-			'duration'      => $duration['hours'].'h '.$duration['minutes'].'m',
+			'duration'      => $duration['hours'].'h '.$duration['minutes'].'m '.$duration['seconds'].'s',
 		);
 
 		return $info;

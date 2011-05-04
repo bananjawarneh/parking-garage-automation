@@ -57,6 +57,7 @@ class Model_Garage extends ORM
 	public function clear_spot()
 	{
 		$this->values(array(
+			'parking_id'    => NULL,
 			'license_plate' => NULL,
 			'state'         => NULL,
 			'open'          => TRUE,

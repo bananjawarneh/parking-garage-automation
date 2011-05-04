@@ -154,8 +154,12 @@ class Model_PricePlan extends ORM
 	{
 		return $this->available(DB::expr($array['member_price']), 'member_price', array(
 			'guest_price'   => DB::expr($array['guest_price']),
-			'discount_rate' => DB::expr($array['discount_rate']),
-			'min_price'     => DB::expr($array['min_price']),
+			'discount_rate' => Valid::not_empty($array['discount_rate'])
+							?  DB::expr($array['discount_rate'])
+							:  NULL,
+			'min_price'     => Valid::not_empty($array['min_price'])
+							?  DB::expr($array['min_price'])
+							: NULL,
 		));
 	}
 } // End Model_PricePlan
