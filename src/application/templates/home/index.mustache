@@ -1,5 +1,29 @@
 <div id="content">
+	<div class="module">
+		<h4>Welcome to Park a Lot. Park with Confidence!</h4>
+		<p>Park a lot is an efficient, effective solution for parking, in the busy
+			area of downtown New Brunswick NJ. Whether you need a place to park
+			on your daily commute to work, or you just need parking for a night out
+			on the town, Park a Lot is here to help you.
+			<strong>Walk Ins Welcome</strong>.</p>
+		<div>There are currently <strong>{{open_spots}}</strong> available spots in our garage.</div>
 	
+	</div>
+	<div class="module">
+		<h4>Garage Pricing</h4>
+		{{#price_plan}}
+		<ul id="price-plans">
+			<li class="guest-price">
+				<strong>{{guest_price}}/hr</strong>
+				<div>Guest Price</div>
+			</li>
+			<li class="member-price">
+				<strong>{{member_price}}/hr</strong>
+				<div>Member Price</div>
+			</li>
+		</ul>
+		{{/price_plan}}
+	</div>
 </div>
 <div id="sidebar">
 	<div class="module">

@@ -961,6 +961,46 @@ a.more:hover{
 	padding-top: 30px;
 }
 
+/* ~PRICE PLANS (home page)
+--------------------------------------*/
+
+#price-plans{
+	color: #000000;
+	list-style: none;
+	margin: 0;
+	padding:0;
+	text-align: center;
+}
+
+#price-plans li{
+	border: 2px ridge #333333;
+	float: left;
+	list-style: none;
+	margin: 0 11px;
+	padding: 15px 0px;
+	width: 45%;
+}
+
+#price-plans li strong{
+	color: #FFFFFF;
+	font-size: 2em;
+	font-weight: bold;
+}
+
+#price-plans div{
+	font-size: 1.3em;
+	font-weight: bold;
+	margin-top: 40px;
+}
+
+#price-plans .guest-price{
+	background: #F25050;
+}
+
+#price-plans .member-price{
+	background: #70E01B;
+}
+
 /* ~FOOTER
 ------------------------------------------------------------------------------*/
 
