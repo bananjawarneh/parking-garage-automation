@@ -37,6 +37,7 @@
 				</select>
 				<span class="suggestion">30 minute blocks (hours:minutes)</span>
 			</div>
+			{{!No need for vehicle id at this time.
 			<div class="form-row">
 				<label for="vehicle_id">Vehicle</label>
 				<select name="vehicle_id">
@@ -46,6 +47,7 @@
 				</select>
 				<span class="suggestion">most likely to arrive in</span>
 			</div>
+			}}
 			<div class="form-row">
 				<label for="recurrence">Recurrence</label>
 				<select name="recurrence" id="recurrence">
@@ -81,7 +83,7 @@
 				just type "tomorrow".
 			</li>
 			<li>Choose your duration. Reservations are set in 30 minute blocks.</li>
-			<li>Select the vehicle your most likely to arrive in.</li>
+			{{!<li>Select the vehicle your most likely to arrive in.</li>}}
 			<li>If you'd like for your reservation to occur on multiple occasions,
 				set your level of recurrence.
 			</li>

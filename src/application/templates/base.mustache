@@ -30,8 +30,10 @@
 				<ul id="topnav" class="navbar clearfix">
 					<li><a href="/">Home</a></li>
 					<li><a href="reservation/create">Reserve</a></li>
-					{{#logged_in}}
+					{{#logged_in_admin}}
 					<li><a href="admin/garage/usage">Admin</a></li>
+					{{/logged_in_admin}}
+					{{#logged_in}}
 					<li><a href="user/logout">Logout</a></li>
 					{{/logged_in}}
 					{{^logged_in}}

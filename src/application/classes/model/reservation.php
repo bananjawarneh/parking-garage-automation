@@ -84,9 +84,9 @@ class Model_Reservation extends ORM
 				array('not_empty'),
 				array(array(ORM::factory('user'), 'exists'), array(':value', 'id')),
 			),
-			'vehicle_id' => array(
-				array(array(ORM::factory('vehicle'), 'exists'), array(':value', 'id')),
-			),
+			//'vehicle_id' => array(
+				//array(array(ORM::factory('vehicle'), 'exists'), array(':value', 'id')),
+			//),
 			'start_time' => array(
 				array('not_empty'),
 				array('Model_Reservation::on_half_hour', array(':validation', ':field')),
@@ -179,7 +179,7 @@ class Model_Reservation extends ORM
 	{
 		$this->values($values, array(
 			'user_id',
-			'vehicle_id',
+			//'vehicle_id',
 			'start_time',
 			'end_time',
 		));
@@ -466,7 +466,7 @@ class Model_Reservation extends ORM
 		$max_date   = strtotime($values['end_recurrence']);
 		$values     = array(
 			'user_id'    => $this->user_id,
-			'vehicle_id' => $this->vehicle_id,
+			//'vehicle_id' => $this->vehicle_id,
 		);
 		$previous_id = $this->id;
 

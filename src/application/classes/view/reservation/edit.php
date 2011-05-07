@@ -83,7 +83,7 @@ class View_Reservation_Edit extends View_Base
 			$extensions[] = array(
 				'value' => $i,
 				'name'  => $name.' '.str_pad($span['hours'], 2, 0, STR_PAD_LEFT).':'.str_pad($span['minutes'], 2, 0, STR_PAD_LEFT),
-				'selected' => ($i == $this->form['extension']),
+				'selected' => ($i == @$this->form['extension']),
 			);
 		}
 
